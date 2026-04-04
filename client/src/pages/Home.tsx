@@ -1,4 +1,4 @@
-/* Design: Warm Operator — assembles all sections in order */
+/* Design: Midnight Gold — full page assembly */
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Problem from "@/components/Problem";
@@ -12,7 +12,7 @@ import FloatingChat from "@/components/FloatingChat";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#FAF7F2]">
+    <div className="min-h-screen" style={{ background: "#0A0A0F" }}>
       <Navbar />
       <Hero />
       <Problem />

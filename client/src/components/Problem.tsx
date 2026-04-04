@@ -1,24 +1,14 @@
-/* Design: Warm Operator — warm gray bg, large serif numbers, editorial pain points */
+/* Design: Midnight Gold — dark section with before/after image, pain point cards */
 import { useEffect, useRef, useState } from "react";
+import { PhoneOff, Clock, TrendingDown, AlertCircle } from "lucide-react";
 
-const ANALYTICS_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663082783554/QDcYwAv8SHis62JyYiBJro/hotel-staff-service-Q2pfA4QY7QnzGet4wsVvxZ.webp";
+const BEFORE_AFTER_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663082783554/QDcYwAv8SHis62JyYiBJro/before-after-V8J6FWmnF9gcn9A8z3UoEP.webp";
 
 const pains = [
-  {
-    num: "01",
-    title: "Staff are answering the same questions — all day, every day",
-    desc: "\"What time is check-in?\" \"Do you have parking?\" \"Is breakfast included?\" Your team spends hours on questions a bot can answer in seconds.",
-  },
-  {
-    num: "02",
-    title: "Guests message at midnight. Nobody responds until morning.",
-    desc: "Late-night inquiries go unanswered. Potential bookings are lost. Guests book with the competitor who replied first.",
-  },
-  {
-    num: "03",
-    title: "Hiring more staff isn't the answer — it's too expensive",
-    desc: "A full-time receptionist costs $2,500–$4,000/month. A part-timer still leaves gaps. Your margins can't sustain it.",
-  },
+  { icon: PhoneOff, title: "Missed Inquiries After Hours", desc: "60% of hotel booking inquiries happen outside business hours. Every unanswered message is a lost guest." },
+  { icon: Clock, title: "Staff Overwhelmed by Repetition", desc: "Your team answers the same 20 questions every single day — check-in times, parking, breakfast, pet policy." },
+  { icon: TrendingDown, title: "Guests Book Elsewhere", desc: "When guests don't get instant answers, they don't wait. They open a competitor's site and book there." },
+  { icon: AlertCircle, title: "No Budget for 24/7 Staff", desc: "Hiring a night receptionist costs $2,000–$4,000/month. Most boutique properties simply can't afford it." },
 ];
 
 export default function Problem() {
@@ -26,85 +16,53 @@ export default function Problem() {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.15 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold: 0.12 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
   }, []);
 
   return (
-    <section className="bg-[#EDE8E0] py-24 lg:py-32" ref={ref}>
+    <section id="problem" ref={ref} className="py-24 md:py-32 relative overflow-hidden" style={{ background: "#0D0D14" }}>
+      <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.18), transparent)" }} />
+
       <div className="container">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Left: Image */}
-          <div
-            className={`relative transition-all duration-700 ${visible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"}`}
-          >
-            <div className="relative rounded-2xl overflow-hidden aspect-[4/3]">
-              <img
-                src={ANALYTICS_IMG}
-                alt="Hotel management analytics dashboard"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#1C1008]/30 to-transparent"></div>
-            </div>
-            {/* Floating quote */}
-            <div className="absolute -bottom-6 -right-6 bg-white rounded-xl p-5 shadow-lg border border-[#EDE8E0] max-w-xs">
-              <p
-                className="text-sm text-[#1C1008]/70 italic leading-relaxed"
-                style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1rem" }}
-              >
-                "We were losing 3–4 bookings a week just because nobody was online to answer questions after 9 PM."
-              </p>
-              <p className="mt-2 text-xs font-semibold text-[#C2622D]" style={{ fontFamily: "'Sora', sans-serif" }}>
-                — Boutique Hotel Owner, Lisbon
-              </p>
-            </div>
-          </div>
+        {/* Header */}
+        <div className={`text-center mb-14 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
+          <span className="section-label block mb-4">The Problem</span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5" style={{ fontFamily: "'Playfair Display', serif", color: "#F0EDE6" }}>
+            Running a Boutique Property Is{" "}
+            <span className="gold-text italic">Exhausting.</span>
+          </h2>
+          <p className="text-lg max-w-xl mx-auto" style={{ color: "rgba(240,237,230,0.48)", fontFamily: "'DM Sans', sans-serif" }}>
+            You're managing operations, guests, staff, and marketing — all at once. Guest communication is breaking you.
+          </p>
+        </div>
 
-          {/* Right: Pain points */}
-          <div
-            className={`transition-all duration-700 delay-200 ${visible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"}`}
-          >
-            <span className="section-label">The Problem</span>
-            <h2
-              className="display-heading text-4xl md:text-5xl mt-4 mb-12"
-              style={{ fontFamily: "'Cormorant Garamond', serif" }}
-            >
-              Your team is drowning in{" "}
-              <span className="italic text-[#C2622D]">repetitive tasks</span>
-            </h2>
+        {/* Before/After image */}
+        <div className={`mb-14 rounded-2xl overflow-hidden transition-all duration-1000 delay-200 ${visible ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
+          style={{ border: "1px solid rgba(255,255,255,0.05)", boxShadow: "0 24px 80px rgba(0,0,0,0.5)" }}>
+          <img src={BEFORE_AFTER_IMG} alt="Before and after HostAI" className="w-full object-cover" style={{ maxHeight: "400px" }} />
+        </div>
 
-            <div className="flex flex-col gap-8">
-              {pains.map((p, i) => (
-                <div
-                  key={p.num}
-                  className={`flex gap-5 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
-                  style={{ transitionDelay: `${300 + i * 100}ms` }}
-                >
-                  <span
-                    className="text-4xl font-bold text-[#C2622D]/20 flex-shrink-0 leading-none mt-1"
-                    style={{ fontFamily: "'Cormorant Garamond', serif" }}
-                  >
-                    {p.num}
-                  </span>
-                  <div>
-                    <h3
-                      className="text-lg font-semibold text-[#1C1008] mb-1.5"
-                      style={{ fontFamily: "'Sora', sans-serif" }}
-                    >
-                      {p.title}
-                    </h3>
-                    <p className="text-sm text-[#1C1008]/60 leading-relaxed" style={{ fontFamily: "'Sora', sans-serif" }}>
-                      {p.desc}
-                    </p>
-                  </div>
-                </div>
-              ))}
+        {/* Pain cards */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {pains.map((p, i) => (
+            <div key={p.title} className={`card-dark p-6 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`} style={{ transitionDelay: `${300 + i * 100}ms` }}>
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ background: "rgba(201,168,76,0.08)", border: "1px solid rgba(201,168,76,0.15)" }}>
+                <p.icon size={18} style={{ color: "#C9A84C" }} />
+              </div>
+              <h3 className="text-base font-semibold mb-2" style={{ color: "#F0EDE6", fontFamily: "'DM Sans', sans-serif" }}>{p.title}</h3>
+              <p className="text-sm leading-relaxed" style={{ color: "rgba(240,237,230,0.43)", fontFamily: "'DM Sans', sans-serif" }}>{p.desc}</p>
             </div>
-          </div>
+          ))}
+        </div>
+
+        {/* Bridge */}
+        <div className={`mt-14 text-center transition-all duration-700 delay-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
+          <div className="gold-line mx-auto mb-5" />
+          <p className="text-xl font-semibold" style={{ color: "rgba(240,237,230,0.65)", fontFamily: "'Playfair Display', serif" }}>
+            There is a better way — and it costs less than a part-time employee.
+          </p>
         </div>
       </div>
     </section>

@@ -1,164 +1,183 @@
-/* Design: Warm Operator — asymmetric split hero, dark text on cream left, full-bleed image right */
-import { useEffect, useRef, useState } from "react";
-import { ArrowRight, CheckCircle } from "lucide-react";
+/* Design: Midnight Gold — cinematic full-viewport hero, animated live chat, gold CTAs */
+import { useEffect, useState } from "react";
+import { ArrowRight, Star, ChevronDown } from "lucide-react";
 
-const HERO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663082783554/QDcYwAv8SHis62JyYiBJro/hero-hotel-lobby-8fbbN5x4e8J5GdWkQMTWYz.webp";
+const HERO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663082783554/QDcYwAv8SHis62JyYiBJro/hero-main-Nu7QTaZrK4Z2sdYGQwyjMs.webp";
+const PHONE_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663082783554/QDcYwAv8SHis62JyYiBJro/phone-chat-WibJqHwgnsRNQZhq7Jykua.webp";
+
+const chatMessages = [
+  { from: "guest", text: "Hi! What time is check-in?" },
+  { from: "ai", text: "Welcome! Check-in is from 3:00 PM. Early check-in available from 1 PM — shall I arrange that? 🏨" },
+  { from: "guest", text: "Yes please! Do you allow pets?" },
+  { from: "ai", text: "Absolutely! We're pet-friendly. A $25/night pet fee applies. Your furry friend is welcome! 🐾" },
+];
 
 export default function Hero() {
   const [visible, setVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const [visibleMessages, setVisibleMessages] = useState(0);
+  const [isTyping, setIsTyping] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setVisible(true), 100);
     return () => clearTimeout(t);
   }, []);
 
-  const benefits = [
-    "No technical skills required",
-    "Setup in under 7 days",
-    "Works 24/7 — even when you're asleep",
-  ];
+  useEffect(() => {
+    let idx = 0;
+    let cancelled = false;
+
+    const showNext = () => {
+      if (cancelled) return;
+      if (idx >= chatMessages.length) {
+        setTimeout(() => {
+          if (!cancelled) { setVisibleMessages(0); idx = 0; setTimeout(showNext, 800); }
+        }, 3500);
+        return;
+      }
+      const msg = chatMessages[idx];
+      if (msg.from === "ai") {
+        setIsTyping(true);
+        setTimeout(() => {
+          if (cancelled) return;
+          setIsTyping(false);
+          setVisibleMessages(idx + 1);
+          idx++;
+          setTimeout(showNext, 1400);
+        }, 1300);
+      } else {
+        setVisibleMessages(idx + 1);
+        idx++;
+        setTimeout(showNext, 1000);
+      }
+    };
+
+    const t = setTimeout(showNext, 1200);
+    return () => { cancelled = true; clearTimeout(t); };
+  }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden bg-[#FAF7F2]" ref={ref}>
-      {/* Left content column */}
-      <div className="relative z-10 w-full lg:w-[52%] px-6 md:px-12 lg:px-16 xl:px-20 pt-28 pb-20 lg:pt-32 lg:pb-24">
-        
-        {/* Label */}
-        <div
-          className={`transition-all duration-700 delay-100 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
-        >
-          <span className="section-label flex items-center gap-2">
-            <span className="inline-block w-6 h-px bg-[#C2622D]"></span>
-            AI-Powered Hospitality Automation
-          </span>
-        </div>
+    <section className="relative min-h-screen flex items-center overflow-hidden" style={{ background: "#0A0A0F" }}>
+      {/* Background */}
+      <div className="absolute inset-0">
+        <img src={HERO_IMG} alt="Luxury boutique hotel" className="w-full h-full object-cover" style={{ opacity: 0.32 }} loading="eager" />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(120deg, rgba(10,10,15,0.97) 0%, rgba(10,10,15,0.65) 55%, rgba(10,10,15,0.88) 100%)" }} />
+        <div className="absolute bottom-0 left-0 right-0 h-48" style={{ background: "linear-gradient(to bottom, transparent, #0A0A0F)" }} />
+      </div>
 
-        {/* Headline */}
-        <div
-          className={`mt-5 transition-all duration-700 delay-200 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
-        >
-          <h1
-            className="display-heading text-5xl md:text-6xl xl:text-7xl"
-            style={{ fontFamily: "'Cormorant Garamond', serif" }}
-          >
-            Your Hotel's{" "}
-            <span className="italic text-[#C2622D]">AI Receptionist</span>
-            <br />
-            Works While You Sleep
-          </h1>
-        </div>
+      {/* Gold glow */}
+      <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(201,168,76,0.05) 0%, transparent 70%)", filter: "blur(60px)" }} />
 
-        {/* Sub-headline */}
-        <div
-          className={`mt-6 transition-all duration-700 delay-300 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
-        >
-          <p
-            className="text-lg text-[#1C1008]/65 leading-relaxed max-w-lg"
-            style={{ fontFamily: "'Sora', sans-serif" }}
-          >
-            We build and install AI chatbots for boutique hotels and cafes that answer guest questions, capture bookings, and handle customer service — 24 hours a day, for less than the cost of one shift.
-          </p>
-        </div>
+      <div className="container relative z-10 pt-28 pb-16">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
-        {/* Benefits list */}
-        <div
-          className={`mt-8 flex flex-col gap-3 transition-all duration-700 delay-400 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
-        >
-          {benefits.map((b) => (
-            <div key={b} className="flex items-center gap-2.5">
-              <CheckCircle size={16} className="text-[#4A6741] flex-shrink-0" />
-              <span className="text-sm text-[#1C1008]/75" style={{ fontFamily: "'Sora', sans-serif" }}>
-                {b}
+          {/* Left — Copy */}
+          <div>
+            {/* Badge */}
+            <div className={`transition-all duration-700 delay-100 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold mb-6" style={{ background: "rgba(201,168,76,0.1)", border: "1px solid rgba(201,168,76,0.25)", color: "#C9A84C", fontFamily: "'DM Sans', sans-serif", letterSpacing: "0.1em" }}>
+                <div className="pulse-dot" style={{ width: 6, height: 6 }} />
+                BUILT BY HOSPITALITY INSIDERS
               </span>
             </div>
-          ))}
-        </div>
 
-        {/* CTAs */}
-        <div
-          className={`mt-10 flex flex-col sm:flex-row gap-4 transition-all duration-700 delay-500 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
-        >
-          <a href="#contact" className="btn-primary">
-            Book a Free Demo
-            <ArrowRight size={16} />
-          </a>
-          <a href="#how-it-works" className="btn-outline">
-            See How It Works
-          </a>
-        </div>
+            {/* Headline */}
+            <div className={`transition-all duration-700 delay-200 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`}>
+              <h1 className="text-4xl md:text-5xl lg:text-[3.4rem] font-bold leading-[1.1] mb-6" style={{ fontFamily: "'Playfair Display', serif", color: "#F0EDE6" }}>
+                Your Guests Have<br />
+                Questions at{" "}
+                <span className="gold-text italic">2am.</span>
+                <br />
+                <span style={{ color: "rgba(240,237,230,0.65)" }}>We Have Answers.</span>
+              </h1>
+            </div>
 
-        {/* Social proof strip */}
-        <div
-          className={`mt-12 pt-8 border-t border-[#EDE8E0] transition-all duration-700 delay-600 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
-        >
-          <p className="text-xs text-[#1C1008]/40 uppercase tracking-widest mb-4" style={{ fontFamily: "'Sora', sans-serif" }}>
-            Trusted by hospitality businesses
-          </p>
-          <div className="flex items-center gap-6 flex-wrap">
-            {[
-              { stat: "24/7", label: "Always On" },
-              { stat: "< 7 days", label: "Setup Time" },
-              { stat: "80%+", label: "Profit Margin" },
-              { stat: "$249/mo", label: "Starting From" },
-            ].map((item) => (
-              <div key={item.label} className="flex flex-col">
-                <span
-                  className="text-2xl font-bold text-[#C2622D]"
-                  style={{ fontFamily: "'Cormorant Garamond', serif" }}
-                >
-                  {item.stat}
-                </span>
-                <span className="text-xs text-[#1C1008]/50" style={{ fontFamily: "'Sora', sans-serif" }}>
-                  {item.label}
-                </span>
-              </div>
-            ))}
+            {/* Sub */}
+            <div className={`transition-all duration-700 delay-300 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`}>
+              <p className="text-lg mb-8 leading-relaxed" style={{ color: "rgba(240,237,230,0.58)", fontFamily: "'DM Sans', sans-serif", maxWidth: "480px" }}>
+                HostAI installs a custom AI concierge on your boutique hotel, B&B, or cafe website in{" "}
+                <strong style={{ color: "#C9A84C" }}>7 days</strong> — answering guest questions, reducing staff workload, and capturing bookings 24/7.
+              </p>
+            </div>
+
+            {/* Stars */}
+            <div className={`flex items-center gap-3 mb-8 transition-all duration-700 delay-350 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`}>
+              <div className="flex">{[...Array(5)].map((_, i) => <Star key={i} size={13} fill="#C9A84C" color="#C9A84C" />)}</div>
+              <span className="text-sm" style={{ color: "rgba(240,237,230,0.45)", fontFamily: "'DM Sans', sans-serif" }}>
+                Trusted by hospitality owners in 12+ countries
+              </span>
+            </div>
+
+            {/* CTAs */}
+            <div className={`flex flex-col sm:flex-row gap-3 transition-all duration-700 delay-400 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`}>
+              <a href="#contact" className="btn-gold px-7 py-3.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2">
+                Book Your Free Demo <ArrowRight size={15} />
+              </a>
+              <a href="#how-it-works" className="btn-ghost-gold px-7 py-3.5 rounded-xl text-sm font-semibold flex items-center justify-center">
+                See How It Works
+              </a>
+            </div>
+
+            <p className={`mt-4 text-xs transition-all duration-700 delay-500 ${visible ? "opacity-100" : "opacity-0"}`} style={{ color: "rgba(240,237,230,0.3)", fontFamily: "'DM Sans', sans-serif" }}>
+              No tech skills needed · Setup in 7 days · Cancel anytime
+            </p>
           </div>
-        </div>
-      </div>
 
-      {/* Right image panel */}
-      <div
-        className={`hidden lg:block absolute right-0 top-0 bottom-0 w-[50%] transition-all duration-1000 delay-200 ${visible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"}`}
-      >
-        <div className="relative h-full">
-          <img
-            src={HERO_IMG}
-            alt="Boutique hotel lobby with AI chatbot on reception desk"
-            className="w-full h-full object-cover"
-          />
-          {/* Gradient fade on left edge */}
-          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#FAF7F2] to-transparent"></div>
-          {/* Overlay for depth */}
-          <div className="absolute inset-0 bg-[#1C1008]/10"></div>
-
-          {/* Floating stat card */}
-          <div
-            className={`absolute bottom-12 left-8 bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-xl border border-[#EDE8E0] transition-all duration-700 delay-800 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-[#4A6741]/10 flex items-center justify-center">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M10 2C5.58 2 2 5.58 2 10s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z" fill="#4A6741"/>
-                  <path d="M10.5 6H9v5l4.25 2.55.75-1.23-3.5-2.07V6z" fill="#4A6741"/>
-                </svg>
+          {/* Right — Phone + Live Chat */}
+          <div className={`flex justify-center lg:justify-end transition-all duration-1000 delay-300 ${visible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"}`}>
+            <div className="relative w-full max-w-[340px]">
+              {/* Phone */}
+              <div className="float">
+                <img src={PHONE_IMG} alt="AI concierge chat interface" className="w-full rounded-2xl" style={{ boxShadow: "0 32px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(201,168,76,0.12)" }} />
               </div>
-              <div>
-                <p className="text-xs text-[#1C1008]/50 font-medium" style={{ fontFamily: "'Sora', sans-serif" }}>
-                  Staff hours saved/month
-                </p>
-                <p
-                  className="text-xl font-bold text-[#1C1008]"
-                  style={{ fontFamily: "'Cormorant Garamond', serif" }}
-                >
-                  20+ Hours
-                </p>
+
+              {/* Live chat card */}
+              <div className="absolute -bottom-8 -left-8 w-72 rounded-2xl p-4" style={{ background: "rgba(14,14,22,0.97)", border: "1px solid rgba(201,168,76,0.22)", backdropFilter: "blur(20px)", boxShadow: "0 20px 60px rgba(0,0,0,0.55)" }}>
+                {/* Header */}
+                <div className="flex items-center gap-2.5 mb-3 pb-3" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style={{ background: "linear-gradient(135deg, #C9A84C, #E8C96A)", color: "#0A0A0F", fontFamily: "'Playfair Display', serif" }}>H</div>
+                  <div>
+                    <div className="text-xs font-semibold" style={{ color: "#F0EDE6", fontFamily: "'DM Sans', sans-serif" }}>AI Concierge</div>
+                    <div className="flex items-center gap-1">
+                      <div className="pulse-dot" style={{ width: 5, height: 5 }} />
+                      <span className="text-xs" style={{ color: "rgba(74,222,128,0.85)", fontFamily: "'DM Sans', sans-serif" }}>Online 24/7</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Messages */}
+                <div className="flex flex-col gap-2 min-h-[110px]">
+                  {chatMessages.slice(0, visibleMessages).map((msg, i) => (
+                    <div key={i} className={msg.from === "ai" ? "chat-bubble-ai" : "chat-bubble-user"} style={{ animation: "fadeInUp 0.3s ease", fontSize: "0.72rem", padding: "7px 11px" }}>
+                      {msg.text}
+                    </div>
+                  ))}
+                  {isTyping && (
+                    <div className="chat-bubble-ai flex items-center gap-1" style={{ padding: "9px 13px" }}>
+                      <div className="typing-dot" /><div className="typing-dot" /><div className="typing-dot" />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Stat badge */}
+              <div className="absolute -top-4 -right-4 px-3 py-2 rounded-xl text-center" style={{ background: "rgba(14,14,22,0.97)", border: "1px solid rgba(201,168,76,0.28)", backdropFilter: "blur(20px)" }}>
+                <div className="text-xl font-bold" style={{ color: "#C9A84C", fontFamily: "'Playfair Display', serif" }}>24/7</div>
+                <div className="text-xs" style={{ color: "rgba(240,237,230,0.45)", fontFamily: "'DM Sans', sans-serif" }}>Always On</div>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Scroll cue */}
+        <div className="flex justify-center mt-20">
+          <a href="#problem" className="flex flex-col items-center gap-2 opacity-30 hover:opacity-60 transition-opacity" style={{ color: "#C9A84C" }}>
+            <span className="text-xs" style={{ fontFamily: "'DM Sans', sans-serif", letterSpacing: "0.12em" }}>SCROLL</span>
+            <ChevronDown size={15} className="animate-bounce" />
+          </a>
+        </div>
       </div>
+
+      <style>{`@keyframes fadeInUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }`}</style>
     </section>
   );
 }

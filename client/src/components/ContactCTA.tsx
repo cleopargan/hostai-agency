@@ -1,220 +1,120 @@
-/* Design: Warm Operator — terracotta bg CTA section + espresso footer */
+/* Design: Midnight Gold — dark gold CTA section with contact form and premium footer */
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Mail, Phone, MapPin } from "lucide-react";
 
-function ContactForm() {
-  const [submitted, setSubmitted] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", property: "", message: "" });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-  };
-
-  if (submitted) {
-    return (
-      <div className="flex flex-col items-center justify-center h-full py-12 text-center gap-4">
-        <div className="w-16 h-16 rounded-full bg-[#4A6741]/20 flex items-center justify-center">
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="#4A6741">
-            <path d="M16 3C8.82 3 3 8.82 3 16s5.82 13 13 13 13-5.82 13-13S23.18 3 16 3zm-2 18l-5-5 1.41-1.41L14 18.17l7.59-7.59L23 12l-9 9z"/>
-          </svg>
-        </div>
-        <h3 className="text-2xl font-bold text-[#1C1008]" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
-          Thank you!
-        </h3>
-        <p className="text-[#1C1008]/60 text-sm max-w-xs" style={{ fontFamily: "'Sora', sans-serif" }}>
-          We'll be in touch within 24 hours to schedule your free demo.
-        </p>
-      </div>
-    );
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <div className="grid sm:grid-cols-2 gap-4">
-        <div>
-          <label className="text-xs font-semibold text-[#1C1008]/60 uppercase tracking-wider mb-1.5 block" style={{ fontFamily: "'Sora', sans-serif" }}>
-            Your Name
-          </label>
-          <input
-            type="text"
-            required
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-            placeholder="Maria Santos"
-            className="w-full px-4 py-3 rounded-lg border border-[#EDE8E0] bg-[#FAF7F2] text-[#1C1008] text-sm focus:outline-none focus:ring-2 focus:ring-[#C2622D]/30 focus:border-[#C2622D] transition-all"
-            style={{ fontFamily: "'Sora', sans-serif" }}
-          />
-        </div>
-        <div>
-          <label className="text-xs font-semibold text-[#1C1008]/60 uppercase tracking-wider mb-1.5 block" style={{ fontFamily: "'Sora', sans-serif" }}>
-            Email Address
-          </label>
-          <input
-            type="email"
-            required
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-            placeholder="maria@yourhotel.com"
-            className="w-full px-4 py-3 rounded-lg border border-[#EDE8E0] bg-[#FAF7F2] text-[#1C1008] text-sm focus:outline-none focus:ring-2 focus:ring-[#C2622D]/30 focus:border-[#C2622D] transition-all"
-            style={{ fontFamily: "'Sora', sans-serif" }}
-          />
-        </div>
-      </div>
-      <div>
-        <label className="text-xs font-semibold text-[#1C1008]/60 uppercase tracking-wider mb-1.5 block" style={{ fontFamily: "'Sora', sans-serif" }}>
-          Property Name & Type
-        </label>
-        <input
-          type="text"
-          value={form.property}
-          onChange={(e) => setForm({ ...form, property: e.target.value })}
-          placeholder="e.g. The Alcove Boutique Hotel, Lisbon"
-          className="w-full px-4 py-3 rounded-lg border border-[#EDE8E0] bg-[#FAF7F2] text-[#1C1008] text-sm focus:outline-none focus:ring-2 focus:ring-[#C2622D]/30 focus:border-[#C2622D] transition-all"
-          style={{ fontFamily: "'Sora', sans-serif" }}
-        />
-      </div>
-      <div>
-        <label className="text-xs font-semibold text-[#1C1008]/60 uppercase tracking-wider mb-1.5 block" style={{ fontFamily: "'Sora', sans-serif" }}>
-          What's your biggest challenge right now?
-        </label>
-        <textarea
-          rows={3}
-          value={form.message}
-          onChange={(e) => setForm({ ...form, message: e.target.value })}
-          placeholder="e.g. Staff spending too much time on repetitive questions, missing after-hours bookings..."
-          className="w-full px-4 py-3 rounded-lg border border-[#EDE8E0] bg-[#FAF7F2] text-[#1C1008] text-sm focus:outline-none focus:ring-2 focus:ring-[#C2622D]/30 focus:border-[#C2622D] transition-all resize-none"
-          style={{ fontFamily: "'Sora', sans-serif" }}
-        />
-      </div>
-      <button type="submit" className="btn-primary justify-center mt-2">
-        Book My Free Demo
-        <ArrowRight size={16} />
-      </button>
-      <p className="text-xs text-center text-[#1C1008]/40" style={{ fontFamily: "'Sora', sans-serif" }}>
-        No commitment required. We'll show you a live demo built for your property.
-      </p>
-    </form>
-  );
-}
-
 export default function ContactCTA() {
   const [visible, setVisible] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", property: "", message: "" });
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.1 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold: 0.1 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
   }, []);
+
+  const handleSubmit = (e: React.FormEvent) => { e.preventDefault(); setSubmitted(true); };
 
   return (
     <>
-      {/* CTA Section */}
-      <section id="contact" className="bg-[#FAF7F2] py-24 lg:py-32" ref={ref}>
-        <div className="container">
+      <section id="contact" ref={ref} className="py-24 md:py-32 relative" style={{ background: "#0A0A0F" }}>
+        <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.25), transparent)" }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] pointer-events-none" style={{ background: "radial-gradient(ellipse, rgba(201,168,76,0.04) 0%, transparent 70%)", filter: "blur(40px)" }} />
+
+        <div className="container relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-start">
-            {/* Left */}
-            <div
-              className={`transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
-            >
-              <span className="section-label">Get Started</span>
-              <h2
-                className="display-heading text-4xl md:text-5xl mt-4 leading-tight"
-                style={{ fontFamily: "'Cormorant Garamond', serif" }}
-              >
-                Ready to give your guests a{" "}
-                <span className="italic text-[#C2622D]">24/7 AI receptionist?</span>
+            <div className={`transition-all duration-700 ${visible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"}`}>
+              <span className="section-label block mb-4">Get Started</span>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6" style={{ fontFamily: "'Playfair Display', serif", color: "#F0EDE6" }}>
+                Ready to Let AI Handle Your <span className="gold-text italic">Guest Communication?</span>
               </h2>
-              <p className="text-[#1C1008]/60 mt-5 text-base leading-relaxed" style={{ fontFamily: "'Sora', sans-serif" }}>
-                Book a free 20-minute demo call. We'll show you a live AI chatbot built specifically for your type of property — no commitment, no sales pressure.
+              <p className="text-lg mb-10 leading-relaxed" style={{ color: "rgba(240,237,230,0.5)", fontFamily: "'DM Sans', sans-serif" }}>
+                Book a free 15-minute demo call. We'll show you exactly how your AI concierge will look and work on your property's website — no commitment required.
               </p>
 
-              <div className="mt-8 flex flex-col gap-4">
+              <div className="flex flex-col gap-4 mb-10">
                 {[
-                  { icon: Mail, label: "hello@hostai.co" },
-                  { icon: Phone, label: "+1 (555) 000-0000" },
-                  { icon: MapPin, label: "Serving clients worldwide" },
-                ].map(({ icon: Icon, label }) => (
-                  <div key={label} className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-lg bg-[#C2622D]/10 flex items-center justify-center">
-                      <Icon size={16} className="text-[#C2622D]" />
+                  { icon: Mail, text: "hello@hostai.co" },
+                  { icon: Phone, text: "+1 (555) 000-0000" },
+                  { icon: MapPin, text: "Available worldwide — remote setup" },
+                ].map((item) => (
+                  <div key={item.text} className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: "rgba(201,168,76,0.08)", border: "1px solid rgba(201,168,76,0.15)" }}>
+                      <item.icon size={15} style={{ color: "#C9A84C" }} />
                     </div>
-                    <span className="text-sm text-[#1C1008]/70" style={{ fontFamily: "'Sora', sans-serif" }}>
-                      {label}
-                    </span>
+                    <span className="text-sm" style={{ color: "rgba(240,237,230,0.55)", fontFamily: "'DM Sans', sans-serif" }}>{item.text}</span>
                   </div>
                 ))}
               </div>
 
-              {/* Trust badges */}
-              <div className="mt-10 flex flex-wrap gap-3">
-                {["7-Day Setup Guarantee", "30-Day Money Back", "No Tech Skills Needed"].map((b) => (
-                  <span
-                    key={b}
-                    className="text-xs font-medium px-3 py-1.5 rounded-full border border-[#4A6741]/30 text-[#4A6741] bg-[#4A6741]/5"
-                    style={{ fontFamily: "'Sora', sans-serif" }}
-                  >
-                    ✓ {b}
+              <div className="flex flex-wrap gap-3">
+                {["7-Day Setup", "No Tech Skills Needed", "Cancel Anytime", "30-Day Guarantee"].map((b) => (
+                  <span key={b} className="px-3 py-1.5 rounded-full text-xs font-medium" style={{ background: "rgba(201,168,76,0.06)", border: "1px solid rgba(201,168,76,0.15)", color: "rgba(240,237,230,0.55)", fontFamily: "'DM Sans', sans-serif" }}>
+                    {b}
                   </span>
                 ))}
               </div>
             </div>
 
-            {/* Right: Form */}
-            <div
-              className={`warm-card p-8 transition-all duration-700 delay-200 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
-            >
-              <h3
-                className="text-xl font-semibold text-[#1C1008] mb-6"
-                style={{ fontFamily: "'Sora', sans-serif" }}
-              >
-                Book your free demo
-              </h3>
-              <ContactForm />
+            <div className={`transition-all duration-700 delay-200 ${visible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"}`}>
+              <div className="rounded-2xl p-8" style={{ background: "#16161F", border: "1px solid rgba(201,168,76,0.15)", boxShadow: "0 24px 80px rgba(0,0,0,0.4)" }}>
+                {submitted ? (
+                  <div className="text-center py-12">
+                    <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5 text-2xl" style={{ background: "rgba(201,168,76,0.1)", border: "1px solid rgba(201,168,76,0.3)" }}>✓</div>
+                    <h3 className="text-xl font-bold mb-3" style={{ color: "#F0EDE6", fontFamily: "'Playfair Display', serif" }}>We'll be in touch within 24 hours!</h3>
+                    <p className="text-sm" style={{ color: "rgba(240,237,230,0.48)", fontFamily: "'DM Sans', sans-serif" }}>Thank you for your interest. We're looking forward to showing you what HostAI can do for your property.</p>
+                  </div>
+                ) : (
+                  <>
+                    <h3 className="text-xl font-bold mb-6" style={{ color: "#F0EDE6", fontFamily: "'Playfair Display', serif" }}>Book Your Free Demo</h3>
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs font-semibold mb-1.5" style={{ color: "rgba(240,237,230,0.4)", fontFamily: "'DM Sans', sans-serif", letterSpacing: "0.08em" }}>YOUR NAME</label>
+                          <input required value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Maria Santos" className="form-input w-full" />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-semibold mb-1.5" style={{ color: "rgba(240,237,230,0.4)", fontFamily: "'DM Sans', sans-serif", letterSpacing: "0.08em" }}>EMAIL ADDRESS</label>
+                          <input required type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder="maria@yourhotel.com" className="form-input w-full" />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold mb-1.5" style={{ color: "rgba(240,237,230,0.4)", fontFamily: "'DM Sans', sans-serif", letterSpacing: "0.08em" }}>PROPERTY NAME & TYPE</label>
+                        <input required value={form.property} onChange={e => setForm(f => ({ ...f, property: e.target.value }))} placeholder="The Grand Boutique Hotel — 20 rooms" className="form-input w-full" />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold mb-1.5" style={{ color: "rgba(240,237,230,0.4)", fontFamily: "'DM Sans', sans-serif", letterSpacing: "0.08em" }}>BIGGEST CHALLENGE (OPTIONAL)</label>
+                        <textarea value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} placeholder="e.g. We miss too many inquiries after hours..." rows={3} className="form-input w-full resize-none" />
+                      </div>
+                      <button type="submit" className="btn-gold w-full py-4 rounded-xl text-sm font-bold flex items-center justify-center gap-2 mt-2">
+                        Book Free Demo Call <ArrowRight size={15} />
+                      </button>
+                      <p className="text-center text-xs" style={{ color: "rgba(240,237,230,0.25)", fontFamily: "'DM Sans', sans-serif" }}>No spam. No commitment. Just a 15-minute call.</p>
+                    </form>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-[#1C1008] py-12">
-        <div className="container">
+      <footer style={{ background: "#070709", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+        <div className="container py-12">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-lg bg-[#C2622D] flex items-center justify-center">
-                <svg width="15" height="15" viewBox="0 0 18 18" fill="none">
-                  <path d="M3 14L7 10M7 10L9 12L13 7M7 10L5 8" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                  <circle cx="13" cy="5" r="2" fill="white"/>
-                </svg>
+            <div>
+              <div className="text-xl font-bold mb-1" style={{ fontFamily: "'Playfair Display', serif", color: "#F0EDE6" }}>
+                Host<span style={{ color: "#C9A84C" }}>AI</span>
               </div>
-              <span
-                className="text-[#FAF7F2] font-bold text-lg"
-                style={{ fontFamily: "'Cormorant Garamond', serif" }}
-              >
-                HostAI
-              </span>
+              <p className="text-xs" style={{ color: "rgba(240,237,230,0.28)", fontFamily: "'DM Sans', sans-serif" }}>AI Concierges for Boutique Hospitality</p>
             </div>
-
-            <p className="text-[#FAF7F2]/30 text-xs text-center" style={{ fontFamily: "'Sora', sans-serif" }}>
-              © {new Date().getFullYear()} HostAI. AI Receptionists for Boutique Hospitality.
-            </p>
-
-            <div className="flex gap-5">
-              {["Privacy Policy", "Terms", "Contact"].map((l) => (
-                <a
-                  key={l}
-                  href="#"
-                  className="text-xs text-[#FAF7F2]/40 hover:text-[#FAF7F2]/70 transition-colors"
-                  style={{ fontFamily: "'Sora', sans-serif" }}
-                >
-                  {l}
-                </a>
+            <div className="flex flex-wrap gap-6 justify-center">
+              {[["#problem", "The Problem"], ["#how-it-works", "How It Works"], ["#results", "Results"], ["#pricing", "Pricing"], ["#faq", "FAQ"], ["#contact", "Contact"]].map(([href, label]) => (
+                <a key={href} href={href} className="text-xs hover:opacity-70 transition-opacity" style={{ color: "rgba(240,237,230,0.35)", fontFamily: "'DM Sans', sans-serif" }}>{label}</a>
               ))}
             </div>
+            <p className="text-xs" style={{ color: "rgba(240,237,230,0.2)", fontFamily: "'DM Sans', sans-serif" }}>© {new Date().getFullYear()} HostAI. All rights reserved.</p>
           </div>
         </div>
       </footer>

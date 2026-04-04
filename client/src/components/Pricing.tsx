@@ -1,47 +1,50 @@
-/* Design: Warm Operator — cream bg, two-card pricing layout, terracotta highlight on recommended */
+/* Design: Midnight Gold — dark pricing cards with gold featured card */
 import { useEffect, useRef, useState } from "react";
-import { Check, ArrowRight } from "lucide-react";
+import { Check, Zap } from "lucide-react";
 
 const plans = [
   {
     name: "Starter",
-    price: "$997",
-    period: "one-time setup",
-    monthly: "+ $249/month",
-    monthlyLabel: "maintenance & support",
-    desc: "Perfect for independent boutique hotels and cafes getting started with AI automation.",
+    tagline: "Perfect for B&Bs and small cafes",
+    setup: 997,
+    monthly: 249,
+    featured: false,
     features: [
-      "Custom AI chatbot built for your property",
-      "WordPress website integration",
-      "FAQ training (up to 50 questions)",
-      "Booking link integration",
-      "7-day setup guarantee",
-      "Monthly performance report",
+      "Custom AI trained on your property",
+      "Website installation (any platform)",
+      "Up to 500 conversations/month",
+      "FAQ & booking link handling",
       "Email support",
+      "Monthly performance report",
+      "7-day setup guarantee",
     ],
     cta: "Get Started",
-    highlight: false,
   },
   {
     name: "Professional",
-    price: "$1,497",
-    period: "one-time setup",
-    monthly: "+ $349/month",
-    monthlyLabel: "maintenance & support",
-    desc: "For properties that want advanced automation, multi-language support, and priority service.",
+    tagline: "For boutique hotels & multi-location properties",
+    setup: 1497,
+    monthly: 349,
+    featured: true,
     features: [
-      "Everything in Starter, plus:",
+      "Everything in Starter",
+      "Unlimited conversations",
       "Multi-language support (up to 3 languages)",
-      "Advanced booking flow automation",
-      "Lead capture & CRM integration",
-      "Upsell prompts (room upgrades, extras)",
-      "Priority 24-hour support",
+      "WhatsApp & Instagram integration",
+      "Priority support (4-hour response)",
       "Monthly strategy call",
-      "Quarterly bot retraining",
+      "Quarterly AI retraining",
+      "Custom bot personality & tone",
     ],
-    cta: "Book a Demo",
-    highlight: true,
+    cta: "Most Popular — Get Started",
   },
+];
+
+const addons = [
+  { name: "WhatsApp Integration", price: "$249 one-time" },
+  { name: "Instagram DM Automation", price: "$249 one-time" },
+  { name: "One-Page Website Build", price: "$399 one-time" },
+  { name: "Additional Language", price: "$99/month" },
 ];
 
 export default function Pricing() {
@@ -49,129 +52,103 @@ export default function Pricing() {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.1 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold: 0.1 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
   }, []);
 
   return (
-    <section id="pricing" className="bg-[#FAF7F2] py-24 lg:py-32" ref={ref}>
+    <section id="pricing" ref={ref} className="py-24 md:py-32 relative" style={{ background: "#0A0A0F" }}>
+      <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.18), transparent)" }} />
+
       <div className="container">
-        {/* Header */}
-        <div
-          className={`text-center mb-16 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
-        >
-          <span className="section-label">Pricing</span>
-          <h2
-            className="display-heading text-4xl md:text-5xl mt-4"
-            style={{ fontFamily: "'Cormorant Garamond', serif" }}
-          >
-            Less than the cost of{" "}
-            <span className="italic text-[#C2622D]">one extra shift</span>
+        <div className={`text-center mb-14 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
+          <span className="section-label block mb-4">Pricing</span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5" style={{ fontFamily: "'Playfair Display', serif", color: "#F0EDE6" }}>
+            Simple, <span className="gold-text italic">Transparent</span> Pricing
           </h2>
-          <p className="text-[#1C1008]/60 mt-4 max-w-xl mx-auto text-base" style={{ fontFamily: "'Sora', sans-serif" }}>
-            A part-time receptionist costs $1,200–$2,000/month. Your AI works 24/7 for a fraction of that — and never calls in sick.
+          <p className="text-lg max-w-xl mx-auto" style={{ color: "rgba(240,237,230,0.48)", fontFamily: "'DM Sans', sans-serif" }}>
+            One setup fee. One monthly retainer. No hidden costs, no long-term contracts.
           </p>
         </div>
 
-        {/* Cards */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-14">
           {plans.map((plan, i) => (
             <div
               key={plan.name}
-              className={`relative rounded-2xl p-8 transition-all duration-700 ${
-                plan.highlight
-                  ? "bg-[#1C1008] text-[#FAF7F2] shadow-2xl scale-[1.02]"
-                  : "warm-card"
-              } ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
-              style={{ transitionDelay: `${i * 150}ms` }}
+              className={`relative rounded-2xl p-8 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+              style={{
+                transitionDelay: `${i * 150}ms`,
+                background: plan.featured ? "linear-gradient(145deg, #1A1810, #16140A)" : "#16161F",
+                border: plan.featured ? "1px solid rgba(201,168,76,0.45)" : "1px solid rgba(255,255,255,0.07)",
+                boxShadow: plan.featured ? "0 24px 80px rgba(201,168,76,0.12)" : "none",
+              }}
             >
-              {plan.highlight && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="bg-[#C2622D] text-white text-xs font-bold px-4 py-1.5 rounded-full" style={{ fontFamily: "'Sora', sans-serif" }}>
-                    Most Popular
+              {plan.featured && (
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                  <span className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold" style={{ background: "linear-gradient(135deg, #C9A84C, #E8C96A)", color: "#0A0A0F", fontFamily: "'DM Sans', sans-serif" }}>
+                    <Zap size={11} /> MOST POPULAR
                   </span>
                 </div>
               )}
 
               <div className="mb-6">
-                <h3
-                  className={`text-lg font-semibold mb-1 ${plan.highlight ? "text-[#FAF7F2]" : "text-[#1C1008]"}`}
-                  style={{ fontFamily: "'Sora', sans-serif" }}
-                >
-                  {plan.name}
-                </h3>
-                <p className={`text-sm leading-relaxed ${plan.highlight ? "text-[#FAF7F2]/60" : "text-[#1C1008]/55"}`} style={{ fontFamily: "'Sora', sans-serif" }}>
-                  {plan.desc}
-                </p>
+                <h3 className="text-xl font-bold mb-1" style={{ color: "#F0EDE6", fontFamily: "'Playfair Display', serif" }}>{plan.name}</h3>
+                <p className="text-sm" style={{ color: "rgba(240,237,230,0.45)", fontFamily: "'DM Sans', sans-serif" }}>{plan.tagline}</p>
               </div>
 
-              <div className="mb-6">
-                <div className="flex items-baseline gap-2">
-                  <span
-                    className={`text-5xl font-bold ${plan.highlight ? "text-[#C2622D]" : "text-[#1C1008]"}`}
-                    style={{ fontFamily: "'Cormorant Garamond', serif" }}
-                  >
-                    {plan.price}
+              <div className="mb-6 pb-6" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+                <div className="flex items-baseline gap-1 mb-1">
+                  <span className="text-3xl font-bold" style={{ color: plan.featured ? "#C9A84C" : "#F0EDE6", fontFamily: "'Playfair Display', serif" }}>
+                    ${plan.setup.toLocaleString()}
                   </span>
-                  <span className={`text-sm ${plan.highlight ? "text-[#FAF7F2]/50" : "text-[#1C1008]/40"}`} style={{ fontFamily: "'Sora', sans-serif" }}>
-                    {plan.period}
-                  </span>
+                  <span className="text-sm" style={{ color: "rgba(240,237,230,0.38)", fontFamily: "'DM Sans', sans-serif" }}>one-time setup</span>
                 </div>
-                <p className={`text-sm mt-1 font-medium ${plan.highlight ? "text-[#FAF7F2]/70" : "text-[#1C1008]/60"}`} style={{ fontFamily: "'Sora', sans-serif" }}>
-                  {plan.monthly} <span className="font-normal">{plan.monthlyLabel}</span>
-                </p>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-xl font-semibold" style={{ color: plan.featured ? "#C9A84C" : "#F0EDE6", fontFamily: "'DM Sans', sans-serif" }}>
+                    ${plan.monthly}
+                  </span>
+                  <span className="text-sm" style={{ color: "rgba(240,237,230,0.38)", fontFamily: "'DM Sans', sans-serif" }}>/month retainer</span>
+                </div>
               </div>
-
-              <div className="divider-warm mb-6" style={{ background: plan.highlight ? "rgba(255,255,255,0.1)" : undefined }}></div>
 
               <ul className="flex flex-col gap-3 mb-8">
                 {plan.features.map((f) => (
                   <li key={f} className="flex items-start gap-2.5">
-                    <Check
-                      size={15}
-                      className="flex-shrink-0 mt-0.5"
-                      style={{ color: plan.highlight ? "#C2622D" : "#4A6741" }}
-                    />
-                    <span
-                      className={`text-sm ${f.startsWith("Everything") ? "font-semibold" : ""} ${plan.highlight ? "text-[#FAF7F2]/80" : "text-[#1C1008]/70"}`}
-                      style={{ fontFamily: "'Sora', sans-serif" }}
-                    >
-                      {f}
-                    </span>
+                    <div className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: plan.featured ? "rgba(201,168,76,0.15)" : "rgba(255,255,255,0.06)" }}>
+                      <Check size={10} style={{ color: plan.featured ? "#C9A84C" : "rgba(240,237,230,0.5)" }} />
+                    </div>
+                    <span className="text-sm" style={{ color: "rgba(240,237,230,0.65)", fontFamily: "'DM Sans', sans-serif" }}>{f}</span>
                   </li>
                 ))}
               </ul>
 
-              <a
-                href="#contact"
-                className={`flex items-center justify-center gap-2 w-full py-3.5 rounded-lg font-semibold text-sm transition-all duration-200 ${
-                  plan.highlight
-                    ? "bg-[#C2622D] text-white hover:bg-[#a8521f]"
-                    : "bg-[#1C1008] text-[#FAF7F2] hover:bg-[#2d1a0e]"
-                }`}
-                style={{ fontFamily: "'Sora', sans-serif" }}
-              >
+              <a href="#contact" className={`block text-center py-3.5 rounded-xl text-sm font-bold transition-all duration-200 ${plan.featured ? "btn-gold" : "btn-ghost-gold"}`}>
                 {plan.cta}
-                <ArrowRight size={15} />
               </a>
             </div>
           ))}
         </div>
 
+        {/* Add-ons */}
+        <div className={`max-w-3xl mx-auto transition-all duration-700 delay-500 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
+          <h3 className="text-center text-base font-semibold mb-5" style={{ color: "rgba(240,237,230,0.5)", fontFamily: "'DM Sans', sans-serif" }}>Optional Add-Ons</h3>
+          <div className="grid sm:grid-cols-2 gap-3">
+            {addons.map((a) => (
+              <div key={a.name} className="flex items-center justify-between px-5 py-3.5 rounded-xl" style={{ background: "#16161F", border: "1px solid rgba(255,255,255,0.06)" }}>
+                <span className="text-sm" style={{ color: "rgba(240,237,230,0.6)", fontFamily: "'DM Sans', sans-serif" }}>{a.name}</span>
+                <span className="text-sm font-semibold" style={{ color: "#C9A84C", fontFamily: "'DM Sans', sans-serif" }}>{a.price}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Guarantee */}
-        <div
-          className={`mt-12 text-center transition-all duration-700 delay-300 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
-        >
-          <div className="inline-flex items-center gap-2.5 bg-[#4A6741]/10 border border-[#4A6741]/20 rounded-full px-5 py-2.5">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="#4A6741">
-              <path d="M8 1L2 4v4c0 3.31 2.56 6.41 6 7 3.44-.59 6-3.69 6-7V4L8 1zm-1 9.41L4.59 8 5.66 6.93 7 8.25l3.34-3.34 1.07 1.08L7 10.41z"/>
-            </svg>
-            <span className="text-sm text-[#4A6741] font-medium" style={{ fontFamily: "'Sora', sans-serif" }}>
-              30-day satisfaction guarantee — if you're not happy, we'll refund your setup fee in full.
+        <div className={`mt-12 text-center transition-all duration-700 delay-600 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
+          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full" style={{ background: "rgba(201,168,76,0.06)", border: "1px solid rgba(201,168,76,0.15)" }}>
+            <span className="text-lg">🛡️</span>
+            <span className="text-sm" style={{ color: "rgba(240,237,230,0.55)", fontFamily: "'DM Sans', sans-serif" }}>
+              <strong style={{ color: "#C9A84C" }}>30-day money-back guarantee.</strong> If your AI isn't live in 7 days, you pay nothing.
             </span>
           </div>
         </div>
