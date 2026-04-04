@@ -1,6 +1,7 @@
-/* Design: Midnight Gold — full page assembly */
+/* Design: Midnight Gold — full page assembly with TrustStrip */
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import TrustStrip from "@/components/TrustStrip";
 import Problem from "@/components/Problem";
 import HowItWorks from "@/components/HowItWorks";
 import Features from "@/components/Features";
@@ -15,6 +16,7 @@ export default function Home() {
     <div className="min-h-screen" style={{ background: "#0A0A0F" }}>
       <Navbar />
       <Hero />
+      <TrustStrip />
       <Problem />
       <HowItWorks />
       <Features />
