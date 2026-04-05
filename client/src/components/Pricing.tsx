@@ -1,6 +1,9 @@
-/* Design: Midnight Gold — dark pricing cards with gold featured card */
+/* ============================================================
+   PRICING — Obsidian & Gold Luxury v3
+   Premium pricing cards, gold featured card, refined layout
+   ============================================================ */
 import { useEffect, useRef, useState } from "react";
-import { Check, Zap } from "lucide-react";
+import { Check, Sparkles } from "lucide-react";
 
 const plans = [
   {
@@ -36,7 +39,7 @@ const plans = [
       "Quarterly AI retraining",
       "Custom bot personality & tone",
     ],
-    cta: "Most Popular — Get Started",
+    cta: "Get Started",
   },
 ];
 
@@ -58,72 +61,148 @@ export default function Pricing() {
   }, []);
 
   return (
-    <section id="pricing" ref={ref} className="py-24 md:py-32 relative" style={{ background: "#0A0A0F" }}>
+    <section id="pricing" ref={ref} className="py-24 md:py-32 relative" style={{ background: "#080810" }}>
       <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.18), transparent)" }} />
 
-      <div className="container">
-        <div className={`text-center mb-14 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
-          <span className="section-label block mb-4">Pricing</span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5" style={{ fontFamily: "'Playfair Display', serif", color: "#F0EDE6" }}>
-            Simple, <span className="gold-text italic">Transparent</span> Pricing
+      {/* Ambient glow */}
+      <div className="absolute pointer-events-none" style={{
+        top: "30%", left: "50%", transform: "translateX(-50%)",
+        width: "700px", height: "400px",
+        background: "radial-gradient(ellipse, rgba(201,168,76,0.03) 0%, transparent 65%)",
+        filter: "blur(80px)"
+      }} />
+
+      <div className="container relative z-10">
+
+        {/* Header */}
+        <div className={`max-w-2xl mx-auto text-center mb-16 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <div className="gold-line" />
+            <span className="section-label">Pricing</span>
+            <div className="gold-line" style={{ background: "linear-gradient(90deg, transparent, #C9A84C)" }} />
+          </div>
+          <h2 style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontSize: "clamp(2rem, 3.5vw, 3rem)",
+            fontWeight: 600,
+            lineHeight: 1.1,
+            color: "#F5F0E8",
+            marginBottom: "1.25rem"
+          }}>
+            Simple, <em className="gold-text">Transparent</em> Pricing
           </h2>
-          <p className="text-lg max-w-xl mx-auto" style={{ color: "rgba(240,237,230,0.48)", fontFamily: "'DM Sans', sans-serif" }}>
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "1rem", lineHeight: 1.75, color: "rgba(245,240,232,0.42)" }}>
             One setup fee. One monthly retainer. No hidden costs, no long-term contracts.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-14">
+        {/* Pricing cards */}
+        <div className="grid md:grid-cols-2 gap-5 max-w-3xl mx-auto mb-14">
           {plans.map((plan, i) => (
             <div
               key={plan.name}
-              className={`relative rounded-2xl p-8 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+              className={`relative transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
               style={{
                 transitionDelay: `${i * 150}ms`,
-                background: plan.featured ? "linear-gradient(145deg, #1A1810, #16140A)" : "#16161F",
-                border: plan.featured ? "1px solid rgba(201,168,76,0.45)" : "1px solid rgba(255,255,255,0.07)",
-                boxShadow: plan.featured ? "0 24px 80px rgba(201,168,76,0.12)" : "none",
+                background: plan.featured
+                  ? "linear-gradient(160deg, rgba(28,22,10,0.98) 0%, rgba(20,16,6,0.98) 100%)"
+                  : "rgba(12,11,22,0.95)",
+                border: plan.featured
+                  ? "1px solid rgba(201,168,76,0.4)"
+                  : "1px solid rgba(255,255,255,0.065)",
+                borderRadius: "2px",
+                padding: "2.25rem",
+                boxShadow: plan.featured
+                  ? "0 32px 80px rgba(201,168,76,0.1), 0 0 0 1px rgba(201,168,76,0.06)"
+                  : "0 16px 50px rgba(0,0,0,0.3)"
               }}
             >
+              {/* Most popular badge */}
               {plan.featured && (
-                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                  <span className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold" style={{ background: "linear-gradient(135deg, #C9A84C, #E8C96A)", color: "#0A0A0F", fontFamily: "'DM Sans', sans-serif" }}>
-                    <Zap size={11} /> MOST POPULAR
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                  <span className="flex items-center gap-1.5 px-4 py-1.5" style={{
+                    background: "linear-gradient(135deg, #B8922E, #E8C96A)",
+                    color: "#0A0806",
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: "0.62rem",
+                    fontWeight: 700,
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                    borderRadius: "2px",
+                    whiteSpace: "nowrap"
+                  }}>
+                    <Sparkles size={10} /> Most Popular
                   </span>
                 </div>
               )}
 
+              {/* Plan name */}
               <div className="mb-6">
-                <h3 className="text-xl font-bold mb-1" style={{ color: "#F0EDE6", fontFamily: "'Playfair Display', serif" }}>{plan.name}</h3>
-                <p className="text-sm" style={{ color: "rgba(240,237,230,0.45)", fontFamily: "'DM Sans', sans-serif" }}>{plan.tagline}</p>
+                <h3 style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontSize: "1.5rem",
+                  fontWeight: 600,
+                  color: "#F5F0E8",
+                  marginBottom: "0.375rem"
+                }}>
+                  {plan.name}
+                </h3>
+                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.8rem", color: "rgba(245,240,232,0.4)" }}>
+                  {plan.tagline}
+                </p>
               </div>
 
-              <div className="mb-6 pb-6" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-                <div className="flex items-baseline gap-1 mb-1">
-                  <span className="text-3xl font-bold" style={{ color: plan.featured ? "#C9A84C" : "#F0EDE6", fontFamily: "'Playfair Display', serif" }}>
+              {/* Pricing */}
+              <div className="mb-7 pb-7" style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                <div className="flex items-baseline gap-1.5 mb-1.5">
+                  <span style={{
+                    fontFamily: "'Cormorant Garamond', serif",
+                    fontSize: "2.5rem",
+                    fontWeight: 600,
+                    color: plan.featured ? "#C9A84C" : "#F5F0E8",
+                    lineHeight: 1
+                  }}>
                     ${plan.setup.toLocaleString()}
                   </span>
-                  <span className="text-sm" style={{ color: "rgba(240,237,230,0.38)", fontFamily: "'DM Sans', sans-serif" }}>one-time setup</span>
+                  <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.78rem", color: "rgba(245,240,232,0.32)" }}>
+                    one-time setup
+                  </span>
                 </div>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-xl font-semibold" style={{ color: plan.featured ? "#C9A84C" : "#F0EDE6", fontFamily: "'DM Sans', sans-serif" }}>
+                <div className="flex items-baseline gap-1.5">
+                  <span style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: "1.25rem",
+                    fontWeight: 600,
+                    color: plan.featured ? "#C9A84C" : "#F5F0E8"
+                  }}>
                     ${plan.monthly}
                   </span>
-                  <span className="text-sm" style={{ color: "rgba(240,237,230,0.38)", fontFamily: "'DM Sans', sans-serif" }}>/month retainer</span>
+                  <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.78rem", color: "rgba(245,240,232,0.32)" }}>
+                    /month retainer
+                  </span>
                 </div>
               </div>
 
+              {/* Features */}
               <ul className="flex flex-col gap-3 mb-8">
                 {plan.features.map((f) => (
                   <li key={f} className="flex items-start gap-2.5">
-                    <div className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: plan.featured ? "rgba(201,168,76,0.15)" : "rgba(255,255,255,0.06)" }}>
-                      <Check size={10} style={{ color: plan.featured ? "#C9A84C" : "rgba(240,237,230,0.5)" }} />
+                    <div className="w-4 h-4 flex items-center justify-center flex-shrink-0 mt-0.5" style={{
+                      background: plan.featured ? "rgba(201,168,76,0.12)" : "rgba(255,255,255,0.04)",
+                      border: `1px solid ${plan.featured ? "rgba(201,168,76,0.25)" : "rgba(255,255,255,0.06)"}`,
+                      borderRadius: "2px"
+                    }}>
+                      <Check size={9} style={{ color: plan.featured ? "#C9A84C" : "rgba(245,240,232,0.45)" }} />
                     </div>
-                    <span className="text-sm" style={{ color: "rgba(240,237,230,0.65)", fontFamily: "'DM Sans', sans-serif" }}>{f}</span>
+                    <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.82rem", color: "rgba(245,240,232,0.6)", lineHeight: 1.5 }}>
+                      {f}
+                    </span>
                   </li>
                 ))}
               </ul>
 
-              <a href="#contact" className={`block text-center py-3.5 rounded-xl text-sm font-bold transition-all duration-200 ${plan.featured ? "btn-gold" : "btn-ghost-gold"}`}>
+              {/* CTA */}
+              <a href="#contact" className={plan.featured ? "btn-gold" : "btn-ghost-gold"} style={{ display: "block", textAlign: "center" }}>
                 {plan.cta}
               </a>
             </div>
@@ -131,23 +210,33 @@ export default function Pricing() {
         </div>
 
         {/* Add-ons */}
-        <div className={`max-w-3xl mx-auto transition-all duration-700 delay-500 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
-          <h3 className="text-center text-base font-semibold mb-5" style={{ color: "rgba(240,237,230,0.5)", fontFamily: "'DM Sans', sans-serif" }}>Optional Add-Ons</h3>
+        <div className={`max-w-3xl mx-auto mb-12 transition-all duration-700 delay-500 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(245,240,232,0.28)", textAlign: "center", marginBottom: "1.25rem" }}>
+            Optional Add-Ons
+          </p>
           <div className="grid sm:grid-cols-2 gap-3">
             {addons.map((a) => (
-              <div key={a.name} className="flex items-center justify-between px-5 py-3.5 rounded-xl" style={{ background: "#16161F", border: "1px solid rgba(255,255,255,0.06)" }}>
-                <span className="text-sm" style={{ color: "rgba(240,237,230,0.6)", fontFamily: "'DM Sans', sans-serif" }}>{a.name}</span>
-                <span className="text-sm font-semibold" style={{ color: "#C9A84C", fontFamily: "'DM Sans', sans-serif" }}>{a.price}</span>
+              <div key={a.name} className="flex items-center justify-between px-5 py-3.5" style={{
+                background: "rgba(12,11,22,0.8)",
+                border: "1px solid rgba(255,255,255,0.055)",
+                borderRadius: "2px"
+              }}>
+                <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.82rem", color: "rgba(245,240,232,0.55)" }}>{a.name}</span>
+                <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.82rem", fontWeight: 600, color: "#C9A84C" }}>{a.price}</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Guarantee */}
-        <div className={`mt-12 text-center transition-all duration-700 delay-600 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
-          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full" style={{ background: "rgba(201,168,76,0.06)", border: "1px solid rgba(201,168,76,0.15)" }}>
-            <span className="text-lg">🛡️</span>
-            <span className="text-sm" style={{ color: "rgba(240,237,230,0.55)", fontFamily: "'DM Sans', sans-serif" }}>
+        <div className={`text-center transition-all duration-700 delay-600 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
+          <div className="inline-flex items-center gap-3 px-7 py-3.5" style={{
+            background: "rgba(201,168,76,0.04)",
+            border: "1px solid rgba(201,168,76,0.14)",
+            borderRadius: "2px"
+          }}>
+            <span style={{ fontSize: "1.1rem" }}>🛡️</span>
+            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.82rem", color: "rgba(245,240,232,0.5)" }}>
               <strong style={{ color: "#C9A84C" }}>30-day money-back guarantee.</strong> If your AI isn't live in 7 days, you pay nothing.
             </span>
           </div>

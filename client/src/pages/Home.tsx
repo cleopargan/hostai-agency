@@ -1,4 +1,7 @@
-/* Design: Midnight Gold — full page assembly with TrustStrip */
+/* ============================================================
+   HOME — Obsidian & Gold Luxury v3
+   Full page assembly with all premium sections
+   ============================================================ */
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import TrustStrip from "@/components/TrustStrip";
@@ -13,7 +16,7 @@ import FloatingChat from "@/components/FloatingChat";
 
 export default function Home() {
   return (
-    <div className="min-h-screen" style={{ background: "#0A0A0F" }}>
+    <div className="min-h-screen" style={{ background: "#080810" }}>
       <Navbar />
       <Hero />
       <TrustStrip />

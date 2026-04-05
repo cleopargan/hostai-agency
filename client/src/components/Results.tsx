@@ -1,17 +1,19 @@
-/* Design: Midnight Gold — hexagonal bg, animated gold stat counters, real-photo testimonial cards */
+/* ============================================================
+   RESULTS — Obsidian & Gold Luxury v3
+   Animated stat counters, premium testimonial cards, gold accents
+   ============================================================ */
 import { useEffect, useRef, useState } from "react";
 import { Quote, Star } from "lucide-react";
 
-const STATS_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663082783554/QDcYwAv8SHis62JyYiBJro/stats-bg-ijZiFmkdvtYsz944f3mMpV.webp";
-const PROCESS_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663082783554/QDcYwAv8SHis62JyYiBJro/process-bg-NL6TaEc7NQ3QWt3Q7rmezn.webp";
-const PHOTO_MARIA = "https://d2xsxph8kpxj0f.cloudfront.net/310519663082783554/QDcYwAv8SHis62JyYiBJro/testimonial-maria-CxGwuSmZtv8TpE8YzNtgqz.webp";
-const PHOTO_JAMES = "https://d2xsxph8kpxj0f.cloudfront.net/310519663082783554/QDcYwAv8SHis62JyYiBJro/testimonial-james-3XNx7HkrGgYTQVUwShZPDh.webp";
+const STATS_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663082783554/QDcYwAv8SHis62JyYiBJro/hero-luxury-v2_016a6f73.jpg";
+const PHOTO_MARIA = "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=80&h=80&fit=crop&crop=face";
+const PHOTO_JAMES = "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=80&h=80&fit=crop&crop=face";
 
 const stats = [
-  { value: 94, suffix: "%", label: "Guest Satisfaction Rate", desc: "Guests rate AI responses as helpful or very helpful" },
+  { value: 94, suffix: "%", label: "Guest Satisfaction", desc: "Guests rate AI responses as helpful or very helpful" },
   { value: 24, suffix: "/7", label: "Always Available", desc: "Zero downtime — your AI never calls in sick" },
-  { value: 3, suffix: "×", label: "More Inquiries Captured", desc: "Properties see 3× more captured leads after HostAI" },
-  { value: 20, suffix: "+", label: "Staff Hours Saved/Month", desc: "Per property — time your team uses for real hospitality" },
+  { value: 3, suffix: "×", label: "More Leads Captured", desc: "Properties see 3× more captured leads after HostAI" },
+  { value: 20, suffix: "+", label: "Staff Hours Saved", desc: "Per property per month — time for real hospitality" },
 ];
 
 const testimonials = [
@@ -58,13 +60,15 @@ function useCountUp(target: number, active: boolean) {
   return count;
 }
 
-function StatCard({ stat, active, idx }: { stat: typeof stats[0]; active: boolean; idx: number }) {
+function StatCard({ stat, active }: { stat: typeof stats[0]; active: boolean }) {
   const count = useCountUp(stat.value, active);
   return (
-    <div className="text-center p-6 md:p-8 relative group transition-all duration-300 hover:bg-white/5 rounded-xl">
+    <div className="text-center p-7 md:p-9 relative group transition-all duration-300" style={{ cursor: "default" }}
+      onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.025)"}
+      onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = "transparent"}>
       <div className="stat-number mb-2">{count}{stat.suffix}</div>
-      <div className="text-sm font-semibold mb-1.5" style={{ color: "#F0EDE6", fontFamily: "'DM Sans', sans-serif" }}>{stat.label}</div>
-      <div className="text-xs leading-relaxed" style={{ color: "rgba(240,237,230,0.38)", fontFamily: "'DM Sans', sans-serif" }}>{stat.desc}</div>
+      <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.82rem", fontWeight: 600, color: "#F5F0E8", marginBottom: "0.5rem" }}>{stat.label}</div>
+      <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.72rem", lineHeight: 1.6, color: "rgba(245,240,232,0.32)" }}>{stat.desc}</div>
     </div>
   );
 }
@@ -81,48 +85,74 @@ export default function Results() {
 
   return (
     <section id="results" ref={ref} className="relative overflow-hidden">
-      {/* Stats with bg */}
+
+      {/* ── Stats section ── */}
       <div className="relative py-24 md:py-28">
         <div className="absolute inset-0">
-          <img src={STATS_BG} alt="" className="w-full h-full object-cover" style={{ opacity: 0.55 }} />
-          <div className="absolute inset-0" style={{ background: "rgba(10,10,15,0.78)" }} />
+          <img src={STATS_BG} alt="" className="w-full h-full object-cover" style={{ opacity: 0.5 }} />
+          <div className="absolute inset-0" style={{ background: "rgba(8,8,16,0.82)" }} />
         </div>
-        <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.25), transparent)" }} />
+        <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.22), transparent)" }} />
 
         <div className="container relative z-10">
           <div className={`text-center mb-12 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
-            <span className="section-label block mb-4">Real Results</span>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" style={{ fontFamily: "'Playfair Display', serif", color: "#F0EDE6" }}>
-              Numbers That <span className="gold-text italic">Speak for Themselves</span>
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <div className="gold-line" />
+              <span className="section-label">Real Results</span>
+              <div className="gold-line" style={{ background: "linear-gradient(90deg, transparent, #C9A84C)" }} />
+            </div>
+            <h2 style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: "clamp(2rem, 3.5vw, 3rem)",
+              fontWeight: 600,
+              lineHeight: 1.1,
+              color: "#F5F0E8"
+            }}>
+              Numbers That <em className="gold-text">Speak for Themselves</em>
             </h2>
           </div>
 
-          <div className={`grid grid-cols-2 lg:grid-cols-4 transition-all duration-700 delay-200 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-            style={{ background: "rgba(14,14,22,0.85)", border: "1px solid rgba(201,168,76,0.15)", borderRadius: "20px", backdropFilter: "blur(20px)" }}>
+          <div
+            className={`grid grid-cols-2 lg:grid-cols-4 transition-all duration-700 delay-200 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+            style={{
+              background: "rgba(10,9,18,0.9)",
+              border: "1px solid rgba(201,168,76,0.12)",
+              borderRadius: "2px",
+              backdropFilter: "blur(24px)",
+              boxShadow: "0 24px 80px rgba(0,0,0,0.4)"
+            }}
+          >
             {stats.map((s, i) => (
-              <div key={s.label} style={{ borderRight: i < stats.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none" }}>
-                <StatCard stat={s} active={visible} idx={i} />
+              <div key={s.label} style={{ borderRight: i < stats.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none" }}>
+                <StatCard stat={s} active={visible} />
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Testimonials */}
-      <div className="relative py-24 md:py-28 overflow-hidden" style={{ background: "#0D0D14" }}>
-        {/* Subtle hexagonal bg */}
-        <div className="absolute inset-0 pointer-events-none">
-          <img src={PROCESS_BG} alt="" className="w-full h-full object-cover" style={{ opacity: 0.04 }} />
-        </div>
-        <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.15), transparent)" }} />
+      {/* ── Testimonials section ── */}
+      <div className="relative py-24 md:py-28" style={{ background: "#0C0B18" }}>
+        <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.12), transparent)" }} />
 
         <div className="container relative z-10">
-          <div className={`text-center mb-12 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
-            <span className="section-label block mb-4">What Owners Say</span>
-            <h2 className="text-3xl md:text-4xl font-bold" style={{ fontFamily: "'Playfair Display', serif", color: "#F0EDE6" }}>
-              From Overwhelmed to <span className="gold-text italic">In Control</span>
+          <div className={`max-w-2xl mx-auto text-center mb-14 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <div className="gold-line" />
+              <span className="section-label">What Owners Say</span>
+              <div className="gold-line" style={{ background: "linear-gradient(90deg, transparent, #C9A84C)" }} />
+            </div>
+            <h2 style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: "clamp(1.8rem, 3vw, 2.6rem)",
+              fontWeight: 600,
+              lineHeight: 1.15,
+              color: "#F5F0E8",
+              marginBottom: "1rem"
+            }}>
+              From Overwhelmed to <em className="gold-text">In Control</em>
             </h2>
-            <p className="mt-4 text-base" style={{ color: "rgba(240,237,230,0.4)", fontFamily: "'DM Sans', sans-serif" }}>
+            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.9rem", color: "rgba(245,240,232,0.38)", lineHeight: 1.7 }}>
               Real feedback from boutique property owners across 12 countries
             </p>
           </div>
@@ -131,39 +161,66 @@ export default function Results() {
             {testimonials.map((t, i) => (
               <div
                 key={t.name}
-                className={`gradient-border p-6 flex flex-col transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+                className={`gradient-border p-7 flex flex-col transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
                 style={{ transitionDelay: `${300 + i * 120}ms` }}
               >
-                <div className="flex gap-0.5 mb-4">
-                  {[...Array(t.stars)].map((_, j) => <Star key={j} size={13} fill="#C9A84C" color="#C9A84C" />)}
+                {/* Stars */}
+                <div className="flex gap-0.5 mb-5">
+                  {[...Array(t.stars)].map((_, j) => <Star key={j} size={11} fill="#C9A84C" color="#C9A84C" />)}
                 </div>
-                <Quote size={22} style={{ color: "rgba(201,168,76,0.25)" }} className="mb-3" />
-                <p className="text-base leading-relaxed mb-6 italic flex-1" style={{ color: "rgba(240,237,230,0.72)", fontFamily: "'Playfair Display', serif" }}>
+
+                {/* Quote mark */}
+                <Quote size={20} style={{ color: "rgba(201,168,76,0.2)", marginBottom: "0.875rem" }} />
+
+                {/* Quote text */}
+                <p style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontSize: "1.05rem",
+                  fontStyle: "italic",
+                  lineHeight: 1.65,
+                  color: "rgba(245,240,232,0.72)",
+                  flex: 1,
+                  marginBottom: "1.5rem"
+                }}>
                   "{t.quote}"
                 </p>
-                <div className="flex items-center gap-3 pt-4" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+
+                {/* Author */}
+                <div className="flex items-center gap-3 pt-4" style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}>
                   {t.photo ? (
-                    <img src={t.photo} alt={t.name} className="w-11 h-11 rounded-full object-cover" style={{ border: "2px solid rgba(201,168,76,0.3)" }} />
+                    <img
+                      src={t.photo}
+                      alt={t.name}
+                      className="w-10 h-10 object-cover flex-shrink-0"
+                      style={{ borderRadius: "2px", border: "1px solid rgba(201,168,76,0.25)" }}
+                    />
                   ) : (
-                    <div className="w-11 h-11 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0" style={{ background: "linear-gradient(135deg, #C9A84C, #E8C96A)", color: "#0A0A0F", fontFamily: "'DM Sans', sans-serif" }}>
+                    <div className="w-10 h-10 flex items-center justify-center flex-shrink-0" style={{
+                      background: "linear-gradient(135deg, #B8922E, #E8C96A)",
+                      borderRadius: "2px",
+                      fontFamily: "'Cormorant Garamond', serif",
+                      fontSize: "0.95rem",
+                      fontWeight: 600,
+                      color: "#0A0806"
+                    }}>
                       {(t as any).initials}
                     </div>
                   )}
                   <div>
-                    <div className="text-sm font-semibold" style={{ color: "#F0EDE6", fontFamily: "'DM Sans', sans-serif" }}>{t.name}</div>
-                    <div className="text-xs" style={{ color: "rgba(240,237,230,0.38)", fontFamily: "'DM Sans', sans-serif" }}>{t.role} · {t.location}</div>
+                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.82rem", fontWeight: 600, color: "#F5F0E8" }}>{t.name}</div>
+                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.72rem", color: "rgba(245,240,232,0.35)" }}>{t.role} · {t.location}</div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Bottom CTA nudge */}
-          <div className={`mt-12 text-center transition-all duration-700 delay-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
-            <p className="text-sm mb-5" style={{ color: "rgba(240,237,230,0.35)", fontFamily: "'DM Sans', sans-serif" }}>
+          {/* CTA */}
+          <div className={`mt-14 text-center transition-all duration-700 delay-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.8rem", color: "rgba(245,240,232,0.3)", marginBottom: "1.25rem", letterSpacing: "0.04em" }}>
               Join 50+ boutique properties already using HostAI
             </p>
-            <a href="#contact" className="btn-gold px-8 py-3.5 rounded-xl text-sm font-bold inline-flex items-center gap-2">
+            <a href="#contact" className="btn-gold">
               Start Your 7-Day Setup
             </a>
           </div>

@@ -1,4 +1,7 @@
-/* Design: Midnight Gold — floating chatbot widget with dark glass UI and gold accents */
+/* ============================================================
+   FLOATING CHAT — Obsidian & Gold Luxury v3
+   Premium chat widget with dark glass UI and gold accents
+   ============================================================ */
 import { useEffect, useRef, useState } from "react";
 import { MessageSquare, X, ArrowRight } from "lucide-react";
 
@@ -57,30 +60,49 @@ export default function FloatingChat() {
     <>
       {open && (
         <div
-          className="fixed bottom-20 right-4 md:right-6 z-50 w-80 md:w-[360px] rounded-2xl overflow-hidden"
-          style={{ background: "#0F0F18", border: "1px solid rgba(201,168,76,0.25)", boxShadow: "0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(201,168,76,0.08)", animation: "slideUp 0.25s ease" }}
+          className="fixed bottom-20 right-4 md:right-6 z-50 w-80 md:w-[360px] overflow-hidden"
+          style={{
+            background: "rgba(10,9,18,0.99)",
+            border: "1px solid rgba(201,168,76,0.22)",
+            borderRadius: "2px",
+            boxShadow: "0 32px 80px rgba(0,0,0,0.75), 0 0 0 1px rgba(201,168,76,0.06)",
+            backdropFilter: "blur(24px)",
+            animation: "slideUp 0.25s ease"
+          }}
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3" style={{ background: "#16161F", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+          <div className="flex items-center justify-between px-4 py-3" style={{ background: "rgba(255,255,255,0.025)", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold" style={{ background: "linear-gradient(135deg, #C9A84C, #E8C96A)", color: "#0A0A0F", fontFamily: "'Playfair Display', serif" }}>H</div>
+              <div className="w-8 h-8 flex items-center justify-center flex-shrink-0" style={{
+                background: "linear-gradient(135deg, #B8922E, #E8C96A)",
+                borderRadius: "2px",
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: "1rem",
+                fontWeight: 600,
+                color: "#0A0806"
+              }}>H</div>
               <div>
-                <p className="text-sm font-semibold" style={{ color: "#F0EDE6", fontFamily: "'DM Sans', sans-serif" }}>HostAI Concierge</p>
+                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.82rem", fontWeight: 600, color: "#F5F0E8" }}>
+                  HostAI Concierge
+                </p>
                 <div className="flex items-center gap-1.5">
-                  <span className="pulse-dot" style={{ width: 5, height: 5 }} />
-                  <p className="text-xs" style={{ color: "rgba(74,222,128,0.8)", fontFamily: "'DM Sans', sans-serif" }}>Online 24/7</p>
+                  <div className="pulse-dot" style={{ width: 5, height: 5 }} />
+                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.65rem", color: "rgba(74,222,128,0.8)" }}>Online 24/7</p>
                 </div>
               </div>
             </div>
-            <button onClick={() => setOpen(false)} style={{ color: "rgba(240,237,230,0.4)" }} className="hover:opacity-80 transition-opacity">
-              <X size={18} />
+            <button onClick={() => setOpen(false)} style={{ color: "rgba(245,240,232,0.35)", transition: "color 0.2s" }}
+              onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.7)"}
+              onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.35)"}>
+              <X size={16} />
             </button>
           </div>
 
           {/* Messages */}
-          <div className="px-4 py-4 h-64 overflow-y-auto flex flex-col gap-2.5" style={{ background: "#0A0A0F" }}>
+          <div className="px-4 py-4 h-64 overflow-y-auto flex flex-col gap-2.5" style={{ background: "rgba(6,5,14,0.95)" }}>
             {messages.map((msg, i) => (
-              <div key={i} className={msg.from === "bot" ? "chat-bubble-ai" : "chat-bubble-user"} style={{ animation: "fadeInUp 0.25s ease", fontSize: "0.8rem" }}>
+              <div key={i} className={msg.from === "bot" ? "chat-bubble-ai" : "chat-bubble-user"}
+                style={{ animation: "fadeInUp 0.25s ease" }}>
                 {msg.text}
               </div>
             ))}
@@ -93,23 +115,41 @@ export default function FloatingChat() {
           </div>
 
           {/* Input */}
-          <div className="px-3 py-3 flex gap-2" style={{ background: "#16161F", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+          <div className="px-3 py-3 flex gap-2" style={{ background: "rgba(255,255,255,0.02)", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && send()}
               placeholder="Ask about check-in, parking…"
-              className="flex-1 text-xs rounded-xl px-3 py-2.5 focus:outline-none"
-              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "#F0EDE6", fontFamily: "'DM Sans', sans-serif" }}
+              style={{
+                flex: 1,
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.07)",
+                borderRadius: "2px",
+                padding: "0.5rem 0.75rem",
+                color: "#F5F0E8",
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: "0.78rem",
+                outline: "none",
+                transition: "border-color 0.2s"
+              }}
+              onFocus={e => (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,168,76,0.35)"}
+              onBlur={e => (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.07)"}
             />
-            <button onClick={send} className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: "linear-gradient(135deg, #C9A84C, #E8C96A)" }}>
-              <ArrowRight size={14} style={{ color: "#0A0A0F" }} />
+            <button onClick={send} className="w-8 h-8 flex items-center justify-center flex-shrink-0" style={{
+              background: "linear-gradient(135deg, #C9A84C, #E8C96A)",
+              borderRadius: "2px",
+              transition: "opacity 0.2s"
+            }}
+              onMouseEnter={e => (e.currentTarget as HTMLElement).style.opacity = "0.85"}
+              onMouseLeave={e => (e.currentTarget as HTMLElement).style.opacity = "1"}>
+              <ArrowRight size={13} style={{ color: "#0A0806" }} />
             </button>
           </div>
 
-          <div className="px-4 py-2" style={{ background: "#16161F", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
-            <p className="text-center" style={{ fontSize: "0.6rem", color: "rgba(240,237,230,0.2)", fontFamily: "'DM Sans', sans-serif" }}>
+          <div className="px-4 py-2" style={{ background: "rgba(255,255,255,0.015)", borderTop: "1px solid rgba(255,255,255,0.03)" }}>
+            <p style={{ textAlign: "center", fontFamily: "'DM Sans', sans-serif", fontSize: "0.58rem", color: "rgba(245,240,232,0.18)", letterSpacing: "0.08em" }}>
               Powered by HostAI · Live Demo
             </p>
           </div>
@@ -119,16 +159,25 @@ export default function FloatingChat() {
       {/* Toggle button */}
       <button
         onClick={() => setOpen(!open)}
-        className="fixed bottom-4 right-4 md:right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-105"
-        style={{ background: open ? "#16161F" : "linear-gradient(135deg, #C9A84C, #E8C96A)", border: open ? "1px solid rgba(201,168,76,0.3)" : "none", boxShadow: "0 8px 30px rgba(201,168,76,0.3)" }}
+        className="fixed bottom-4 right-4 md:right-6 z-50 w-14 h-14 flex items-center justify-center transition-all duration-300"
+        style={{
+          background: open ? "rgba(10,9,18,0.99)" : "linear-gradient(135deg, #B8922E, #E8C96A)",
+          border: open ? "1px solid rgba(201,168,76,0.3)" : "none",
+          borderRadius: "2px",
+          boxShadow: open ? "0 8px 30px rgba(0,0,0,0.4)" : "0 8px 30px rgba(201,168,76,0.35)",
+          transform: "scale(1)",
+          transition: "all 0.3s ease"
+        }}
+        onMouseEnter={e => (e.currentTarget as HTMLElement).style.transform = "scale(1.06)"}
+        onMouseLeave={e => (e.currentTarget as HTMLElement).style.transform = "scale(1)"}
       >
         {open
-          ? <X size={22} style={{ color: "#C9A84C" }} />
-          : <MessageSquare size={22} style={{ color: "#0A0A0F" }} />
+          ? <X size={20} style={{ color: "#C9A84C" }} />
+          : <MessageSquare size={20} style={{ color: "#0A0806" }} />
         }
         {!open && (
-          <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full border-2 flex items-center justify-center" style={{ background: "#4ADE80", borderColor: "#0A0A0F" }}>
-            <span className="w-1.5 h-1.5 rounded-full bg-white" />
+          <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center" style={{ background: "#4ADE80", borderColor: "#080810" }}>
+            <span className="w-1 h-1 rounded-full bg-white" />
           </span>
         )}
       </button>

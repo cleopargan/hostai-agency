@@ -1,8 +1,9 @@
-/* Design: Midnight Gold — premium CTA section with booking form, trust signals, and rich footer */
+/* ============================================================
+   CONTACT CTA + FOOTER — Obsidian & Gold Luxury v3
+   Premium booking form, refined footer, gold accents
+   ============================================================ */
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, Mail, Phone, MapPin, Calendar, CheckCircle2 } from "lucide-react";
-
-const LOGO_ICON = "https://d2xsxph8kpxj0f.cloudfront.net/310519663082783554/QDcYwAv8SHis62JyYiBJro/logo-icon-DhGVZGxUWwJnv5mPBaqd3u.webp";
+import { ArrowRight, Mail, MapPin, Calendar, CheckCircle2 } from "lucide-react";
 
 const benefits = [
   "See your AI concierge live in 15 minutes",
@@ -32,30 +33,59 @@ export default function ContactCTA() {
 
   return (
     <>
-      <section id="contact" ref={ref} className="py-24 md:py-32 relative overflow-hidden" style={{ background: "#0A0A0F" }}>
-        <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.25), transparent)" }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] pointer-events-none" style={{ background: "radial-gradient(ellipse, rgba(201,168,76,0.05) 0%, transparent 70%)", filter: "blur(50px)" }} />
+      {/* ── Contact Section ── */}
+      <section id="contact" ref={ref} className="py-24 md:py-32 relative overflow-hidden" style={{ background: "#080810" }}>
+        <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.22), transparent)" }} />
+
+        {/* Ambient glow */}
+        <div className="absolute pointer-events-none" style={{
+          top: "40%", left: "50%", transform: "translateX(-50%)",
+          width: "800px", height: "500px",
+          background: "radial-gradient(ellipse, rgba(201,168,76,0.04) 0%, transparent 65%)",
+          filter: "blur(80px)"
+        }} />
 
         <div className="container relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-start">
 
-            {/* Left */}
+            {/* ── Left — Copy ── */}
             <div className={`transition-all duration-700 ${visible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"}`}>
-              <span className="section-label block mb-4">Get Started</span>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6" style={{ fontFamily: "'Playfair Display', serif", color: "#F0EDE6" }}>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="gold-line" />
+                <span className="section-label">Get Started</span>
+              </div>
+
+              <h2 style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: "clamp(2rem, 3.5vw, 3rem)",
+                fontWeight: 600,
+                lineHeight: 1.1,
+                letterSpacing: "-0.01em",
+                color: "#F5F0E8",
+                marginBottom: "1.25rem"
+              }}>
                 Ready to Let AI Handle Your{" "}
-                <span className="gold-text italic">Guest Communication?</span>
+                <em className="gold-text">Guest Communication?</em>
               </h2>
-              <p className="text-lg mb-8 leading-relaxed" style={{ color: "rgba(240,237,230,0.5)", fontFamily: "'DM Sans', sans-serif" }}>
+
+              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "1rem", lineHeight: 1.75, color: "rgba(245,240,232,0.45)", marginBottom: "2.5rem" }}>
                 Book a free 15-minute demo call. We'll show you exactly how your AI concierge will look and work on your property's website — no commitment required.
               </p>
 
-              {/* Benefits list */}
+              {/* Benefits */}
               <div className="flex flex-col gap-3 mb-10">
                 {benefits.map((b) => (
                   <div key={b} className="flex items-center gap-3">
-                    <CheckCircle2 size={16} style={{ color: "#48BB78", flexShrink: 0 }} />
-                    <span className="text-sm" style={{ color: "rgba(240,237,230,0.65)", fontFamily: "'DM Sans', sans-serif" }}>{b}</span>
+                    <div className="w-4 h-4 flex items-center justify-center flex-shrink-0" style={{
+                      background: "rgba(110,231,183,0.1)",
+                      border: "1px solid rgba(110,231,183,0.25)",
+                      borderRadius: "2px"
+                    }}>
+                      <CheckCircle2 size={10} style={{ color: "#6EE7B7" }} />
+                    </div>
+                    <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.85rem", color: "rgba(245,240,232,0.6)" }}>
+                      {b}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -68,90 +98,145 @@ export default function ContactCTA() {
                   { icon: MapPin, text: "Available worldwide — remote setup" },
                 ].map((item) => (
                   <div key={item.text} className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: "rgba(201,168,76,0.08)", border: "1px solid rgba(201,168,76,0.15)" }}>
-                      <item.icon size={15} style={{ color: "#C9A84C" }} />
+                    <div className="w-8 h-8 flex items-center justify-center flex-shrink-0" style={{
+                      background: "rgba(201,168,76,0.06)",
+                      border: "1px solid rgba(201,168,76,0.14)",
+                      borderRadius: "2px"
+                    }}>
+                      <item.icon size={13} style={{ color: "#C9A84C" }} />
                     </div>
                     {(item as any).href ? (
-                      <a href={(item as any).href} className="text-sm transition-colors duration-200 hover:opacity-80" style={{ color: "rgba(240,237,230,0.6)", fontFamily: "'DM Sans', sans-serif" }}>{item.text}</a>
+                      <a href={(item as any).href} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.83rem", color: "rgba(245,240,232,0.55)", textDecoration: "none", transition: "color 0.2s" }}
+                        onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#C9A84C"}
+                        onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.55)"}>
+                        {item.text}
+                      </a>
                     ) : (
-                      <span className="text-sm" style={{ color: "rgba(240,237,230,0.55)", fontFamily: "'DM Sans', sans-serif" }}>{item.text}</span>
+                      <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.83rem", color: "rgba(245,240,232,0.45)" }}>{item.text}</span>
                     )}
                   </div>
                 ))}
               </div>
 
-              {/* Trust badges */}
+              {/* Trust tags */}
               <div className="flex flex-wrap gap-2">
                 {["7-Day Setup", "No Tech Skills Needed", "Cancel Anytime", "30-Day Guarantee"].map((b) => (
-                  <span key={b} className="px-3 py-1.5 rounded-full text-xs font-medium" style={{ background: "rgba(201,168,76,0.06)", border: "1px solid rgba(201,168,76,0.15)", color: "rgba(240,237,230,0.55)", fontFamily: "'DM Sans', sans-serif" }}>
+                  <span key={b} style={{
+                    padding: "0.3rem 0.75rem",
+                    background: "rgba(201,168,76,0.04)",
+                    border: "1px solid rgba(201,168,76,0.13)",
+                    borderRadius: "2px",
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: "0.72rem",
+                    fontWeight: 500,
+                    color: "rgba(245,240,232,0.45)"
+                  }}>
                     ✓ {b}
                   </span>
                 ))}
               </div>
             </div>
 
-            {/* Right — Form */}
+            {/* ── Right — Form ── */}
             <div className={`transition-all duration-700 delay-200 ${visible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"}`}>
-              <div className="rounded-2xl p-8" style={{ background: "#16161F", border: "1px solid rgba(201,168,76,0.18)", boxShadow: "0 32px 80px rgba(0,0,0,0.45)" }}>
+              <div style={{
+                background: "rgba(12,11,22,0.98)",
+                border: "1px solid rgba(201,168,76,0.18)",
+                borderRadius: "2px",
+                padding: "2.25rem",
+                boxShadow: "0 32px 80px rgba(0,0,0,0.45), 0 0 0 1px rgba(201,168,76,0.04)"
+              }}>
                 {submitted ? (
                   <div className="text-center py-10">
-                    <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: "rgba(72,187,120,0.1)", border: "1px solid rgba(72,187,120,0.3)" }}>
-                      <CheckCircle2 size={36} style={{ color: "#48BB78" }} />
+                    <div className="w-16 h-16 flex items-center justify-center mx-auto mb-6" style={{
+                      background: "rgba(110,231,183,0.08)",
+                      border: "1px solid rgba(110,231,183,0.25)",
+                      borderRadius: "2px"
+                    }}>
+                      <CheckCircle2 size={28} style={{ color: "#6EE7B7" }} />
                     </div>
-                    <h3 className="text-2xl font-bold mb-3" style={{ color: "#F0EDE6", fontFamily: "'Playfair Display', serif" }}>
+                    <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.75rem", fontWeight: 600, color: "#F5F0E8", marginBottom: "0.75rem" }}>
                       You're on the list!
                     </h3>
-                    <p className="text-base mb-6" style={{ color: "rgba(240,237,230,0.55)", fontFamily: "'DM Sans', sans-serif" }}>
+                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.9rem", color: "rgba(245,240,232,0.5)", lineHeight: 1.7, marginBottom: "1.5rem" }}>
                       We'll reach out within <strong style={{ color: "#C9A84C" }}>24 hours</strong> to schedule your free demo. Check your inbox — including spam, just in case.
                     </p>
-                    <div className="px-4 py-3 rounded-xl text-sm" style={{ background: "rgba(201,168,76,0.06)", border: "1px solid rgba(201,168,76,0.15)", color: "rgba(240,237,230,0.5)", fontFamily: "'DM Sans', sans-serif" }}>
+                    <div style={{
+                      padding: "0.875rem 1.25rem",
+                      background: "rgba(201,168,76,0.04)",
+                      border: "1px solid rgba(201,168,76,0.12)",
+                      borderRadius: "2px",
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: "0.8rem",
+                      color: "rgba(245,240,232,0.45)"
+                    }}>
                       While you wait — try the live demo chatbot in the bottom-right corner of this page 👇
                     </div>
                   </div>
                 ) : (
                   <>
-                    <div className="flex items-center gap-3 mb-6 pb-5" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-                      <Calendar size={20} style={{ color: "#C9A84C" }} />
-                      <h3 className="text-xl font-bold" style={{ color: "#F0EDE6", fontFamily: "'Playfair Display', serif" }}>Book Your Free Demo</h3>
+                    <div className="flex items-center gap-3 mb-7 pb-5" style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                      <Calendar size={16} style={{ color: "#C9A84C" }} />
+                      <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.35rem", fontWeight: 600, color: "#F5F0E8" }}>
+                        Book Your Free Demo
+                      </h3>
                     </div>
+
                     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                       <div className="grid sm:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-xs font-semibold mb-1.5" style={{ color: "rgba(240,237,230,0.4)", fontFamily: "'DM Sans', sans-serif", letterSpacing: "0.08em" }}>YOUR NAME *</label>
-                          <input required value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Maria Santos" className="form-input w-full" />
+                          <label style={{ display: "block", fontFamily: "'DM Sans', sans-serif", fontSize: "0.6rem", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(245,240,232,0.32)", marginBottom: "0.5rem" }}>
+                            Your Name *
+                          </label>
+                          <input required value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Maria Santos" className="form-input" />
                         </div>
                         <div>
-                          <label className="block text-xs font-semibold mb-1.5" style={{ color: "rgba(240,237,230,0.4)", fontFamily: "'DM Sans', sans-serif", letterSpacing: "0.08em" }}>EMAIL ADDRESS *</label>
-                          <input required type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder="maria@yourhotel.com" className="form-input w-full" />
+                          <label style={{ display: "block", fontFamily: "'DM Sans', sans-serif", fontSize: "0.6rem", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(245,240,232,0.32)", marginBottom: "0.5rem" }}>
+                            Email Address *
+                          </label>
+                          <input required type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder="maria@yourhotel.com" className="form-input" />
                         </div>
                       </div>
+
                       <div>
-                        <label className="block text-xs font-semibold mb-1.5" style={{ color: "rgba(240,237,230,0.4)", fontFamily: "'DM Sans', sans-serif", letterSpacing: "0.08em" }}>PROPERTY NAME & TYPE *</label>
-                        <input required value={form.property} onChange={e => setForm(f => ({ ...f, property: e.target.value }))} placeholder="The Grand Boutique Hotel — 20 rooms" className="form-input w-full" />
+                        <label style={{ display: "block", fontFamily: "'DM Sans', sans-serif", fontSize: "0.6rem", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(245,240,232,0.32)", marginBottom: "0.5rem" }}>
+                          Property Name & Size *
+                        </label>
+                        <input required value={form.property} onChange={e => setForm(f => ({ ...f, property: e.target.value }))} placeholder="The Grand Boutique Hotel — 20 rooms" className="form-input" />
                       </div>
+
                       <div>
-                        <label className="block text-xs font-semibold mb-1.5" style={{ color: "rgba(240,237,230,0.4)", fontFamily: "'DM Sans', sans-serif", letterSpacing: "0.08em" }}>PROPERTY TYPE</label>
-                        <select value={form.type} onChange={e => setForm(f => ({ ...f, type: e.target.value }))} className="form-input w-full" style={{ appearance: "none" }}>
-                          <option value="" style={{ background: "#16161F" }}>Select your property type...</option>
-                          <option value="hotel" style={{ background: "#16161F" }}>Boutique Hotel</option>
-                          <option value="bnb" style={{ background: "#16161F" }}>B&B / Guesthouse</option>
-                          <option value="cafe" style={{ background: "#16161F" }}>Cafe / Restaurant</option>
-                          <option value="resort" style={{ background: "#16161F" }}>Resort / Villa</option>
-                          <option value="other" style={{ background: "#16161F" }}>Other Hospitality</option>
+                        <label style={{ display: "block", fontFamily: "'DM Sans', sans-serif", fontSize: "0.6rem", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(245,240,232,0.32)", marginBottom: "0.5rem" }}>
+                          Property Type
+                        </label>
+                        <select value={form.type} onChange={e => setForm(f => ({ ...f, type: e.target.value }))} className="form-input" style={{ appearance: "none" }}>
+                          <option value="" style={{ background: "#0C0B18" }}>Select your property type…</option>
+                          <option value="hotel" style={{ background: "#0C0B18" }}>Boutique Hotel</option>
+                          <option value="bnb" style={{ background: "#0C0B18" }}>B&B / Guesthouse</option>
+                          <option value="cafe" style={{ background: "#0C0B18" }}>Cafe / Restaurant</option>
+                          <option value="resort" style={{ background: "#0C0B18" }}>Resort / Villa</option>
+                          <option value="other" style={{ background: "#0C0B18" }}>Other Hospitality</option>
                         </select>
                       </div>
+
                       <div>
-                        <label className="block text-xs font-semibold mb-1.5" style={{ color: "rgba(240,237,230,0.4)", fontFamily: "'DM Sans', sans-serif", letterSpacing: "0.08em" }}>BIGGEST CHALLENGE (OPTIONAL)</label>
-                        <textarea value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} placeholder="e.g. We miss too many inquiries after hours..." rows={3} className="form-input w-full resize-none" />
+                        <label style={{ display: "block", fontFamily: "'DM Sans', sans-serif", fontSize: "0.6rem", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(245,240,232,0.32)", marginBottom: "0.5rem" }}>
+                          Biggest Challenge (Optional)
+                        </label>
+                        <textarea value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} placeholder="e.g. We miss too many inquiries after hours…" rows={3} className="form-input" style={{ resize: "none" }} />
                       </div>
-                      <button type="submit" disabled={loading} className="btn-gold w-full py-4 rounded-xl text-sm font-bold flex items-center justify-center gap-2 mt-2" style={{ opacity: loading ? 0.8 : 1 }}>
+
+                      <button type="submit" disabled={loading} className="btn-gold" style={{ width: "100%", padding: "1rem", marginTop: "0.5rem", opacity: loading ? 0.8 : 1 }}>
                         {loading ? (
-                          <><span className="animate-spin inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full" /> Sending...</>
+                          <><span className="animate-spin inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full" /> Sending…</>
                         ) : (
-                          <>Book Free Demo Call <ArrowRight size={15} /></>
+                          <>Book Free Demo Call <ArrowRight size={14} /></>
                         )}
                       </button>
-                      <p className="text-center text-xs" style={{ color: "rgba(240,237,230,0.25)", fontFamily: "'DM Sans', sans-serif" }}>No spam. No commitment. Just a 15-minute call.</p>
+
+                      <p style={{ textAlign: "center", fontFamily: "'DM Sans', sans-serif", fontSize: "0.72rem", color: "rgba(245,240,232,0.2)", letterSpacing: "0.04em" }}>
+                        No spam. No commitment. Just a 15-minute call.
+                      </p>
                     </form>
                   </>
                 )}
@@ -161,52 +246,73 @@ export default function ContactCTA() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer style={{ background: "#070709", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+      {/* ── Footer ── */}
+      <footer style={{ background: "#050509", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
         <div className="container py-14">
           <div className="grid md:grid-cols-3 gap-10 mb-10">
+
             {/* Brand */}
             <div>
-              <div className="flex items-center gap-2.5 mb-3">
-                <img src={LOGO_ICON} alt="HostAI" className="w-8 h-8 rounded-lg" />
-                <span className="text-xl font-bold" style={{ fontFamily: "'Playfair Display', serif", color: "#F0EDE6" }}>
+              <div className="mb-4">
+                <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.5rem", fontWeight: 600, color: "#F5F0E8" }}>
                   Host<span style={{ color: "#C9A84C" }}>AI</span>
                 </span>
+                <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.58rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(201,168,76,0.4)", marginTop: "2px" }}>
+                  AI Concierge
+                </div>
               </div>
-              <p className="text-sm leading-relaxed" style={{ color: "rgba(240,237,230,0.35)", fontFamily: "'DM Sans', sans-serif" }}>
+              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.82rem", lineHeight: 1.75, color: "rgba(245,240,232,0.28)" }}>
                 AI concierges for boutique hotels, B&Bs, and cafes. Built by hospitality insiders who understand your world.
               </p>
             </div>
 
             {/* Navigation */}
             <div>
-              <h4 className="text-xs font-bold mb-4" style={{ color: "rgba(240,237,230,0.3)", fontFamily: "'DM Sans', sans-serif", letterSpacing: "0.12em", textTransform: "uppercase" }}>Navigation</h4>
+              <h4 style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.6rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(245,240,232,0.22)", marginBottom: "1.25rem" }}>
+                Navigation
+              </h4>
               <div className="flex flex-col gap-2.5">
                 {[["#problem", "The Problem"], ["#how-it-works", "How It Works"], ["#results", "Results"], ["#pricing", "Pricing"], ["#faq", "FAQ"], ["#contact", "Contact"]].map(([href, label]) => (
-                  <a key={href} href={href} className="text-sm transition-opacity hover:opacity-70" style={{ color: "rgba(240,237,230,0.4)", fontFamily: "'DM Sans', sans-serif" }}>{label}</a>
+                  <a key={href} href={href} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.82rem", color: "rgba(245,240,232,0.35)", textDecoration: "none", transition: "color 0.2s" }}
+                    onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.7)"}
+                    onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.35)"}>
+                    {label}
+                  </a>
                 ))}
               </div>
             </div>
 
             {/* Contact */}
             <div>
-              <h4 className="text-xs font-bold mb-4" style={{ color: "rgba(240,237,230,0.3)", fontFamily: "'DM Sans', sans-serif", letterSpacing: "0.12em", textTransform: "uppercase" }}>Contact</h4>
-              <div className="flex flex-col gap-2.5">
-                <a href="mailto:hello@hostai.co" className="text-sm transition-opacity hover:opacity-70" style={{ color: "rgba(240,237,230,0.4)", fontFamily: "'DM Sans', sans-serif" }}>hello@hostai.co</a>
-                <span className="text-sm" style={{ color: "rgba(240,237,230,0.4)", fontFamily: "'DM Sans', sans-serif" }}>Available worldwide</span>
-                <div className="flex items-center gap-2 mt-2">
-                  <div className="pulse-dot" style={{ width: 6, height: 6 }} />
-                  <span className="text-xs" style={{ color: "rgba(74,222,128,0.7)", fontFamily: "'DM Sans', sans-serif" }}>Currently accepting new clients</span>
-                </div>
+              <h4 style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.6rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(245,240,232,0.22)", marginBottom: "1.25rem" }}>
+                Contact
+              </h4>
+              <div className="flex flex-col gap-3">
+                <a href="mailto:hello@hostai.co" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.82rem", color: "rgba(245,240,232,0.38)", textDecoration: "none" }}>
+                  hello@hostai.co
+                </a>
+                <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.82rem", color: "rgba(245,240,232,0.3)" }}>
+                  Available worldwide — remote setup
+                </span>
+                <a href="#contact" className="btn-gold" style={{ padding: "0.625rem 1.25rem", fontSize: "0.72rem", marginTop: "0.5rem", display: "inline-flex" }}>
+                  Book Free Demo
+                </a>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-8" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-            <p className="text-xs" style={{ color: "rgba(240,237,230,0.2)", fontFamily: "'DM Sans', sans-serif" }}>© {new Date().getFullYear()} HostAI. All rights reserved.</p>
+          {/* Bottom bar */}
+          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.72rem", color: "rgba(245,240,232,0.2)" }}>
+              © 2026 HostAI. All rights reserved.
+            </span>
             <div className="flex gap-6">
-              {["Privacy Policy", "Terms of Service"].map((item) => (
-                <a key={item} href="#" className="text-xs transition-opacity hover:opacity-70" style={{ color: "rgba(240,237,230,0.2)", fontFamily: "'DM Sans', sans-serif" }}>{item}</a>
+              {["Privacy Policy", "Terms of Service"].map((l) => (
+                <a key={l} href="#" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.72rem", color: "rgba(245,240,232,0.2)", textDecoration: "none", transition: "color 0.2s" }}
+                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.5)"}
+                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.2)"}>
+                  {l}
+                </a>
               ))}
             </div>
           </div>

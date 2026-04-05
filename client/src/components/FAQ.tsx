@@ -1,6 +1,9 @@
-/* Design: Midnight Gold — two-column FAQ with category tags, smooth accordion, and CTA nudge */
+/* ============================================================
+   FAQ — Obsidian & Gold Luxury v3
+   Refined accordion, category tags, premium typography
+   ============================================================ */
 import { useEffect, useRef, useState } from "react";
-import { Plus, Minus, MessageCircle } from "lucide-react";
+import { Plus, Minus, Mail } from "lucide-react";
 
 const faqs = [
   { q: "Do I need any technical knowledge to get started?", a: "None at all. You fill in a simple onboarding form about your property — your FAQs, policies, booking links. We handle everything else: building, training, and installing the AI. Most clients spend less than 20 minutes on setup.", tag: "Getting Started" },
@@ -14,10 +17,10 @@ const faqs = [
 ];
 
 const tagColors: Record<string, { bg: string; color: string }> = {
-  "Getting Started": { bg: "rgba(72,187,120,0.1)", color: "#48BB78" },
-  "Technical": { bg: "rgba(99,179,237,0.1)", color: "#63B3ED" },
-  "Quality": { bg: "rgba(201,168,76,0.1)", color: "#C9A84C" },
-  "Billing": { bg: "rgba(159,122,234,0.1)", color: "#9F7AEA" },
+  "Getting Started": { bg: "rgba(110,231,183,0.08)", color: "#6EE7B7" },
+  "Technical": { bg: "rgba(126,200,227,0.08)", color: "#7EC8E3" },
+  "Quality": { bg: "rgba(201,168,76,0.08)", color: "#C9A84C" },
+  "Billing": { bg: "rgba(196,181,253,0.08)", color: "#C4B5FD" },
 };
 
 export default function FAQ() {
@@ -32,61 +35,114 @@ export default function FAQ() {
   }, []);
 
   return (
-    <section id="faq" ref={ref} className="py-24 md:py-32 relative" style={{ background: "#0A0A0F" }}>
-      <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.18), transparent)" }} />
+    <section id="faq" ref={ref} className="py-24 md:py-32 relative" style={{ background: "#0C0B18" }}>
+      <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.15), transparent)" }} />
 
       <div className="container">
-        <div className={`text-center mb-14 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
-          <span className="section-label block mb-4">FAQ</span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5" style={{ fontFamily: "'Playfair Display', serif", color: "#F0EDE6" }}>
-            Questions? We Have <span className="gold-text italic">Answers.</span>
+
+        {/* Header */}
+        <div className={`max-w-2xl mx-auto text-center mb-14 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <div className="gold-line" />
+            <span className="section-label">FAQ</span>
+            <div className="gold-line" style={{ background: "linear-gradient(90deg, transparent, #C9A84C)" }} />
+          </div>
+          <h2 style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontSize: "clamp(2rem, 3.5vw, 3rem)",
+            fontWeight: 600,
+            lineHeight: 1.1,
+            color: "#F5F0E8"
+          }}>
+            Questions? We Have <em className="gold-text">Answers.</em>
           </h2>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-4 max-w-5xl mx-auto">
+        {/* FAQ accordion — two columns */}
+        <div className="grid lg:grid-cols-2 gap-3 max-w-5xl mx-auto">
           {faqs.map((faq, i) => {
-            const tc = tagColors[faq.tag] || { bg: "rgba(201,168,76,0.1)", color: "#C9A84C" };
+            const tc = tagColors[faq.tag] || { bg: "rgba(201,168,76,0.08)", color: "#C9A84C" };
+            const isOpen = open === i;
             return (
               <div
                 key={i}
-                className={`rounded-xl overflow-hidden transition-all duration-500 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+                className={`overflow-hidden transition-all duration-500 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
                 style={{
                   transitionDelay: `${i * 50}ms`,
-                  background: open === i ? "rgba(201,168,76,0.04)" : "#16161F",
-                  border: `1px solid ${open === i ? "rgba(201,168,76,0.28)" : "rgba(255,255,255,0.06)"}`,
+                  background: isOpen ? "rgba(201,168,76,0.03)" : "rgba(12,11,22,0.9)",
+                  border: `1px solid ${isOpen ? "rgba(201,168,76,0.25)" : "rgba(255,255,255,0.055)"}`,
+                  borderRadius: "2px",
+                  transition: "all 0.3s ease"
                 }}
               >
                 <button
                   className="w-full flex items-start justify-between gap-4 px-5 py-4 text-left"
-                  onClick={() => setOpen(open === i ? null : i)}
+                  onClick={() => setOpen(isOpen ? null : i)}
                 >
                   <div className="flex flex-col gap-2 flex-1">
-                    <span className="inline-block px-2 py-0.5 rounded-full text-xs font-semibold self-start" style={{ background: tc.bg, color: tc.color, fontFamily: "'DM Sans', sans-serif" }}>
+                    <span style={{
+                      display: "inline-block",
+                      padding: "0.15rem 0.55rem",
+                      borderRadius: "2px",
+                      background: tc.bg,
+                      color: tc.color,
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: "0.6rem",
+                      fontWeight: 700,
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
+                      alignSelf: "flex-start"
+                    }}>
                       {faq.tag}
                     </span>
-                    <span className="text-sm font-semibold leading-snug" style={{ color: "#F0EDE6", fontFamily: "'DM Sans', sans-serif" }}>{faq.q}</span>
+                    <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.85rem", fontWeight: 600, color: "#F5F0E8", lineHeight: 1.45 }}>
+                      {faq.q}
+                    </span>
                   </div>
-                  <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-1" style={{ background: open === i ? "rgba(201,168,76,0.15)" : "rgba(255,255,255,0.05)", border: `1px solid ${open === i ? "rgba(201,168,76,0.3)" : "rgba(255,255,255,0.06)"}` }}>
-                    {open === i ? <Minus size={12} style={{ color: "#C9A84C" }} /> : <Plus size={12} style={{ color: "rgba(240,237,230,0.4)" }} />}
+                  <div className="w-6 h-6 flex items-center justify-center flex-shrink-0 mt-1" style={{
+                    background: isOpen ? "rgba(201,168,76,0.12)" : "rgba(255,255,255,0.04)",
+                    border: `1px solid ${isOpen ? "rgba(201,168,76,0.28)" : "rgba(255,255,255,0.06)"}`,
+                    borderRadius: "2px",
+                    transition: "all 0.2s ease"
+                  }}>
+                    {isOpen
+                      ? <Minus size={11} style={{ color: "#C9A84C" }} />
+                      : <Plus size={11} style={{ color: "rgba(245,240,232,0.35)" }} />
+                    }
                   </div>
                 </button>
-                {open === i && (
+
+                <div style={{
+                  maxHeight: isOpen ? "300px" : "0",
+                  overflow: "hidden",
+                  transition: "max-height 0.35s ease"
+                }}>
                   <div className="px-5 pb-5">
-                    <p className="text-sm leading-relaxed" style={{ color: "rgba(240,237,230,0.52)", fontFamily: "'DM Sans', sans-serif" }}>{faq.a}</p>
+                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.83rem", lineHeight: 1.75, color: "rgba(245,240,232,0.5)" }}>
+                      {faq.a}
+                    </p>
                   </div>
-                )}
+                </div>
               </div>
             );
           })}
         </div>
 
-        {/* Still have questions nudge */}
+        {/* Still have questions */}
         <div className={`mt-12 text-center transition-all duration-700 delay-500 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
-          <div className="inline-flex items-center gap-3 px-6 py-4 rounded-2xl" style={{ background: "#16161F", border: "1px solid rgba(255,255,255,0.06)" }}>
-            <MessageCircle size={18} style={{ color: "#C9A84C" }} />
-            <span className="text-sm" style={{ color: "rgba(240,237,230,0.5)", fontFamily: "'DM Sans', sans-serif" }}>
+          <div className="inline-flex items-center gap-3 px-7 py-4" style={{
+            background: "rgba(12,11,22,0.9)",
+            border: "1px solid rgba(255,255,255,0.055)",
+            borderRadius: "2px"
+          }}>
+            <Mail size={15} style={{ color: "#C9A84C", flexShrink: 0 }} />
+            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.82rem", color: "rgba(245,240,232,0.45)" }}>
               Still have a question?{" "}
-              <a href="mailto:hello@hostai.co" className="font-semibold hover:underline" style={{ color: "#C9A84C" }}>Email us at hello@hostai.co</a>
+              <a href="mailto:hello@hostai.co" style={{ color: "#C9A84C", fontWeight: 600, textDecoration: "none" }}
+                onMouseEnter={e => (e.currentTarget as HTMLElement).style.textDecoration = "underline"}
+                onMouseLeave={e => (e.currentTarget as HTMLElement).style.textDecoration = "none"}>
+                Email us at hello@hostai.co
+              </a>
               {" "}— we reply within 24 hours.
             </span>
           </div>
