@@ -1,6 +1,6 @@
 /* ============================================================
-   HOME — Obsidian & Gold Luxury v3
-   Full page assembly with all premium sections
+   HOME — Elite Luxury v4
+   Full page assembly — all sections rebuilt to 10/10 standard
    ============================================================ */
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";

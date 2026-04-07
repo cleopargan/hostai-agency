@@ -1,11 +1,15 @@
 /* ============================================================
-   RESULTS — Obsidian & Gold Luxury v3
-   Animated stat counters, premium testimonial cards, gold accents
+   RESULTS — Elite Luxury v4
+   - New results background image (v3)
+   - Animated stat counters with gold numbers
+   - Premium testimonial cards with refined typography
    ============================================================ */
 import { useEffect, useRef, useState } from "react";
 import { Quote, Star } from "lucide-react";
 
-const STATS_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663082783554/QDcYwAv8SHis62JyYiBJro/hero-luxury-v2_016a6f73.jpg";
+const STATS_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663082783554/QDcYwAv8SHis62JyYiBJro/results-bg-v3-EFNm8aFiK7Li4RzrYmukPR.webp";
+const STATS_BG_FALLBACK = "https://d2xsxph8kpxj0f.cloudfront.net/310519663082783554/QDcYwAv8SHis62JyYiBJro/hero-luxury-v2_016a6f73.jpg";
+
 const PHOTO_MARIA = "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=80&h=80&fit=crop&crop=face";
 const PHOTO_JAMES = "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=80&h=80&fit=crop&crop=face";
 
@@ -63,12 +67,42 @@ function useCountUp(target: number, active: boolean) {
 function StatCard({ stat, active }: { stat: typeof stats[0]; active: boolean }) {
   const count = useCountUp(stat.value, active);
   return (
-    <div className="text-center p-7 md:p-9 relative group transition-all duration-300" style={{ cursor: "default" }}
-      onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.025)"}
-      onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = "transparent"}>
-      <div className="stat-number mb-2">{count}{stat.suffix}</div>
-      <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.82rem", fontWeight: 600, color: "#F5F0E8", marginBottom: "0.5rem" }}>{stat.label}</div>
-      <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.72rem", lineHeight: 1.6, color: "rgba(245,240,232,0.32)" }}>{stat.desc}</div>
+    <div
+      className="text-center relative group"
+      style={{ padding: "2.25rem 1.5rem", cursor: "default" }}
+    >
+      {/* Hover overlay */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: "rgba(255,255,255,0.02)" }} />
+      <div style={{
+        fontFamily: "'Cormorant Garamond', Georgia, serif",
+        fontSize: "clamp(2.5rem, 4vw, 3.5rem)",
+        fontWeight: 700,
+        lineHeight: 1,
+        marginBottom: "0.5rem",
+        background: "linear-gradient(135deg, #BFA06A, #E8C96A, #C9A84C)",
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+        backgroundClip: "text",
+      }}>
+        {count}{stat.suffix}
+      </div>
+      <div style={{
+        fontFamily: "'DM Sans', sans-serif",
+        fontSize: "0.82rem",
+        fontWeight: 600,
+        color: "#F5F0E8",
+        marginBottom: "0.5rem",
+      }}>
+        {stat.label}
+      </div>
+      <div style={{
+        fontFamily: "'DM Sans', sans-serif",
+        fontSize: "0.72rem",
+        lineHeight: 1.6,
+        color: "rgba(245,240,232,0.3)",
+      }}>
+        {stat.desc}
+      </div>
     </div>
   );
 }
@@ -78,7 +112,10 @@ export default function Results() {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold: 0.1 });
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold: 0.08 }
+    );
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
   }, []);
@@ -86,44 +123,63 @@ export default function Results() {
   return (
     <section id="results" ref={ref} className="relative overflow-hidden">
 
-      {/* ── Stats section ── */}
-      <div className="relative py-24 md:py-28">
+      {/* Stats section */}
+      <div className="relative py-24 md:py-32">
         <div className="absolute inset-0">
-          <img src={STATS_BG} alt="" className="w-full h-full object-cover" style={{ opacity: 0.5 }} />
-          <div className="absolute inset-0" style={{ background: "rgba(8,8,16,0.82)" }} />
+          <img
+            src={STATS_BG}
+            alt=""
+            className="w-full h-full object-cover"
+            onError={e => { (e.target as HTMLImageElement).src = STATS_BG_FALLBACK; }}
+            style={{ opacity: 0.45 }}
+          />
+          <div className="absolute inset-0" style={{ background: "rgba(8,8,16,0.84)" }} />
         </div>
         <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.22), transparent)" }} />
 
         <div className="container relative z-10">
-          <div className={`text-center mb-12 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
-            <div className="flex items-center justify-center gap-3 mb-6">
-              <div className="gold-line" />
+          <div
+            className={`text-center mb-14 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+          >
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem", marginBottom: "1.5rem" }}>
+              <div style={{ flex: 1, height: "1px", background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.2))", maxWidth: "80px" }} />
               <span className="section-label">Real Results</span>
-              <div className="gold-line" style={{ background: "linear-gradient(90deg, transparent, #C9A84C)" }} />
+              <div style={{ flex: 1, height: "1px", background: "linear-gradient(90deg, rgba(201,168,76,0.2), transparent)", maxWidth: "80px" }} />
             </div>
             <h2 style={{
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: "clamp(2rem, 3.5vw, 3rem)",
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontSize: "clamp(2.2rem, 4vw, 3.25rem)",
               fontWeight: 600,
-              lineHeight: 1.1,
-              color: "#F5F0E8"
+              lineHeight: 1.08,
+              letterSpacing: "-0.015em",
+              color: "#F5F0E8",
             }}>
-              Numbers That <em className="gold-text">Speak for Themselves</em>
+              Numbers That{" "}
+              <em style={{
+                fontStyle: "italic",
+                background: "linear-gradient(90deg, #BFA06A, #E8C96A, #C9A84C)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}>Speak for Themselves</em>
             </h2>
           </div>
 
           <div
-            className={`grid grid-cols-2 lg:grid-cols-4 transition-all duration-700 delay-200 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+            className={`grid grid-cols-2 lg:grid-cols-4 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
             style={{
-              background: "rgba(10,9,18,0.9)",
+              transitionDelay: "200ms",
+              background: "rgba(10,9,18,0.92)",
               border: "1px solid rgba(201,168,76,0.12)",
-              borderRadius: "2px",
               backdropFilter: "blur(24px)",
-              boxShadow: "0 24px 80px rgba(0,0,0,0.4)"
+              boxShadow: "0 32px 80px rgba(0,0,0,0.45)",
             }}
           >
             {stats.map((s, i) => (
-              <div key={s.label} style={{ borderRight: i < stats.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none" }}>
+              <div
+                key={s.label}
+                style={{ borderRight: i < stats.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none" }}
+              >
                 <StatCard stat={s} active={visible} />
               </div>
             ))}
@@ -131,28 +187,43 @@ export default function Results() {
         </div>
       </div>
 
-      {/* ── Testimonials section ── */}
-      <div className="relative py-24 md:py-28" style={{ background: "#0C0B18" }}>
+      {/* Testimonials section */}
+      <div className="relative py-24 md:py-32" style={{ background: "#0C0B18" }}>
         <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.12), transparent)" }} />
 
         <div className="container relative z-10">
-          <div className={`max-w-2xl mx-auto text-center mb-14 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
-            <div className="flex items-center justify-center gap-3 mb-6">
-              <div className="gold-line" />
+          <div
+            className={`max-w-2xl mx-auto text-center mb-16 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+          >
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem", marginBottom: "1.5rem" }}>
+              <div style={{ flex: 1, height: "1px", background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.2))", maxWidth: "80px" }} />
               <span className="section-label">What Owners Say</span>
-              <div className="gold-line" style={{ background: "linear-gradient(90deg, transparent, #C9A84C)" }} />
+              <div style={{ flex: 1, height: "1px", background: "linear-gradient(90deg, rgba(201,168,76,0.2), transparent)", maxWidth: "80px" }} />
             </div>
             <h2 style={{
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: "clamp(1.8rem, 3vw, 2.6rem)",
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontSize: "clamp(2rem, 3.5vw, 2.75rem)",
               fontWeight: 600,
-              lineHeight: 1.15,
+              lineHeight: 1.1,
+              letterSpacing: "-0.015em",
               color: "#F5F0E8",
-              marginBottom: "1rem"
+              marginBottom: "1rem",
             }}>
-              From Overwhelmed to <em className="gold-text">In Control</em>
+              From Overwhelmed to{" "}
+              <em style={{
+                fontStyle: "italic",
+                background: "linear-gradient(90deg, #BFA06A, #E8C96A, #C9A84C)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}>In Control</em>
             </h2>
-            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.9rem", color: "rgba(245,240,232,0.38)", lineHeight: 1.7 }}>
+            <p style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "0.9rem",
+              color: "rgba(245,240,232,0.35)",
+              lineHeight: 1.75,
+            }}>
               Real feedback from boutique property owners across 12 countries
             </p>
           </div>
@@ -161,54 +232,102 @@ export default function Results() {
             {testimonials.map((t, i) => (
               <div
                 key={t.name}
-                className={`gradient-border p-7 flex flex-col transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-                style={{ transitionDelay: `${300 + i * 120}ms` }}
+                className={`flex flex-col transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+                style={{
+                  transitionDelay: `${300 + i * 120}ms`,
+                  background: "rgba(255,255,255,0.025)",
+                  border: "1px solid rgba(255,255,255,0.055)",
+                  padding: "1.75rem",
+                  position: "relative",
+                }}
               >
+                {/* Top gold accent */}
+                <div style={{
+                  position: "absolute",
+                  top: 0,
+                  left: "1.75rem",
+                  width: "2rem",
+                  height: "2px",
+                  background: "linear-gradient(90deg, #C9A84C, transparent)",
+                }} />
+
                 {/* Stars */}
-                <div className="flex gap-0.5 mb-5">
-                  {[...Array(t.stars)].map((_, j) => <Star key={j} size={11} fill="#C9A84C" color="#C9A84C" />)}
+                <div style={{ display: "flex", gap: "2px", marginBottom: "1.25rem" }}>
+                  {[...Array(t.stars)].map((_, j) => (
+                    <Star key={j} size={11} fill="#C9A84C" color="#C9A84C" />
+                  ))}
                 </div>
 
-                {/* Quote mark */}
-                <Quote size={20} style={{ color: "rgba(201,168,76,0.2)", marginBottom: "0.875rem" }} />
+                {/* Large quote mark */}
+                <Quote size={22} style={{ color: "rgba(201,168,76,0.18)", marginBottom: "0.875rem" }} />
 
                 {/* Quote text */}
                 <p style={{
-                  fontFamily: "'Cormorant Garamond', serif",
+                  fontFamily: "'Cormorant Garamond', Georgia, serif",
                   fontSize: "1.05rem",
                   fontStyle: "italic",
+                  fontWeight: 500,
                   lineHeight: 1.65,
-                  color: "rgba(245,240,232,0.72)",
+                  color: "rgba(245,240,232,0.7)",
                   flex: 1,
-                  marginBottom: "1.5rem"
+                  marginBottom: "1.5rem",
                 }}>
                   "{t.quote}"
                 </p>
 
                 {/* Author */}
-                <div className="flex items-center gap-3 pt-4" style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+                <div style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.75rem",
+                  paddingTop: "1.25rem",
+                  borderTop: "1px solid rgba(255,255,255,0.04)",
+                }}>
                   {t.photo ? (
                     <img
                       src={t.photo}
                       alt={t.name}
-                      className="w-10 h-10 object-cover flex-shrink-0"
-                      style={{ borderRadius: "2px", border: "1px solid rgba(201,168,76,0.25)" }}
+                      style={{
+                        width: "2.5rem",
+                        height: "2.5rem",
+                        objectFit: "cover",
+                        flexShrink: 0,
+                        border: "1px solid rgba(201,168,76,0.22)",
+                      }}
                     />
                   ) : (
-                    <div className="w-10 h-10 flex items-center justify-center flex-shrink-0" style={{
+                    <div style={{
+                      width: "2.5rem",
+                      height: "2.5rem",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0,
                       background: "linear-gradient(135deg, #B8922E, #E8C96A)",
-                      borderRadius: "2px",
-                      fontFamily: "'Cormorant Garamond', serif",
+                      fontFamily: "'Cormorant Garamond', Georgia, serif",
                       fontSize: "0.95rem",
                       fontWeight: 600,
-                      color: "#0A0806"
+                      color: "#0A0806",
                     }}>
                       {(t as any).initials}
                     </div>
                   )}
                   <div>
-                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.82rem", fontWeight: 600, color: "#F5F0E8" }}>{t.name}</div>
-                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.72rem", color: "rgba(245,240,232,0.35)" }}>{t.role} · {t.location}</div>
+                    <div style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: "0.82rem",
+                      fontWeight: 600,
+                      color: "#F5F0E8",
+                    }}>
+                      {t.name}
+                    </div>
+                    <div style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: "0.72rem",
+                      color: "rgba(245,240,232,0.32)",
+                    }}>
+                      {t.role} · {t.location}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -216,8 +335,17 @@ export default function Results() {
           </div>
 
           {/* CTA */}
-          <div className={`mt-14 text-center transition-all duration-700 delay-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
-            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.8rem", color: "rgba(245,240,232,0.3)", marginBottom: "1.25rem", letterSpacing: "0.04em" }}>
+          <div
+            className={`mt-16 text-center transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+            style={{ transitionDelay: "700ms" }}
+          >
+            <p style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "0.78rem",
+              color: "rgba(245,240,232,0.28)",
+              marginBottom: "1.5rem",
+              letterSpacing: "0.04em",
+            }}>
               Join 50+ boutique properties already using HostAI
             </p>
             <a href="#contact" className="btn-gold">

@@ -1,49 +1,135 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { AlertCircle, Home } from "lucide-react";
+/* ============================================================
+   404 NOT FOUND — Elite Luxury v4
+   Matches the obsidian & gold design system
+   ============================================================ */
 import { useLocation } from "wouter";
+import { ArrowLeft, Compass } from "lucide-react";
 
 export default function NotFound() {
   const [, setLocation] = useLocation();
 
-  const handleGoHome = () => {
-    setLocation("/");
-  };
-
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
-      <Card className="w-full max-w-lg mx-4 shadow-lg border-0 bg-white/80 backdrop-blur-sm">
-        <CardContent className="pt-8 pb-8 text-center">
-          <div className="flex justify-center mb-6">
-            <div className="relative">
-              <div className="absolute inset-0 bg-red-100 rounded-full animate-pulse" />
-              <AlertCircle className="relative h-16 w-16 text-red-500" />
-            </div>
-          </div>
+    <div style={{
+      minHeight: "100vh",
+      background: "#080810",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "2rem",
+      position: "relative",
+      overflow: "hidden",
+    }}>
+      {/* Ambient glow */}
+      <div style={{
+        position: "absolute",
+        top: "30%",
+        left: "50%",
+        transform: "translateX(-50%)",
+        width: "600px",
+        height: "400px",
+        background: "radial-gradient(ellipse, rgba(201,168,76,0.05) 0%, transparent 65%)",
+        filter: "blur(80px)",
+        pointerEvents: "none",
+      }} />
 
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">404</h1>
+      <div style={{ textAlign: "center", position: "relative", zIndex: 1 }}>
+        {/* Icon */}
+        <div style={{
+          width: "5rem",
+          height: "5rem",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          margin: "0 auto 2rem",
+          background: "rgba(201,168,76,0.06)",
+          border: "1px solid rgba(201,168,76,0.18)",
+        }}>
+          <Compass size={28} style={{ color: "#C9A84C" }} />
+        </div>
 
-          <h2 className="text-xl font-semibold text-slate-700 mb-4">
-            Page Not Found
-          </h2>
+        {/* 404 */}
+        <div style={{
+          fontFamily: "'Cormorant Garamond', Georgia, serif",
+          fontSize: "clamp(5rem, 15vw, 9rem)",
+          fontWeight: 700,
+          lineHeight: 1,
+          background: "linear-gradient(135deg, rgba(201,168,76,0.15), rgba(201,168,76,0.06))",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          backgroundClip: "text",
+          marginBottom: "1rem",
+          letterSpacing: "-0.04em",
+        }}>
+          404
+        </div>
 
-          <p className="text-slate-600 mb-8 leading-relaxed">
-            Sorry, the page you are looking for doesn't exist.
-            <br />
-            It may have been moved or deleted.
-          </p>
+        {/* Divider */}
+        <div style={{
+          width: "3rem",
+          height: "1px",
+          background: "linear-gradient(90deg, transparent, #C9A84C, transparent)",
+          margin: "0 auto 1.5rem",
+        }} />
 
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button
-              onClick={handleGoHome}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
-            >
-              <Home className="w-4 h-4 mr-2" />
-              Go Home
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+        {/* Heading */}
+        <h1 style={{
+          fontFamily: "'Cormorant Garamond', Georgia, serif",
+          fontSize: "clamp(1.5rem, 3vw, 2.25rem)",
+          fontWeight: 600,
+          color: "#F5F0E8",
+          marginBottom: "1rem",
+          letterSpacing: "-0.01em",
+        }}>
+          Page Not Found
+        </h1>
+
+        {/* Description */}
+        <p style={{
+          fontFamily: "'DM Sans', sans-serif",
+          fontSize: "0.9rem",
+          lineHeight: 1.8,
+          color: "rgba(245,240,232,0.38)",
+          maxWidth: "360px",
+          margin: "0 auto 2.5rem",
+        }}>
+          The page you're looking for doesn't exist or has been moved. Let's get you back on track.
+        </p>
+
+        {/* CTA */}
+        <button
+          onClick={() => setLocation("/")}
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.5rem",
+            padding: "0.875rem 2.25rem",
+            background: "linear-gradient(135deg, #C9A84C 0%, #E8C96A 40%, #C9A84C 70%, #9A7830 100%)",
+            backgroundSize: "200% auto",
+            color: "#0C0B18",
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: "0.8rem",
+            fontWeight: 600,
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+            border: "none",
+            cursor: "pointer",
+            transition: "background-position 0.4s ease, transform 0.2s ease, box-shadow 0.3s ease",
+          }}
+          onMouseEnter={e => {
+            (e.currentTarget as HTMLElement).style.backgroundPosition = "right center";
+            (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)";
+            (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 32px rgba(201,168,76,0.35)";
+          }}
+          onMouseLeave={e => {
+            (e.currentTarget as HTMLElement).style.backgroundPosition = "left center";
+            (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+            (e.currentTarget as HTMLElement).style.boxShadow = "none";
+          }}
+        >
+          <ArrowLeft size={14} />
+          Return to HostAI
+        </button>
+      </div>
     </div>
   );
 }
