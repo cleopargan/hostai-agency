@@ -533,23 +533,34 @@ export default function ContactCTA() {
               © 2026 NightDesk — Operated by Cleopargan LLC. All rights reserved.
             </span>
             <div style={{ display: "flex", gap: "1.5rem" }}>
-              {["Privacy Policy", "Terms of Service"].map((l) => (
-                <a
-                  key={l}
-                  href="mailto:hello@nightdesk.agency"
-                  style={{
-                    fontFamily: "'DM Sans', sans-serif",
-                    fontSize: "0.7rem",
-                    color: "rgba(245,240,232,0.18)",
-                    textDecoration: "none",
-                    transition: "color 0.2s",
-                  }}
-                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.45)"}
-                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.18)"}
-                >
-                  {l}
-                </a>
-              ))}
+              <a
+                href="/privacy"
+                style={{
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: "0.7rem",
+                  color: "rgba(245,240,232,0.18)",
+                  textDecoration: "none",
+                  transition: "color 0.2s",
+                }}
+                onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.45)"}
+                onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.18)"}
+              >
+                Privacy Policy
+              </a>
+              <a
+                href="mailto:hello@nightdesk.agency"
+                style={{
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: "0.7rem",
+                  color: "rgba(245,240,232,0.18)",
+                  textDecoration: "none",
+                  transition: "color 0.2s",
+                }}
+                onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.45)"}
+                onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.18)"}
+              >
+                Terms of Service
+              </a>
             </div>
           </div>
         </div>
