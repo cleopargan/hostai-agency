@@ -17,10 +17,13 @@ const benefits = [
   "Setup guaranteed in 7 days or it's free",
 ];
 
+const WEB3FORMS_KEY = "eda10f46-c87b-499a-b2ce-d653ae7ce76e";
+
 export default function ContactCTA() {
   const [visible, setVisible] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [form, setForm] = useState({ name: "", email: "", property: "", type: "", message: "" });
   const ref = useRef<HTMLDivElement>(null);
 
@@ -33,10 +36,38 @@ export default function ContactCTA() {
     return () => obs.disconnect();
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => { setLoading(false); setSubmitted(true); }, 1200);
+    setError("");
+    try {
+      const payload = {
+        access_key: WEB3FORMS_KEY,
+        subject: `New Demo Request from ${form.name} — ${form.property || "NightDesk Website"}`,
+        from_name: "NightDesk Website",
+        name: form.name,
+        email: form.email,
+        property: form.property,
+        property_type: form.type,
+        message: form.message || "No additional message provided.",
+        botcheck: "",
+      };
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSubmitted(true);
+      } else {
+        setError("Something went wrong. Please email us directly at hello@nightdesk.agency");
+      }
+    } catch {
+      setError("Network error. Please email us directly at hello@nightdesk.agency");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -338,6 +369,19 @@ export default function ContactCTA() {
                         )}
                       </button>
 
+                      {error && (
+                        <p style={{
+                          textAlign: "center",
+                          fontFamily: "'DM Sans', sans-serif",
+                          fontSize: "0.75rem",
+                          color: "#f87171",
+                          padding: "0.5rem",
+                          background: "rgba(248,113,113,0.06)",
+                          border: "1px solid rgba(248,113,113,0.18)",
+                        }}>
+                          {error}
+                        </p>
+                      )}
                       <p style={{
                         textAlign: "center",
                         fontFamily: "'DM Sans', sans-serif",
@@ -370,9 +414,7 @@ export default function ContactCTA() {
                   fontWeight: 600,
                   color: "#F5F0E8",
                   letterSpacing: "-0.01em",
-                }}>
-                  Host<span style={{ color: "#C9A84C" }}>AI</span>
-                </span>
+                }}>Night<span style={{ color: "#C9A84C" }}>Desk</span></span>
                 <div style={{
                   fontFamily: "'DM Sans', sans-serif",
                   fontSize: "0.55rem",
