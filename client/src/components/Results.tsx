@@ -16,13 +16,13 @@ const PHOTO_JAMES = "https://images.unsplash.com/photo-1560250097-0b93528c311a?w
 const stats = [
   { value: 94, suffix: "%", label: "Guest Satisfaction", desc: "Guests rate AI responses as helpful or very helpful" },
   { value: 24, suffix: "/7", label: "Always Available", desc: "Zero downtime — your AI never calls in sick" },
-  { value: 3, suffix: "×", label: "More Leads Captured", desc: "Properties see 3× more captured leads after HostAI" },
+  { value: 3, suffix: "×", label: "More Leads Captured", desc: "Properties see 3× more captured leads with always-on AI" },
   { value: 20, suffix: "+", label: "Staff Hours Saved", desc: "Per property per month — time for real hospitality" },
 ];
 
 const testimonials = [
   {
-    quote: "We were losing 3–4 bookings a week just because nobody was online after 9 PM. HostAI fixed that in one week. The ROI was immediate.",
+    quote: "We were losing 3–4 bookings a week just because nobody was online after 9 PM. NightDesk fixed that in one week. The ROI was immediate.",
     name: "Maria Santos",
     role: "Owner, Boutique Hotel",
     location: "Lisbon, Portugal",
@@ -224,7 +224,7 @@ export default function Results() {
               color: "rgba(245,240,232,0.35)",
               lineHeight: 1.75,
             }}>
-              Real feedback from boutique property owners across 12 countries
+              Real feedback from boutique property owners who made the switch
             </p>
           </div>
 
@@ -346,7 +346,7 @@ export default function Results() {
               marginBottom: "1.5rem",
               letterSpacing: "0.04em",
             }}>
-              Join 50+ boutique properties already using HostAI
+              Join boutique properties already using NightDesk
             </p>
             <a href="#contact" className="btn-gold">
               Start Your 7-Day Setup

@@ -111,7 +111,7 @@ export default function FloatingChat() {
                   fontWeight: 700,
                   color: "#0A0806",
                   lineHeight: 1,
-                }}>H</span>
+                }}>N</span>
               </div>
               <div>
                 <div style={{
@@ -342,7 +342,7 @@ export default function FloatingChat() {
               color: "rgba(245,240,232,0.15)",
               letterSpacing: "0.08em",
             }}>
-              Powered by <strong style={{ color: "rgba(201,168,76,0.3)" }}>HostAI</strong> · This is a live demo
+              Powered by <strong style={{ color: "rgba(201,168,76,0.3)" }}>NightDesk</strong> · This is a live demo
             </span>
           </div>
         </div>

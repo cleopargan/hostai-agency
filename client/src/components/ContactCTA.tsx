@@ -138,8 +138,8 @@ export default function ContactCTA() {
               {/* Contact details */}
               <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginBottom: "2.5rem" }}>
                 {[
-                  { icon: Mail, text: "hello@hostai.co", href: "mailto:hello@hostai.co" },
-                  { icon: Calendar, text: "Book a call at calendly.com/hostai", href: "#" },
+                  { icon: Mail, text: "hello@nightdesk.agency", href: "mailto:hello@nightdesk.agency" },
+                  { icon: Calendar, text: "Book a free 20-min demo call", href: "#" },
                   { icon: MapPin, text: "Available worldwide — remote setup" },
                 ].map((item) => (
                   <div key={item.text} style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
@@ -444,7 +444,7 @@ export default function ContactCTA() {
               </h4>
               <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                 <a
-                  href="mailto:hello@hostai.co"
+                  href="mailto:hello@nightdesk.agency"
                   style={{
                     fontFamily: "'DM Sans', sans-serif",
                     fontSize: "0.82rem",
@@ -455,7 +455,7 @@ export default function ContactCTA() {
                   onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#C9A84C"}
                   onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.35)"}
                 >
-                  hello@hostai.co
+                  hello@nightdesk.agency
                 </a>
                 <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.82rem", color: "rgba(245,240,232,0.25)" }}>
                   Available worldwide
@@ -486,7 +486,7 @@ export default function ContactCTA() {
               fontSize: "0.7rem",
               color: "rgba(245,240,232,0.18)",
             }}>
-              © 2026 HostAI. All rights reserved.
+              © 2026 NightDesk — Operated by Cleopargan LLC. All rights reserved.
             </span>
             <div style={{ display: "flex", gap: "1.5rem" }}>
               {["Privacy Policy", "Terms of Service"].map((l) => (

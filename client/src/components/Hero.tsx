@@ -149,7 +149,7 @@ export default function Hero() {
                 transitionDelay: "200ms",
               }}
             >
-              HostAI installs a custom AI concierge on your boutique hotel or B&B in{" "}
+              NightDesk installs a custom AI concierge on your boutique hotel or B&B in{" "}
               <strong style={{ color: "rgba(201,168,76,0.9)", fontWeight: 600 }}>7 days</strong> — answering guest questions, reducing staff workload, and capturing bookings around the clock.
             </p>
 
@@ -163,7 +163,7 @@ export default function Hero() {
               </div>
               <div style={{ width: "1px", height: "14px", background: "rgba(255,255,255,0.12)" }} />
               <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.78rem", color: "rgba(245,240,232,0.35)" }}>
-                Trusted by 50+ properties in 12+ countries
+                Built for boutique hotels, B&Bs & independent properties
               </span>
             </div>
 
@@ -260,10 +260,10 @@ export default function Hero() {
                   justifyContent: "center",
                   flexShrink: 0,
                 }}>
-                  <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 700, color: "#0C0B18" }}>H</span>
+                  <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 700, color: "#0C0B18" }}>N</span>
                 </div>
                 <div>
-                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.85rem", fontWeight: 600, color: "#F5F0E8" }}>HostAI Concierge</div>
+                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.85rem", fontWeight: 600, color: "#F5F0E8" }}>NightDesk Concierge</div>
                   <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
                     <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#4ade80", display: "block", animation: "pulse-ring 2s infinite" }} />
                     <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.65rem", color: "rgba(74,222,128,0.7)" }}>Online · Replies instantly</span>

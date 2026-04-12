@@ -32,8 +32,8 @@ export default function Navbar() {
     "✦  7-Day Setup Guarantee",
     "✦  30-Day Money-Back",
     "✦  No Technical Skills Required",
-    "✦  50+ Properties Served",
-    "✦  Serving 12+ Countries",
+    "✦  Now Accepting New Properties",
+    "✦  Worldwide Remote Setup",
     "✦  Free WhatsApp Integration This Month",
   ];
 
@@ -137,7 +137,7 @@ export default function Navbar() {
                 color: "#F5F0E8",
                 lineHeight: 1,
               }}>
-                Host<span style={{ color: "#C9A84C" }}>AI</span>
+                Night<span style={{ color: "#C9A84C" }}>Desk</span>
               </span>
               <span style={{
                 fontFamily: "'DM Sans', sans-serif",
@@ -147,7 +147,7 @@ export default function Navbar() {
                 color: "rgba(201,168,76,0.45)",
                 marginTop: "2px",
               }}>
-                AI Concierge
+                AI Concierge Agency
               </span>
             </div>
           </a>

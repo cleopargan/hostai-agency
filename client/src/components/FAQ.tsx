@@ -192,12 +192,12 @@ export default function FAQ() {
             }}>
               Still have a question?{" "}
               <a
-                href="mailto:hello@hostai.co"
+                href="mailto:hello@nightdesk.agency"
                 style={{ color: "#C9A84C", fontWeight: 600, textDecoration: "none" }}
                 onMouseEnter={e => (e.currentTarget as HTMLElement).style.textDecoration = "underline"}
                 onMouseLeave={e => (e.currentTarget as HTMLElement).style.textDecoration = "none"}
               >
-                Email us at hello@hostai.co
+                Email us at hello@nightdesk.agency
               </a>
               {" "}— we reply within 24 hours.
             </span>

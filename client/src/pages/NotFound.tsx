@@ -127,7 +127,7 @@ export default function NotFound() {
           }}
         >
           <ArrowLeft size={14} />
-          Return to HostAI
+          Return to NightDesk
         </button>
       </div>
     </div>

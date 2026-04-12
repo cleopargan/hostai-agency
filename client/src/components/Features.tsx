@@ -97,7 +97,7 @@ export default function Features() {
         >
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem", marginBottom: "1.5rem" }}>
             <div style={{ flex: 1, height: "1px", background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.2))", maxWidth: "80px" }} />
-            <span className="section-label">Why HostAI</span>
+            <span className="section-label">Why NightDesk</span>
             <div style={{ flex: 1, height: "1px", background: "linear-gradient(90deg, rgba(201,168,76,0.2), transparent)", maxWidth: "80px" }} />
           </div>
           <h2 style={{
