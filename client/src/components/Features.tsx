@@ -78,7 +78,7 @@ export default function Features() {
       <div className="absolute inset-0 pointer-events-none">
         <img
           src={TEXTURE_BG}
-          alt=""
+          alt="Dark luxury texture — NightDesk AI concierge features section background"
           className="w-full h-full object-cover"
           onError={e => { (e.target as HTMLImageElement).src = TEXTURE_BG_FALLBACK; }}
           style={{ opacity: 0.3, filter: "saturate(0.6)" }}

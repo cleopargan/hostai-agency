@@ -128,7 +128,7 @@ export default function Results() {
         <div className="absolute inset-0">
           <img
             src={STATS_BG}
-            alt=""
+            alt="Luxury hotel interior — NightDesk client results background"
             className="w-full h-full object-cover"
             onError={e => { (e.target as HTMLImageElement).src = STATS_BG_FALLBACK; }}
             style={{ opacity: 0.45 }}

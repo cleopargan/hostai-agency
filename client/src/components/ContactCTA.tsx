@@ -79,7 +79,7 @@ export default function ContactCTA() {
         <div className="absolute inset-0 pointer-events-none">
           <img
             src={CONTACT_BG}
-            alt=""
+            alt="Boutique hotel atmosphere — NightDesk contact section background"
             className="w-full h-full object-cover"
             onError={e => { (e.target as HTMLImageElement).src = CONTACT_BG_FALLBACK; }}
             style={{ opacity: 0.18 }}
