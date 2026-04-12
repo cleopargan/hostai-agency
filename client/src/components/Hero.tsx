@@ -172,7 +172,7 @@ export default function Hero() {
               className={`flex flex-col sm:flex-row gap-4 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
               style={{ transitionDelay: "400ms" }}
             >
-              <a href="#contact" className="btn-gold">
+              <a href="https://calendly.com/hello-nightdesk/30min" target="_blank" rel="noopener noreferrer" className="btn-gold">
                 Book Your Free Demo <ArrowRight size={14} />
               </a>
               <a href="#how-it-works" className="btn-ghost">

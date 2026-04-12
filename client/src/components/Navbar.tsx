@@ -110,7 +110,7 @@ export default function Navbar() {
         <div className="container flex items-center justify-between" style={{ height: "4.75rem" }}>
 
           {/* ── Logo ── */}
-          <a href="#" style={{ display: "flex", alignItems: "center", gap: "0.75rem", textDecoration: "none" }}>
+          <a href="/" style={{ display: "flex", alignItems: "center", gap: "0.75rem", textDecoration: "none" }}>
             {/* Hexagon icon */}
             <div style={{
               width: "2.25rem",
@@ -202,7 +202,7 @@ export default function Navbar() {
                 Live demo active
               </span>
             </div>
-            <a href="#contact" className="btn-gold" style={{ padding: "0.6rem 1.5rem", fontSize: "0.7rem" }}>
+            <a href="https://calendly.com/hello-nightdesk/30min" target="_blank" rel="noopener noreferrer" className="btn-gold" style={{ padding: "0.6rem 1.5rem", fontSize: "0.7rem" }}>
               Book Free Demo
             </a>
           </div>
@@ -259,7 +259,9 @@ export default function Navbar() {
               </a>
             ))}
             <a
-              href="#contact"
+              href="https://calendly.com/hello-nightdesk/30min"
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn-gold"
               onClick={() => setMenuOpen(false)}
               style={{ marginTop: "1.5rem", width: "100%", justifyContent: "center" }}

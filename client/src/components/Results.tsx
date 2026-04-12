@@ -348,7 +348,7 @@ export default function Results() {
             }}>
               Join boutique properties already using NightDesk
             </p>
-            <a href="#contact" className="btn-gold">
+            <a href="https://calendly.com/hello-nightdesk/30min" target="_blank" rel="noopener noreferrer" className="btn-gold">
               Start Your 7-Day Setup
             </a>
           </div>

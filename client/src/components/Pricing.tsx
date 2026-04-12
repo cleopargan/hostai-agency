@@ -254,7 +254,9 @@ export default function Pricing() {
 
               {/* CTA */}
               <a
-                href="#contact"
+                href="https://calendly.com/hello-nightdesk/30min"
+                target="_blank"
+                rel="noopener noreferrer"
                 className={plan.featured ? "btn-gold" : "btn-ghost-gold"}
                 style={{ display: "block", textAlign: "center" }}
               >

@@ -10,7 +10,7 @@ import { Shield, Award, Globe, Zap } from "lucide-react";
 const trustItems = [
   { icon: Shield, label: "30-Day Money-Back Guarantee" },
   { icon: Award, label: "Built by Hospitality Insiders" },
-  { icon: Globe, label: "12+ Countries Served" },
+  { icon: Globe, label: "Worldwide Remote Setup" },
   { icon: Zap, label: "7-Day Setup Guarantee" },
 ];
 

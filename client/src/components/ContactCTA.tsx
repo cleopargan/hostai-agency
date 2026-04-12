@@ -170,7 +170,7 @@ export default function ContactCTA() {
               <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginBottom: "2.5rem" }}>
                 {[
                   { icon: Mail, text: "hello@nightdesk.agency", href: "mailto:hello@nightdesk.agency" },
-                  { icon: Calendar, text: "Book a free 20-min demo call", href: "#" },
+                  { icon: Calendar, text: "Book a free 20-min demo call", href: "https://calendly.com/hello-nightdesk/30min" },
                   { icon: MapPin, text: "Available worldwide — remote setup" },
                 ].map((item) => (
                   <div key={item.text} style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
@@ -503,7 +503,9 @@ export default function ContactCTA() {
                   Available worldwide
                 </span>
                 <a
-                  href="#contact"
+                  href="https://calendly.com/hello-nightdesk/30min"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="btn-gold"
                   style={{ padding: "0.625rem 1.25rem", fontSize: "0.72rem", marginTop: "0.5rem", display: "inline-flex" }}
                 >
@@ -534,7 +536,7 @@ export default function ContactCTA() {
               {["Privacy Policy", "Terms of Service"].map((l) => (
                 <a
                   key={l}
-                  href="#"
+                  href="mailto:hello@nightdesk.agency"
                   style={{
                     fontFamily: "'DM Sans', sans-serif",
                     fontSize: "0.7rem",
