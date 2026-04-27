@@ -51,7 +51,7 @@ export default function Navbar() {
         >
           <div style={{ display: "flex", alignItems: "center", height: "100%", overflow: "hidden" }}>
             <div className="marquee-track" style={{ gap: "3rem" }}>
-              {[...Array(3)].flatMap(() => announcements).map((text, i) => (
+              {[...announcements, ...announcements].map((text, i) => (
                 <span
                   key={i}
                   style={{

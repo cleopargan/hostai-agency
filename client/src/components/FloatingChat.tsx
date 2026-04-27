@@ -51,6 +51,17 @@ export default function FloatingChat() {
   const [hasOpened, setHasOpened] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // Auto-open after 8 seconds on first visit (once per session)
+  useEffect(() => {
+    const alreadyOpened = sessionStorage.getItem("nd_chat_opened");
+    if (alreadyOpened) return;
+    const timer = setTimeout(() => {
+      setOpen(true);
+      sessionStorage.setItem("nd_chat_opened", "1");
+    }, 8000);
+    return () => clearTimeout(timer);
+  }, []);
+
   useEffect(() => {
     if (open) {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
