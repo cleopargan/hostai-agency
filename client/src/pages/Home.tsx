@@ -1,6 +1,6 @@
 /* ============================================================
-   HOME — Elite Luxury v4
-   Full page assembly — all sections rebuilt to 10/10 standard
+   HOME — NightDesk Elite Luxury v5
+   Full page assembly — public marketing site
    ============================================================ */
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";

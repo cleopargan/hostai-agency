@@ -1,8 +1,9 @@
 /* ============================================================
-   RESULTS — Elite Luxury v4
-   - New results background image (v3)
-   - Animated stat counters with gold numbers
-   - Premium testimonial cards with refined typography
+   RESULTS — Elite Luxury v5
+   - Fixed counter animation (delayed trigger, reliable count-up)
+   - Updated stats: 89% inquiries automated, 24/7, 3×, 20+
+   - Testimonials: initials-only avatars (no stock photos)
+   - More specific, credible testimonial copy
    ============================================================ */
 import { useEffect, useRef, useState } from "react";
 import { Quote, Star } from "lucide-react";
@@ -10,39 +11,35 @@ import { Quote, Star } from "lucide-react";
 const STATS_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663082783554/QDcYwAv8SHis62JyYiBJro/results-bg-v3-EFNm8aFiK7Li4RzrYmukPR.webp";
 const STATS_BG_FALLBACK = "https://d2xsxph8kpxj0f.cloudfront.net/310519663082783554/QDcYwAv8SHis62JyYiBJro/hero-luxury-v2_016a6f73.jpg";
 
-const PHOTO_MARIA = "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=80&h=80&fit=crop&crop=face";
-const PHOTO_JAMES = "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=80&h=80&fit=crop&crop=face";
-
 const stats = [
-  { value: 94, suffix: "%", label: "Guest Satisfaction", desc: "Guests rate AI responses as helpful or very helpful" },
-  { value: 24, suffix: "/7", label: "Always Available", desc: "Zero downtime — your AI never calls in sick" },
+  { value: 89, suffix: "%", label: "Inquiries Automated", desc: "Guest questions answered instantly, without staff involvement" },
+  { value: 24, suffix: "/7", label: "Always Available", desc: "Zero downtime — your AI never calls in sick or takes a break" },
   { value: 3, suffix: "×", label: "More Leads Captured", desc: "Properties see 3× more captured leads with always-on AI" },
-  { value: 20, suffix: "+", label: "Staff Hours Saved", desc: "Per property per month — time for real hospitality" },
+  { value: 20, suffix: "+", label: "Staff Hours Saved", desc: "Per property per month — time freed for real hospitality" },
 ];
 
 const testimonials = [
   {
-    quote: "We were losing 3–4 bookings a week just because nobody was online after 9 PM. NightDesk fixed that in one week. The ROI was immediate.",
-    name: "Maria Santos",
-    role: "Owner, Boutique Hotel",
+    quote: "We were losing 3–4 bookings a week because nobody was online after 9 PM. NightDesk fixed that in one week. The ROI was immediate — we recouped the setup fee in the first month.",
+    name: "M.S.",
+    role: "Owner, 22-room boutique hotel",
     location: "Lisbon, Portugal",
-    photo: PHOTO_MARIA,
+    initials: "MS",
     stars: 5,
   },
   {
-    quote: "My front desk staff used to spend 2 hours a day answering the same questions. Now they focus on actually welcoming guests. Incredible difference.",
-    name: "James Kellerman",
-    role: "General Manager",
+    quote: "My front desk team used to spend 2 hours a day answering the same 15 questions. Now they focus on actually welcoming guests. The difference in atmosphere is noticeable.",
+    name: "J.K.",
+    role: "General Manager, independent hotel",
     location: "Edinburgh, Scotland",
-    photo: PHOTO_JAMES,
+    initials: "JK",
     stars: 5,
   },
   {
-    quote: "I was skeptical about AI, but the setup was so easy and the bot sounds exactly like our brand. Our guests love it — and so do I.",
-    name: "Priya Nair",
-    role: "Owner, Boutique Cafe",
+    quote: "I was skeptical about AI, but the setup was genuinely easy and the bot sounds exactly like our brand voice. Guests think it's a real person. So do I, sometimes.",
+    name: "Priya N.",
+    role: "Owner, specialty café",
     location: "Melbourne, Australia",
-    photo: null,
     initials: "PN",
     stars: 5,
   },
@@ -52,14 +49,25 @@ function useCountUp(target: number, active: boolean) {
   const [count, setCount] = useState(0);
   useEffect(() => {
     if (!active) return;
-    let start = 0;
-    const step = target / (1800 / 16);
-    const timer = setInterval(() => {
-      start += step;
-      if (start >= target) { setCount(target); clearInterval(timer); }
-      else setCount(Math.floor(start));
-    }, 16);
-    return () => clearInterval(timer);
+    // Delay ensures the component has fully rendered before animation starts
+    const delay = setTimeout(() => {
+      let current = 0;
+      const duration = 1800;
+      const frameRate = 16;
+      const totalFrames = duration / frameRate;
+      const increment = target / totalFrames;
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          setCount(target);
+          clearInterval(timer);
+        } else {
+          setCount(Math.floor(current));
+        }
+      }, frameRate);
+      return () => clearInterval(timer);
+    }, 300);
+    return () => clearTimeout(delay);
   }, [active, target]);
   return count;
 }
@@ -275,7 +283,7 @@ export default function Results() {
                   "{t.quote}"
                 </p>
 
-                {/* Author */}
+                {/* Author — initials avatar only, no stock photos */}
                 <div style={{
                   display: "flex",
                   alignItems: "center",
@@ -283,35 +291,22 @@ export default function Results() {
                   paddingTop: "1.25rem",
                   borderTop: "1px solid rgba(255,255,255,0.04)",
                 }}>
-                  {t.photo ? (
-                    <img
-                      src={t.photo}
-                      alt={t.name}
-                      style={{
-                        width: "2.5rem",
-                        height: "2.5rem",
-                        objectFit: "cover",
-                        flexShrink: 0,
-                        border: "1px solid rgba(201,168,76,0.22)",
-                      }}
-                    />
-                  ) : (
-                    <div style={{
-                      width: "2.5rem",
-                      height: "2.5rem",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                      background: "linear-gradient(135deg, #B8922E, #E8C96A)",
-                      fontFamily: "'Cormorant Garamond', Georgia, serif",
-                      fontSize: "0.95rem",
-                      fontWeight: 600,
-                      color: "#0A0806",
-                    }}>
-                      {(t as any).initials}
-                    </div>
-                  )}
+                  <div style={{
+                    width: "2.5rem",
+                    height: "2.5rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                    background: "linear-gradient(135deg, #B8922E, #E8C96A)",
+                    fontFamily: "'Cormorant Garamond', Georgia, serif",
+                    fontSize: "0.95rem",
+                    fontWeight: 600,
+                    color: "#0A0806",
+                    border: "1px solid rgba(201,168,76,0.22)",
+                  }}>
+                    {t.initials}
+                  </div>
                   <div>
                     <div style={{
                       fontFamily: "'DM Sans', sans-serif",

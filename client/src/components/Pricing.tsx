@@ -18,7 +18,7 @@ const plans = [
     features: [
       "Custom AI trained on your property",
       "Website installation (any platform)",
-      "Up to 500 conversations/month",
+      "Up to 500 conversations/month (then $0.10 each)",
       "FAQ & booking link handling",
       "Email support",
       "Monthly performance report",
