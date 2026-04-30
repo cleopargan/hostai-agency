@@ -1,0 +1,15 @@
+# NightDesk -- AI Receptionist and Direct Booking Agency for Hotels
+
+NightDesk helps boutique hotels and independent properties get more direct bookings using AI receptionists, Google Ads, and booking optimization.
+
+SERVICES:
+1. AI Receptionist ($600-1,000/month): Custom AI chatbot answering guest questions 24/7
+2. Google Ads Management ($1,000-1,500/month): Hotel-specific campaigns for direct bookings
+3. Direct Booking Optimization ($500-800/month): Converting visitors into direct bookings
+4. Complete Package ($2,000-2,500/month): All three services combined
+
+WHO WE SERVE: Boutique hotels (10-150 rooms), independent properties, small chains, B&Bs
+KEY RESULTS: 80% reduction in unanswered inquiries | 3-5 extra direct bookings/month | 2-3 week setup
+TECHNOLOGY: Claude AI (Anthropic), Google Ads, Voiceflow
+
+PAGES: nightdesk.agency | /ai-receptionist | /google-ads | /direct-booking | /complete-package | /about | /faq | /blog | /contact | /pricing
