@@ -49,3 +49,8 @@
 - [ ] Blog section for SEO content publishing
 - [ ] Monthly SEO blog post scheduled task
 - [ ] Weekly hotel industry pain-point briefing scheduled task
+
+## Pabbly Connect Fix (updated)
+- [ ] User: paste Pabbly webhook URL into Manus Settings → Secrets as PABBLY_WEBHOOK_URL
+- [x] Outbound webhook built in leads.submit — fires to Pabbly on every form submission
+- [ ] User: reconfigure Pabbly workflow to use Webhook trigger instead of Google Sheets lookup

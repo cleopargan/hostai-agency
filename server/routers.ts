@@ -15,6 +15,7 @@ import {
   getPageViewStats,
 } from "./db";
 import { notifyOwner } from "./_core/notification";
+import { ENV } from "./_core/env";
 
 export const appRouter = router({
   system: systemRouter,
@@ -65,6 +66,28 @@ export const appRouter = router({
           title: `New Demo Request — ${input.name}`,
           content: `**${input.name}** (${input.email}) submitted a demo request via ${input.source}.\n\nProperty: ${input.propertyName || "Not specified"}\nMessage: ${input.message || "None"}`,
         }).catch(() => {}); // Non-blocking
+
+        // Fire outbound webhook to Pabbly Connect
+        // This replaces the broken Google Sheets lookup step in the Pabbly workflow.
+        // Pabbly receives the full lead payload instantly when a form is submitted.
+        if (ENV.pabblyWebhookUrl) {
+          fetch(ENV.pabblyWebhookUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: input.name,
+              email: input.email,
+              source: input.source,
+              property_name: input.propertyName ?? "",
+              property_type: input.propertyType ?? "",
+              message: input.message ?? "",
+              submitted_at: new Date().toISOString(),
+              ip_address: ipAddress ?? "",
+            }),
+          }).catch((err) => {
+            console.warn("[Pabbly] Webhook delivery failed (non-blocking):", err?.message);
+          });
+        }
 
         return { success: true };
       }),
