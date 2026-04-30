@@ -51,6 +51,13 @@
 - [ ] Weekly hotel industry pain-point briefing scheduled task
 
 ## Pabbly Connect Fix (updated)
-- [ ] User: paste Pabbly webhook URL into Manus Settings → Secrets as PABBLY_WEBHOOK_URL
+- [x] User: paste Pabbly webhook URL into Manus Settings → Secrets as PABBLY_WEBHOOK_URL
 - [x] Outbound webhook built in leads.submit — fires to Pabbly on every form submission
 - [ ] User: reconfigure Pabbly workflow to use Webhook trigger instead of Google Sheets lookup
+
+## AI Concierge Bot (Live LLM)
+- [x] Design system prompt and hotel knowledge base structure
+- [x] Build backend tRPC streaming endpoint for AI concierge (invokeLLM)
+- [x] Upgrade FloatingChat widget to call live AI backend with streaming
+- [x] Test full conversation flow end-to-end (6/6 tests passing)
+- [ ] Add hotel configuration panel (name, room types, policies, FAQs) — future enhancement

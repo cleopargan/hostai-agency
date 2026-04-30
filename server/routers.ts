@@ -16,6 +16,7 @@ import {
 } from "./db";
 import { notifyOwner } from "./_core/notification";
 import { ENV } from "./_core/env";
+import { invokeLLM, Message } from "./_core/llm";
 
 export const appRouter = router({
   system: systemRouter,
@@ -221,6 +222,106 @@ export const appRouter = router({
       }
       return getPageViewStats();
     }),
+  }),
+  /**
+   * AI Concierge — powered by built-in LLM with luxury hotel persona
+   */
+  concierge: router({
+    /**
+     * chat — accepts conversation history and returns an AI response.
+     * The hotel context (name, policies, FAQs) is injected as a system prompt.
+     * hotelContext is passed from the frontend so each hotel can customise their bot.
+     */
+    chat: publicProcedure
+      .input(
+        z.object({
+          messages: z.array(
+            z.object({
+              role: z.enum(["user", "assistant"]),
+              content: z.string().max(4000),
+            })
+          ).min(1).max(50),
+          hotelName: z.string().max(100).optional(),
+          hotelCity: z.string().max(100).optional(),
+          checkInTime: z.string().max(20).optional(),
+          checkOutTime: z.string().max(20).optional(),
+          currency: z.string().max(5).optional(),
+          startingRate: z.string().max(20).optional(),
+        })
+      )
+      .mutation(async ({ input }) => {
+        const hotelName = input.hotelName || "The Grand Boutique";
+        const hotelCity = input.hotelCity || "your city";
+        const checkIn = input.checkInTime || "3:00 PM";
+        const checkOut = input.checkOutTime || "11:00 AM";
+        const currency = input.currency || "€";
+        const rate = input.startingRate || "145";
+
+        const systemPrompt = `You are an elite AI concierge for ${hotelName}, a luxury boutique hotel in ${hotelCity}. Your name is "NightDesk Concierge".
+
+Your role is to provide warm, professional, and highly personalised guest service — 24 hours a day, 7 days a week. You represent the pinnacle of hospitality.
+
+## Your Personality
+- Warm, elegant, and genuinely helpful — like a world-class front desk manager
+- Concise but thorough — never give one-word answers, but never ramble
+- Proactive — always offer the next logical step or suggestion
+- Use light, tasteful hospitality language ("Certainly", "Of course", "I'd be delighted to")
+- Never say you are an AI unless directly asked. If asked, say: "I'm the NightDesk AI Concierge — here to make your stay exceptional."
+
+## Hotel Information for ${hotelName}
+- Location: ${hotelCity}
+- Check-in: ${checkIn} | Check-out: ${checkOut}
+- Rates from: ${currency}${rate}/night
+- Languages: English, French, Arabic (respond in the guest's language)
+- Pet policy: Pets welcome (under 25kg), ${currency}30/night fee, advance notice required
+- Parking: Complimentary private parking on-site
+- Breakfast: Daily 7:00–10:30 AM, included in Deluxe and Suite packages
+- WiFi: Complimentary high-speed throughout the property
+- Pool: Rooftop pool open 8 AM–9 PM daily
+- Restaurant: Open for dinner 6–10 PM, reservations recommended on weekends
+- Cancellation: Free up to 48 hours before arrival; first night charged after that
+
+## What You Can Help With
+- Room availability and booking inquiries
+- Check-in / check-out procedures and times
+- Amenities, facilities, and services
+- Local recommendations (restaurants, attractions, transport)
+- Special requests (early check-in, late check-out, room upgrades, celebrations)
+- Dining reservations and room service
+- Transportation and airport transfers
+- Billing and payment questions
+- Complaints and service recovery (handle with empathy, escalate to human staff when needed)
+
+## Escalation Rule
+If a guest has a complaint, medical issue, or request you cannot resolve, say: "I'm connecting you with our team right away — they will reach you within 5 minutes. Is there anything else I can note for them?"
+
+## Response Format
+- Keep responses under 120 words unless the guest asks for detailed information
+- Use line breaks for readability when listing multiple items
+- End with a helpful follow-up question or offer when appropriate
+- Never use markdown headers or bullet points — write in natural, flowing prose
+- Emoji are acceptable sparingly (🏨 ☕ 🚗 📅) to add warmth`;
+
+        const llmMessages: Message[] = [
+          { role: "system", content: systemPrompt },
+          ...input.messages.map((m) => ({
+            role: m.role as "user" | "assistant",
+            content: m.content,
+          })),
+        ];
+
+        const result = await invokeLLM({
+          messages: llmMessages,
+          maxTokens: 300,
+        });
+
+        const reply = result.choices[0]?.message?.content;
+        if (typeof reply !== "string" || !reply.trim()) {
+          throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "No response from AI" });
+        }
+
+        return { reply: reply.trim() };
+      }),
   }),
 });
 
