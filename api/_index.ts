@@ -17,16 +17,29 @@ app.use(
   createExpressMiddleware({ router: appRouter, createContext })
 );
 
+// Debug — visit /api/db-check to see what DATABASE_URL looks like
+app.get("/api/db-check", (req: Request, res: Response) => {
+  const url = process.env.DATABASE_URL ?? "";
+  res.json({
+    set: !!url,
+    length: url.length,
+    preview: url.slice(0, 12) + "...",
+    startsWithMysql: url.trimStart().startsWith("mysql://"),
+  });
+});
+
 // One-time database setup — visit /api/setup once after deployment
 app.get("/api/setup", async (_req: Request, res: Response) => {
-  const url = process.env.DATABASE_URL;
-  if (!url) {
+  let raw = process.env.DATABASE_URL ?? "";
+  if (!raw) {
     res.status(500).json({ error: "DATABASE_URL not set" });
     return;
   }
+  // Strip wrapping quotes and whitespace that Vercel sometimes injects
+  const url = raw.trim().replace(/^["']|["']$/g, "");
   try {
     const mysql = await import("mysql2/promise");
-    const parsed = new URL(url.trim());
+    const parsed = new URL(url);
     const conn = await mysql.createConnection({
       host: parsed.hostname,
       port: parseInt(parsed.port) || 3306,

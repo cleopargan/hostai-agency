@@ -1115,15 +1115,25 @@ app.use(
   "/api/trpc",
   createExpressMiddleware({ router: appRouter, createContext })
 );
+app.get("/api/db-check", (req, res) => {
+  const url = process.env.DATABASE_URL ?? "";
+  res.json({
+    set: !!url,
+    length: url.length,
+    preview: url.slice(0, 12) + "...",
+    startsWithMysql: url.trimStart().startsWith("mysql://")
+  });
+});
 app.get("/api/setup", async (_req, res) => {
-  const url = process.env.DATABASE_URL;
-  if (!url) {
+  let raw = process.env.DATABASE_URL ?? "";
+  if (!raw) {
     res.status(500).json({ error: "DATABASE_URL not set" });
     return;
   }
+  const url = raw.trim().replace(/^["']|["']$/g, "");
   try {
     const mysql = await import("mysql2/promise");
-    const parsed = new URL(url.trim());
+    const parsed = new URL(url);
     const conn = await mysql.createConnection({
       host: parsed.hostname,
       port: parseInt(parsed.port) || 3306,
