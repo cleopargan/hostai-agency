@@ -22,6 +22,8 @@ const TOPIC_BANK = [
 export default function ContentAdmin() {
   const [customTopic, setCustomTopic] = useState("");
   const [generating, setGenerating] = useState<string | null>(null);
+  const [generatingAll, setGeneratingAll] = useState(false);
+  const [allProgress, setAllProgress] = useState<{ done: number; total: number; current: string } | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
   const { data: posts, refetch } = trpc.blog.list.useQuery({ status: "all" });
@@ -41,6 +43,28 @@ export default function ContentAdmin() {
     } finally {
       setGenerating(null);
     }
+  };
+
+  const generateAll = async () => {
+    if (!confirm(`Generate all 12 articles? This will take about 3 minutes and save them all as drafts.`)) return;
+    setGeneratingAll(true);
+    setSuccess(null);
+    let done = 0;
+    for (const item of TOPIC_BANK) {
+      setAllProgress({ done, total: TOPIC_BANK.length, current: item.topic });
+      try {
+        await generateMutation.mutateAsync({ topic: item.topic, category: item.category });
+        done++;
+        refetch();
+      } catch {
+        // continue on error
+        done++;
+      }
+    }
+    setAllProgress(null);
+    setGeneratingAll(false);
+    setSuccess(`All ${done} articles generated and saved as drafts.`);
+    refetch();
   };
 
   const publish = async (id: number) => {
@@ -71,9 +95,19 @@ export default function ContentAdmin() {
               Generator
             </em>
           </h1>
-          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.9rem", color: "rgba(245,240,232,0.42)", lineHeight: 1.7 }}>
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.9rem", color: "rgba(245,240,232,0.42)", lineHeight: 1.7, marginBottom: "1.5rem" }}>
             Generate interactive SEO blog articles with real data, charts, and callouts. Each article is written in a human, expert voice — not AI-sounding.
           </p>
+          <button
+            onClick={generateAll}
+            disabled={generatingAll || !!generating}
+            className="btn-gold"
+            style={{ padding: "0.875rem 2rem", fontSize: "0.85rem", opacity: generatingAll ? 0.7 : 1 }}
+          >
+            {generatingAll
+              ? <><Loader2 size={14} style={{ animation: "spin 1s linear infinite" }} /> Generating {allProgress?.done ?? 0} / {allProgress?.total ?? 12} — {(allProgress?.current ?? "").slice(0, 40)}…</>
+              : <><Sparkles size={14} /> Generate All 12 Articles</>}
+          </button>
         </div>
 
         {/* Custom topic */}
