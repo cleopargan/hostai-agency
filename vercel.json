@@ -3,11 +3,6 @@
   "buildCommand": "pnpm build:client && esbuild api/_index.ts --platform=node --bundle --packages=external --format=esm --outfile=api/index.js",
   "outputDirectory": "dist/public",
   "installCommand": "pnpm install",
-  "functions": {
-    "api/index.js": {
-      "maxDuration": 30
-    }
-  },
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api/index" },
     { "source": "/:path*", "destination": "/index.html" }
