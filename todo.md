@@ -52,7 +52,7 @@
 - [x] MarketingLanding page assembled and routed to / (replaces old Home as default)
 - [x] AI Receptionist page at /ai-receptionist with live embedded Gemini demo
 - [x] .env.example added (documents all required environment variables)
-- [ ] Deployment — platform TBD (Railway removed)
+- [x] Vercel deployment config (vercel.json + api/index.ts serverless function)
 
 ## Pages & Legal
 - [x] Terms of Service page at /terms (12 sections, legally complete)
