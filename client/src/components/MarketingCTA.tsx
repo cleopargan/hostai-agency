@@ -522,7 +522,7 @@ export default function MarketingCTA() {
                 Privacy Policy
               </a>
               <a
-                href="mailto:hello@nightdesk.agency"
+                href="/terms"
                 style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.7rem", color: "rgba(245,240,232,0.18)", textDecoration: "none", transition: "color 0.2s" }}
                 onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.45)"}
                 onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.18)"}

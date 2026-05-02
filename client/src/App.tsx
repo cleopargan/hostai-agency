@@ -47,6 +47,8 @@ import WhatIsAiReceptionistForHotels from "./pages/blog/WhatIsAiReceptionistForH
 import GoogleAdsForHotels from "./pages/blog/GoogleAdsForHotels";
 import TrueCostOfBookingComCommission from "./pages/blog/TrueCostOfBookingComCommission";
 import DirectBookingVsOta from "./pages/blog/DirectBookingVsOta";
+import TermsOfService from "./pages/TermsOfService";
+import HotelConfig from "./pages/HotelConfig";
 
 /** Lightweight page view tracker — fires on every route change */
 function PageViewTracker() {
@@ -109,6 +111,8 @@ function Router() {
         <Route path={"/blog/google-ads-for-hotels"} component={GoogleAdsForHotels} />
         <Route path={"/blog/true-cost-of-booking-com-commission"} component={TrueCostOfBookingComCommission} />
         <Route path={"/blog/direct-booking-vs-ota"} component={DirectBookingVsOta} />
+        <Route path={"/terms"} component={TermsOfService} />
+        <Route path={"/hotel-config"} component={HotelConfig} />
         <Route path={"/404"} component={NotFound} />
         {/* Final fallback route */}
         <Route component={NotFound} />

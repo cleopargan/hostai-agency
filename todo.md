@@ -43,21 +43,36 @@
 - [x] Merge conflict in vite.config.ts resolved (kept publicDir + server config)
 - [x] TypeScript 5.9.3 installed and confirmed clean (0 errors)
 
-## Pending
-- [ ] Chatbase real bot embed (replace FloatingChat simulation with live Chatbase widget)
-- [ ] Terms of Service page (currently links to hello@nightdesk.agency)
-- [ ] Blog section for SEO content publishing
-- [ ] Monthly SEO blog post scheduled task
-- [ ] Weekly hotel industry pain-point briefing scheduled task
+## Oil Machine Architecture
+- [x] 5 service pages (services/*.md) — SEO, Ads, Direct Booking AI, Digital Concierge, CEO Command Center
+- [x] index.md home page overview
+- [x] ai-instructions.txt and .well-known/ai-plugin.json for AI agent discovery (Perplexity, Manus)
+- [x] master_seo_automation_engine.py — full Python SEO automation engine
+- [x] performance_optimization_engine.py — full Python performance monitoring engine
+- [x] MarketingLanding page assembled and routed to / (replaces old Home as default)
+- [x] AI Receptionist page at /ai-receptionist with live embedded Gemini demo
+- [x] Railway deployment config (railway.toml) and .env.example added
 
-## Pabbly Connect Fix (updated)
-- [x] User: paste Pabbly webhook URL into Manus Settings → Secrets as PABBLY_WEBHOOK_URL
-- [x] Outbound webhook built in leads.submit — fires to Pabbly on every form submission
-- [ ] User: reconfigure Pabbly workflow to use Webhook trigger instead of Google Sheets lookup
+## Pages & Legal
+- [x] Terms of Service page at /terms (12 sections, legally complete)
+- [x] Footer "Terms of Service" link wired to /terms route
+- [x] Blog index upgraded to Oil Machine design (MarketingNavbar, luxury dark layout)
+- [x] Hotel AI Config panel at /hotel-config (train AI on hotel details, mailto send to team)
 
 ## AI Concierge Bot (Live LLM)
 - [x] Design system prompt and hotel knowledge base structure
 - [x] Build backend tRPC streaming endpoint for AI concierge (invokeLLM)
 - [x] Upgrade FloatingChat widget to call live AI backend with streaming
 - [x] Test full conversation flow end-to-end (6/6 tests passing)
-- [ ] Add hotel configuration panel (name, room types, policies, FAQs) — future enhancement
+- [x] Embedded live chat demo on /ai-receptionist page
+- [x] Hotel configuration panel at /hotel-config for per-hotel AI training
+
+## Pabbly Connect
+- [x] PABBLY_WEBHOOK_URL secret configured
+- [x] Outbound webhook fires on every leads.submit mutation
+- [ ] User: reconfigure Pabbly workflow to use Webhook trigger instead of Google Sheets lookup
+
+## Remaining (Future Enhancements)
+- [ ] DB-backed hotel config (persist /hotel-config settings to MySQL, read dynamically in AI prompt)
+- [ ] Monthly SEO blog post automation
+- [ ] Weekly hotel industry pain-point briefing
