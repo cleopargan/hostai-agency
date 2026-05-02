@@ -958,6 +958,62 @@ Return only the JSON object, no markdown, no explanation.` }
       await deleteBlogPost(input.id);
       return { success: true };
     })
+  }),
+  /**
+   * Social — generate LinkedIn, Instagram, Facebook posts
+   */
+  social: router({
+    generate: publicProcedure.input(z2.object({ topic: z2.string().min(1).max(300) })).mutation(async ({ input }) => {
+      const prompt = `You are a social media manager for NightDesk.agency, a hotel digital marketing agency. Write 3 social media posts about: "${input.topic}"
+
+Sound like a real person who works in hotel marketing \u2014 confident, helpful, occasionally uses humour. Never use corporate jargon. Use specific numbers and facts.
+
+Return valid JSON only:
+{
+  "linkedin": "Professional post, 120-160 words. Opens with a sharp observation or stat. Ends with a question to drive comments. No hashtags.",
+  "instagram": "Punchy caption, 60-80 words. First line is a hook that stops the scroll. Include line breaks for readability. End with 5 relevant hashtags on the last line.",
+  "facebook": "Conversational post, 80-100 words. Includes one practical tip. Friendly tone. Ends with a soft CTA."
+}`;
+      const result = await invokeLLM({ messages: [{ role: "user", content: prompt }], maxTokens: 1200 });
+      const raw = result.choices[0]?.message?.content ?? "";
+      const jsonStr = raw.trim().replace(/^```json\s*/i, "").replace(/\s*```$/i, "").trim();
+      try {
+        return JSON.parse(jsonStr);
+      } catch {
+        throw new TRPCError3({ code: "INTERNAL_SERVER_ERROR", message: "AI returned invalid JSON" });
+      }
+    })
+  }),
+  /**
+   * Email — generate newsletter + Google Ads copy
+   */
+  email: router({
+    generate: publicProcedure.input(z2.object({ topic: z2.string().min(1).max(300) })).mutation(async ({ input }) => {
+      const prompt = `You are an email marketer and Google Ads specialist for NightDesk.agency. Write a newsletter and ad copy about: "${input.topic}"
+
+Write like a knowledgeable friend, not a marketer. Be direct. Use real numbers. Make the reader feel smarter.
+
+Return valid JSON only:
+{
+  "subject": "Email subject line, under 50 characters, curiosity-driven",
+  "preview": "Preview text, under 90 characters",
+  "intro": "2 sentences. Hook immediately \u2014 start with a surprising stat or bold claim.",
+  "body": "200-250 words. One insight or tip explained properly. Include a specific example or number in every paragraph.",
+  "caseStudy": "One sentence: 'One of our hotel clients did X and got Y result within Z timeframe.'",
+  "ctaText": "Button text, under 6 words",
+  "headlines": ["Headline 1 (max 30 chars)", "Headline 2 (max 30 chars)", "Headline 3 (max 30 chars)"],
+  "descriptions": ["Description 1 (max 90 chars)", "Description 2 (max 90 chars)"],
+  "adCta": "Call to action phrase, max 15 chars"
+}`;
+      const result = await invokeLLM({ messages: [{ role: "user", content: prompt }], maxTokens: 1200 });
+      const raw = result.choices[0]?.message?.content ?? "";
+      const jsonStr = raw.trim().replace(/^```json\s*/i, "").replace(/\s*```$/i, "").trim();
+      try {
+        return JSON.parse(jsonStr);
+      } catch {
+        throw new TRPCError3({ code: "INTERNAL_SERVER_ERROR", message: "AI returned invalid JSON" });
+      }
+    })
   })
 });
 

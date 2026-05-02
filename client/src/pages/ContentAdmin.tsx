@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
-import { ArrowRight, Loader2, CheckCircle2, Trash2, Eye, Sparkles } from "lucide-react";
+import { ArrowRight, Loader2, CheckCircle2, Trash2, Eye, Sparkles, Mail, Share2 } from "lucide-react";
 import MarketingNavbar from "@/components/MarketingNavbar";
 
 const TOPIC_BANK = [
@@ -18,6 +18,113 @@ const TOPIC_BANK = [
   { topic: "The hotel marketing funnel: why most properties lose guests at every stage", category: "Hotel Revenue" },
   { topic: "Bing Ads for hotels: the underpriced channel your competitors ignore", category: "Paid Search" },
 ];
+
+function CopyBox({ label, value }: { label: string; value: string }) {
+  const [copied, setCopied] = useState(false);
+  const copy = () => { navigator.clipboard.writeText(value); setCopied(true); setTimeout(() => setCopied(false), 2000); };
+  return (
+    <div style={{ marginBottom: "1rem" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem" }}>
+        <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(245,240,232,0.3)" }}>{label}</span>
+        <button onClick={copy} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.65rem", color: copied ? "#6EE7B7" : "#C9A84C", background: "none", border: "none", cursor: "pointer" }}>
+          {copied ? "✓ Copied" : "Copy"}
+        </button>
+      </div>
+      <div style={{ padding: "0.875rem", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", fontFamily: "'DM Sans', sans-serif", fontSize: "0.82rem", color: "rgba(245,240,232,0.65)", lineHeight: 1.7, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+        {value}
+      </div>
+    </div>
+  );
+}
+
+function SocialEmailGenerator() {
+  const [topic, setTopic] = useState("");
+  const [tab, setTab] = useState<"social" | "email">("social");
+  const [socialResult, setSocialResult] = useState<any>(null);
+  const [emailResult, setEmailResult] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+
+  const socialMutation = trpc.social.generate.useMutation();
+  const emailMutation = trpc.email.generate.useMutation();
+
+  const generate = async () => {
+    if (!topic.trim()) return;
+    setLoading(true);
+    setSocialResult(null);
+    setEmailResult(null);
+    try {
+      if (tab === "social") {
+        const r = await socialMutation.mutateAsync({ topic });
+        setSocialResult(r);
+      } else {
+        const r = await emailMutation.mutateAsync({ topic });
+        setEmailResult(r);
+      }
+    } catch (e: any) { alert("Failed: " + e.message); }
+    finally { setLoading(false); }
+  };
+
+  return (
+    <div style={{ marginBottom: "3rem" }}>
+      {/* Tabs */}
+      <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1.5rem" }}>
+        {(["social", "email"] as const).map(t => (
+          <button key={t} onClick={() => setTab(t)} style={{ display: "flex", alignItems: "center", gap: "0.4rem", padding: "0.5rem 1.25rem", background: tab === t ? "rgba(201,168,76,0.08)" : "transparent", border: `1px solid ${tab === t ? "rgba(201,168,76,0.4)" : "rgba(255,255,255,0.08)"}`, color: tab === t ? "#C9A84C" : "rgba(245,240,232,0.45)", fontFamily: "'DM Sans', sans-serif", fontSize: "0.75rem", fontWeight: tab === t ? 600 : 400, cursor: "pointer" }}>
+            {t === "social" ? <><Share2 size={12} /> Wednesday Social Posts</> : <><Mail size={12} /> Friday Email + Ad Copy</>}
+          </button>
+        ))}
+      </div>
+
+      <div style={{ padding: "1.75rem", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}>
+        <div style={{ display: "flex", gap: "0.75rem", marginBottom: "1.5rem" }}>
+          <input
+            value={topic}
+            onChange={e => setTopic(e.target.value)}
+            placeholder={tab === "social" ? "e.g. How hotels reduce OTA commission" : "e.g. Direct booking strategies for boutique hotels"}
+            style={{ flex: 1, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", padding: "0.75rem 1rem", color: "#F5F0E8", fontFamily: "'DM Sans', sans-serif", fontSize: "0.88rem", outline: "none" }}
+            onKeyDown={e => e.key === "Enter" && generate()}
+          />
+          <button onClick={generate} disabled={loading || !topic.trim()} className="btn-gold" style={{ padding: "0.75rem 1.5rem", fontSize: "0.8rem", opacity: loading ? 0.6 : 1 }}>
+            {loading ? <><Loader2 size={13} style={{ animation: "spin 1s linear infinite" }} /> Writing…</> : <><Sparkles size={13} /> Generate</>}
+          </button>
+        </div>
+
+        {/* Social results */}
+        {tab === "social" && socialResult && (
+          <div>
+            <CopyBox label="LinkedIn" value={socialResult.linkedin ?? ""} />
+            <CopyBox label="Instagram" value={socialResult.instagram ?? ""} />
+            <CopyBox label="Facebook" value={socialResult.facebook ?? ""} />
+          </div>
+        )}
+
+        {/* Email results */}
+        {tab === "email" && emailResult && (
+          <div>
+            <div className="grid sm:grid-cols-2 gap-4" style={{ marginBottom: "1rem" }}>
+              <CopyBox label="Subject Line" value={emailResult.subject ?? ""} />
+              <CopyBox label="Preview Text" value={emailResult.preview ?? ""} />
+            </div>
+            <CopyBox label="Intro" value={emailResult.intro ?? ""} />
+            <CopyBox label="Body" value={emailResult.body ?? ""} />
+            <CopyBox label="Case Study Teaser" value={emailResult.caseStudy ?? ""} />
+            <CopyBox label="CTA Button Text" value={emailResult.ctaText ?? ""} />
+            <div style={{ marginTop: "1.5rem", paddingTop: "1.5rem", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "#C9A84C", marginBottom: "1rem" }}>Google Ads Copy</div>
+              {(emailResult.headlines ?? []).map((h: string, i: number) => (
+                <CopyBox key={i} label={`Headline ${i + 1} (${h.length}/30 chars)`} value={h} />
+              ))}
+              {(emailResult.descriptions ?? []).map((d: string, i: number) => (
+                <CopyBox key={i} label={`Description ${i + 1} (${d.length}/90 chars)`} value={d} />
+              ))}
+              <CopyBox label="Ad CTA" value={emailResult.adCta ?? ""} />
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default function ContentAdmin() {
   const [customTopic, setCustomTopic] = useState("");
@@ -43,6 +150,17 @@ export default function ContentAdmin() {
     } finally {
       setGenerating(null);
     }
+  };
+
+  const publishAll = async () => {
+    const drafts = (posts ?? []).filter((p: any) => p.status === "draft");
+    if (!drafts.length) { alert("No drafts to publish."); return; }
+    if (!confirm(`Publish all ${drafts.length} drafts?`)) return;
+    for (const post of drafts) {
+      await publishMutation.mutateAsync({ id: post.id });
+    }
+    refetch();
+    setSuccess(`${drafts.length} articles published to /blog`);
   };
 
   const generateAll = async () => {
@@ -163,12 +281,22 @@ export default function ContentAdmin() {
           ))}
         </div>
 
+        {/* Social + Email generators */}
+        <SocialEmailGenerator />
+
         {/* Generated posts */}
         {posts && posts.length > 0 && (
           <>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "1.4rem", fontWeight: 600, color: "#F5F0E8", marginBottom: "1.25rem" }}>
-              Generated Articles ({posts.length})
-            </h3>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
+              <h3 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "1.4rem", fontWeight: 600, color: "#F5F0E8" }}>
+                Generated Articles ({posts.length})
+              </h3>
+              {(posts as any[]).some((p: any) => p.status === "draft") && (
+                <button onClick={publishAll} className="btn-gold" style={{ padding: "0.5rem 1.25rem", fontSize: "0.75rem" }}>
+                  <ArrowRight size={12} /> Publish All Drafts
+                </button>
+              )}
+            </div>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
               {posts.map((post: any) => (
                 <div key={post.id} style={{ display: "flex", alignItems: "center", gap: "1rem", padding: "1.25rem 1.5rem", background: "rgba(255,255,255,0.02)", border: `1px solid ${post.status === "published" ? "rgba(110,231,183,0.2)" : "rgba(255,255,255,0.06)"}` }}>
