@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "wouter";
 import { ArrowRight, Clock, Tag } from "lucide-react";
+import { trpc } from "@/lib/trpc";
 import MarketingNavbar from "@/components/MarketingNavbar";
 
 const posts = [
@@ -53,6 +54,7 @@ const posts = [
 
 export default function Blog() {
   useEffect(() => { window.scrollTo(0, 0); }, []);
+  const { data: dbPosts } = trpc.blog.list.useQuery({ status: "published" });
 
   return (
     <div className="min-h-screen" style={{ background: "#080810", color: "#F5F0E8" }}>
@@ -128,6 +130,36 @@ export default function Blog() {
                     {post.excerpt}
                   </p>
                   <div style={{ paddingLeft: "0.75rem", display: "inline-flex", alignItems: "center", gap: "0.4rem", fontFamily: "'DM Sans', sans-serif", fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", color: post.categoryColor }}>
+                    Read Article <ArrowRight size={11} />
+                  </div>
+                </div>
+              </Link>
+            ))}
+
+            {/* AI-generated articles from DB */}
+            {dbPosts && dbPosts.length > 0 && dbPosts.map((post: any) => (
+              <Link key={post.id} href={`/blog/generated/${post.slug}`} style={{ textDecoration: "none", display: "block" }}>
+                <div
+                  style={{ padding: "2rem", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", position: "relative", overflow: "hidden", transition: "border-color 0.25s ease, box-shadow 0.25s ease" }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,168,76,0.25)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 16px 60px rgba(0,0,0,0.3)"; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.06)"; (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
+                >
+                  <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, width: "3px", background: "linear-gradient(180deg, #C9A84C, transparent)", opacity: 0.6 }} />
+                  <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "0.875rem", marginBottom: "1rem", paddingLeft: "0.75rem" }}>
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: "0.375rem", fontFamily: "'DM Sans', sans-serif", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "#C9A84C" }}>
+                      <Tag size={9} /> {post.category}
+                    </span>
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: "0.375rem", fontFamily: "'DM Sans', sans-serif", fontSize: "0.72rem", color: "rgba(245,240,232,0.28)" }}>
+                      <Clock size={10} /> {post.readTime}
+                    </span>
+                  </div>
+                  <h2 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "clamp(1.3rem, 2.5vw, 1.6rem)", fontWeight: 600, color: "#F5F0E8", marginBottom: "0.75rem", lineHeight: 1.2, paddingLeft: "0.75rem" }}>
+                    {post.title}
+                  </h2>
+                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.88rem", color: "rgba(245,240,232,0.48)", lineHeight: 1.72, marginBottom: "1.25rem", paddingLeft: "0.75rem" }}>
+                    {post.excerpt}
+                  </p>
+                  <div style={{ paddingLeft: "0.75rem", display: "inline-flex", alignItems: "center", gap: "0.4rem", fontFamily: "'DM Sans', sans-serif", fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", color: "#C9A84C" }}>
                     Read Article <ArrowRight size={11} />
                   </div>
                 </div>
