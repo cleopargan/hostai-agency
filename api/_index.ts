@@ -26,7 +26,15 @@ app.get("/api/setup", async (_req: Request, res: Response) => {
   }
   try {
     const mysql = await import("mysql2/promise");
-    const conn = await mysql.createConnection(url);
+    const parsed = new URL(url.trim());
+    const conn = await mysql.createConnection({
+      host: parsed.hostname,
+      port: parseInt(parsed.port) || 3306,
+      user: decodeURIComponent(parsed.username),
+      password: decodeURIComponent(parsed.password),
+      database: parsed.pathname.replace(/^\//, ""),
+      ssl: { rejectUnauthorized: false },
+    });
     const tables = [
       `CREATE TABLE IF NOT EXISTS users (
         id INT AUTO_INCREMENT PRIMARY KEY,
