@@ -51,7 +51,8 @@
 - [x] performance_optimization_engine.py — full Python performance monitoring engine
 - [x] MarketingLanding page assembled and routed to / (replaces old Home as default)
 - [x] AI Receptionist page at /ai-receptionist with live embedded Gemini demo
-- [x] Railway deployment config (railway.toml) and .env.example added
+- [x] .env.example added (documents all required environment variables)
+- [ ] Deployment — platform TBD (Railway removed)
 
 ## Pages & Legal
 - [x] Terms of Service page at /terms (12 sections, legally complete)
