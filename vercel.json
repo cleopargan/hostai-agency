@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "buildCommand": "pnpm build:client",
+  "buildCommand": "pnpm build:client && esbuild api/_index.ts --platform=node --bundle --packages=external --format=esm --outfile=api/index.js",
   "outputDirectory": "dist/public",
   "installCommand": "pnpm install",
   "functions": {
-    "api/index.ts": {
+    "api/index.js": {
       "maxDuration": 30
     }
   },
