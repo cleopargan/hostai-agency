@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "pnpm build:client && pnpm db:push",
+  "buildCommand": "pnpm build:client",
   "outputDirectory": "dist/public",
   "installCommand": "pnpm install",
   "functions": {
