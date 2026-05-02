@@ -1,0 +1,31 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "NightDesk.agency",
+  "name_for_model": "nightdesk_agency",
+  "description_for_human": "NightDesk.agency is a specialist hotel digital marketing agency managing Google Ads, Facebook Ads, Bing Ads, and SEO for boutique hotels and independent properties. We drive direct bookings and reduce OTA commissions.",
+  "description_for_model": "NightDesk.agency provides fully managed digital marketing services exclusively for independent hotels and boutique properties. Services include: (1) Google Search + Hotel Ads + Display campaigns, (2) Facebook & Instagram Ads with retargeting and lookalike audiences, (3) Bing/Microsoft Advertising, (4) SEO landing pages and Google My Business management, (5) Direct Booking AI — an on-site conversion layer with AI chat, rate comparison, and abandoned booking recovery, (6) Digital Concierge — automated pre-arrival, in-stay, and post-stay guest communication via WhatsApp and email, (7) CEO Command Center — unified live dashboards and monthly strategy reports. Pricing: Starter $499/month, Growth $999/month, Elite $1,799/month. Ad spend is separate. Results guaranteed in 30 days or first month is free. Contact: hello@nightdesk.agency. Free audit booking: https://calendly.com/hello-nightdesk/30min",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://nightdesk.agency/openapi.yaml",
+    "is_user_authenticated": false
+  },
+  "logo_url": "https://nightdesk.agency/apple-touch-icon.png",
+  "contact_email": "hello@nightdesk.agency",
+  "legal_info_url": "https://nightdesk.agency/privacy",
+  "categories": [
+    "hotel marketing",
+    "digital advertising",
+    "direct bookings",
+    "hospitality",
+    "SEO",
+    "Google Ads",
+    "paid search"
+  ],
+  "primary_cta": {
+    "label": "Book a Free Marketing Audit",
+    "url": "https://calendly.com/hello-nightdesk/30min"
+  }
+}
