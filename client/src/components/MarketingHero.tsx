@@ -412,17 +412,14 @@ export default function MarketingHero() {
 
         {/* Stats row */}
         <div
-          className={`transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+          className={`grid sm:grid-cols-4 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
           style={{
             transitionDelay: "400ms",
             marginTop: "4.5rem",
             paddingTop: "2.5rem",
             borderTop: "1px solid rgba(255,255,255,0.05)",
-            display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
             gap: "1.5rem",
           }}
-          className={`grid sm:grid-cols-4 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
         >
           {stats.map((s, i) => (
             <div
