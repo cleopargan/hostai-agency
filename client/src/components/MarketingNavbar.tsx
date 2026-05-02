@@ -170,7 +170,7 @@ export default function MarketingNavbar() {
           </div>
 
           <div className="hidden md:flex items-center" style={{ gap: "1.25rem" }}>
-            <a href="/" style={{
+            <a href="/ai-receptionist" style={{
               fontFamily: "'DM Sans', sans-serif",
               fontSize: "0.72rem",
               fontWeight: 500,
