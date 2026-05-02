@@ -11,6 +11,7 @@ import MarketingPricing from "@/components/MarketingPricing";
 import MarketingFAQ from "@/components/MarketingFAQ";
 import MarketingCTA from "@/components/MarketingCTA";
 import FloatingChat from "@/components/FloatingChat";
+import CookieConsent from "@/components/CookieConsent";
 
 export default function MarketingLanding() {
   return (
@@ -28,6 +29,7 @@ export default function MarketingLanding() {
       <MarketingFAQ />
       <MarketingCTA />
       <FloatingChat />
+      <CookieConsent />
     </div>
   );
 }
