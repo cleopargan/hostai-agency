@@ -5,6 +5,7 @@ import { Route, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
+import MarketingLanding from "./pages/MarketingLanding";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import AdminDashboard from "./pages/AdminDashboard";
 import { trpc } from "@/lib/trpc";
@@ -67,7 +68,8 @@ function Router() {
     <>
       <PageViewTracker />
       <Switch>
-        <Route path={"/"} component={Home} />
+        <Route path={"/"} component={MarketingLanding} />
+        <Route path={"/home-v1"} component={Home} />
         <Route path={"/privacy"} component={PrivacyPolicy} />
         <Route path={"/admin"} component={AdminDashboard} />
         <Route path={"/about"} component={About} />
