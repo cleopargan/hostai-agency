@@ -49,6 +49,8 @@ import TrueCostOfBookingComCommission from "./pages/blog/TrueCostOfBookingComCom
 import DirectBookingVsOta from "./pages/blog/DirectBookingVsOta";
 import TermsOfService from "./pages/TermsOfService";
 import HotelConfig from "./pages/HotelConfig";
+import ContentAdmin from "./pages/ContentAdmin";
+import DynamicBlogPost from "./pages/DynamicBlogPost";
 
 /** Lightweight page view tracker — fires on every route change */
 function PageViewTracker() {
@@ -113,6 +115,8 @@ function Router() {
         <Route path={"/blog/direct-booking-vs-ota"} component={DirectBookingVsOta} />
         <Route path={"/terms"} component={TermsOfService} />
         <Route path={"/hotel-config"} component={HotelConfig} />
+        <Route path={"/content-admin"} component={ContentAdmin} />
+        <Route path={"/blog/generated/:slug"} component={DynamicBlogPost} />
         <Route path={"/404"} component={NotFound} />
         {/* Final fallback route */}
         <Route component={NotFound} />

@@ -101,6 +101,19 @@ app.get("/api/setup", async (_req: Request, res: Response) => {
         ipAddress VARCHAR(45),
         createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
       )`,
+      `CREATE TABLE IF NOT EXISTS blog_posts (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        slug VARCHAR(255) NOT NULL UNIQUE,
+        title VARCHAR(500) NOT NULL,
+        category VARCHAR(100),
+        excerpt TEXT,
+        content LONGTEXT NOT NULL,
+        status ENUM('draft','published') NOT NULL DEFAULT 'draft',
+        readTime VARCHAR(20),
+        publishedAt TIMESTAMP NULL,
+        createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      )`,
     ];
     for (const sql of tables) {
       await conn.execute(sql);

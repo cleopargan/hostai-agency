@@ -10,6 +10,8 @@ import {
   chatMessages,
   InsertChatMessage,
   pageViews,
+  blogPosts,
+  InsertBlogPost,
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -182,4 +184,41 @@ export async function getPageViewStats() {
   if (!db) return { total: 0 };
   const result = await db.select({ total: count() }).from(pageViews);
   return { total: result[0]?.total ?? 0 };
+}
+
+// ─── Blog post helpers ────────────────────────────────────────────────────────
+
+export async function createBlogPost(data: InsertBlogPost) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.insert(blogPosts).values(data);
+}
+
+export async function getBlogPost(slug: string) {
+  const db = await getDb();
+  if (!db) return null;
+  const result = await db.select().from(blogPosts).where(eq(blogPosts.slug, slug)).limit(1);
+  return result[0] ?? null;
+}
+
+export async function getAllBlogPosts(status?: "draft" | "published") {
+  const db = await getDb();
+  if (!db) return [];
+  const query = db.select().from(blogPosts).orderBy(desc(blogPosts.createdAt));
+  if (status) return query.where(eq(blogPosts.status, status));
+  return query;
+}
+
+export async function publishBlogPost(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.update(blogPosts)
+    .set({ status: "published", publishedAt: new Date() })
+    .where(eq(blogPosts.id, id));
+}
+
+export async function deleteBlogPost(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.delete(blogPosts).where(eq(blogPosts.id, id));
 }

@@ -13,6 +13,11 @@ import {
   saveChatMessage,
   recordPageView,
   getPageViewStats,
+  createBlogPost,
+  getBlogPost,
+  getAllBlogPosts,
+  publishBlogPost,
+  deleteBlogPost,
 } from "./db";
 import { notifyOwner } from "./_core/notification";
 import { ENV } from "./_core/env";
@@ -322,6 +327,125 @@ If a guest has a complaint, medical issue, or request you cannot resolve, say: "
 
         return { reply: reply.trim() };
       }),
+  }),
+
+  /**
+   * Blog — AI-generated interactive articles stored in MySQL
+   */
+  blog: router({
+    /** Generate a new interactive blog article using Gemini */
+    generate: publicProcedure
+      .input(z.object({
+        topic: z.string().min(1).max(300),
+        category: z.string().max(100).optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const slug = input.topic
+          .toLowerCase()
+          .replace(/[^a-z0-9\s-]/g, "")
+          .replace(/\s+/g, "-")
+          .slice(0, 80) + "-" + Date.now().toString(36);
+
+        const systemPrompt = `You are a senior content strategist for NightDesk.agency, a hotel digital marketing agency. You write SEO blog articles that feel written by a real hotel industry expert — not an AI. Your tone is warm, direct, and objective. You back every claim with real data and statistics. You use vivid analogies from hotel operations that operators will immediately recognise.
+
+CRITICAL REQUIREMENTS for every article:
+1. Sound human and conversational — use "you", "your hotel", "I've seen this pattern". No corporate jargon.
+2. Every section must include at least ONE of: a real statistic, a data comparison, a chart spec, or a callout insight.
+3. Write for boutique hotel owners and GMs who are busy and skeptical — respect their intelligence.
+4. Include specific numbers wherever possible (percentages, dollar amounts, timeframes).
+5. Each article must include at least 2 data visualisation specs (chart or stat block).
+
+OUTPUT FORMAT — you must return valid JSON only, no markdown wrapper:
+
+{
+  "title": "Full SEO-optimised title with keyword",
+  "category": "Hotel Revenue | Google Ads | SEO | AI Technology | Strategy",
+  "excerpt": "One compelling sentence (under 160 chars) that makes a hotel GM want to read this",
+  "readTime": "X min read",
+  "sections": [
+    { "type": "intro", "content": "2-3 sentences. Start with a sharp observation or surprising fact. Make it feel like the start of a conversation, not an essay." },
+    { "type": "h2", "content": "First subheading — should create curiosity" },
+    { "type": "p", "content": "Paragraph text. Write like you're explaining to a smart friend who runs a hotel." },
+    { "type": "stat", "stats": [
+      { "value": "73%", "label": "of hotel website visitors leave without booking", "color": "#f87171" },
+      { "value": "18%", "label": "average OTA commission rate", "color": "#C9A84C" }
+    ]},
+    { "type": "callout", "content": "Key insight or contrarian take the reader didn't expect. Should make them nod or lean in.", "variant": "gold" },
+    { "type": "chart", "chartType": "bar", "title": "Chart title", "description": "One sentence explaining what this shows", "data": [
+      { "label": "Category A", "value": 73, "color": "#f87171" },
+      { "label": "Category B", "value": 27, "color": "#C9A84C" }
+    ]},
+    { "type": "h2", "content": "Second subheading" },
+    { "type": "p", "content": "..." },
+    { "type": "list", "ordered": false, "items": ["Item with specific detail", "Item with number or stat"] },
+    { "type": "callout", "content": "...", "variant": "info" },
+    { "type": "h2", "content": "Third subheading" },
+    { "type": "p", "content": "..." },
+    { "type": "cta", "text": "Get a free hotel marketing audit from NightDesk →", "link": "/#contact" }
+  ]
+}
+
+Section types available: intro, h2, p, stat, callout, chart, list, cta
+Callout variants: gold, info, warning
+Chart types: bar, area, comparison
+
+Write 1,000–1,400 word equivalent content spread across sections. Make it genuinely useful — hotel operators should feel smarter after reading it.`;
+
+        const llmMessages: Message[] = [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: `Write an interactive SEO blog article about: ${input.topic}\n\nReturn only the JSON object, no markdown, no explanation.` },
+        ];
+
+        const result = await invokeLLM({ messages: llmMessages, maxTokens: 4000 });
+        const raw = result.choices[0]?.message?.content;
+        if (typeof raw !== "string" || !raw.trim()) {
+          throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "AI generation failed" });
+        }
+
+        // Strip markdown code fences if present
+        const jsonStr = raw.trim().replace(/^```json\s*/i, "").replace(/\s*```$/i, "").trim();
+        let parsed: any;
+        try {
+          parsed = JSON.parse(jsonStr);
+        } catch {
+          throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "AI returned invalid JSON" });
+        }
+
+        await createBlogPost({
+          slug,
+          title: parsed.title ?? input.topic,
+          category: parsed.category ?? input.category ?? "Hotel Marketing",
+          excerpt: parsed.excerpt ?? "",
+          content: JSON.stringify(parsed.sections ?? []),
+          readTime: parsed.readTime ?? "7 min read",
+          status: "draft",
+        });
+
+        return { slug, title: parsed.title };
+      }),
+
+    /** List all blog posts */
+    list: publicProcedure
+      .input(z.object({ status: z.enum(["draft", "published", "all"]).default("published") }))
+      .query(async ({ input }) => {
+        if (input.status === "all") return getAllBlogPosts();
+        return getAllBlogPosts(input.status);
+      }),
+
+    /** Get single post by slug */
+    get: publicProcedure
+      .input(z.object({ slug: z.string() }))
+      .query(async ({ input }) => getBlogPost(input.slug)),
+
+    /** Publish a draft */
+    publish: publicProcedure
+      .input(z.object({ id: z.number().int().positive() }))
+      .mutation(async ({ input }) => { await publishBlogPost(input.id); return { success: true }; }),
+
+    /** Delete a post */
+    delete: publicProcedure
+      .input(z.object({ id: z.number().int().positive() }))
+      .mutation(async ({ input }) => { await deleteBlogPost(input.id); return { success: true }; }),
   }),
 });
 

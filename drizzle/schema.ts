@@ -102,3 +102,23 @@ export const pageViews = mysqlTable("page_views", {
 });
 
 export type PageView = typeof pageViews.$inferSelect;
+
+/**
+ * Blog posts — AI-generated, stored in DB, rendered as interactive React articles.
+ */
+export const blogPosts = mysqlTable("blog_posts", {
+  id: int("id").autoincrement().primaryKey(),
+  slug: varchar("slug", { length: 255 }).notNull().unique(),
+  title: varchar("title", { length: 500 }).notNull(),
+  category: varchar("category", { length: 100 }),
+  excerpt: text("excerpt"),
+  content: text("content").notNull(), // JSON string — structured interactive sections
+  status: mysqlEnum("status", ["draft", "published"]).default("draft").notNull(),
+  readTime: varchar("readTime", { length: 20 }),
+  publishedAt: timestamp("publishedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type BlogPost = typeof blogPosts.$inferSelect;
+export type InsertBlogPost = typeof blogPosts.$inferInsert;

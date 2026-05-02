@@ -261,6 +261,20 @@ var pageViews = mysqlTable("page_views", {
   ipAddress: varchar("ipAddress", { length: 45 }),
   createdAt: timestamp("createdAt").defaultNow().notNull()
 });
+var blogPosts = mysqlTable("blog_posts", {
+  id: int("id").autoincrement().primaryKey(),
+  slug: varchar("slug", { length: 255 }).notNull().unique(),
+  title: varchar("title", { length: 500 }).notNull(),
+  category: varchar("category", { length: 100 }),
+  excerpt: text("excerpt"),
+  content: text("content").notNull(),
+  // JSON string — structured interactive sections
+  status: mysqlEnum("status", ["draft", "published"]).default("draft").notNull(),
+  readTime: varchar("readTime", { length: 20 }),
+  publishedAt: timestamp("publishedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull()
+});
 
 // server/db.ts
 var _db = null;
@@ -390,6 +404,34 @@ async function getPageViewStats() {
   if (!db) return { total: 0 };
   const result = await db.select({ total: count() }).from(pageViews);
   return { total: result[0]?.total ?? 0 };
+}
+async function createBlogPost(data) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.insert(blogPosts).values(data);
+}
+async function getBlogPost(slug) {
+  const db = await getDb();
+  if (!db) return null;
+  const result = await db.select().from(blogPosts).where(eq(blogPosts.slug, slug)).limit(1);
+  return result[0] ?? null;
+}
+async function getAllBlogPosts(status) {
+  const db = await getDb();
+  if (!db) return [];
+  const query = db.select().from(blogPosts).orderBy(desc(blogPosts.createdAt));
+  if (status) return query.where(eq(blogPosts.status, status));
+  return query;
+}
+async function publishBlogPost(id) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.update(blogPosts).set({ status: "published", publishedAt: /* @__PURE__ */ new Date() }).where(eq(blogPosts.id, id));
+}
+async function deleteBlogPost(id) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.delete(blogPosts).where(eq(blogPosts.id, id));
 }
 
 // server/_core/llm.ts
@@ -818,6 +860,107 @@ If a guest has a complaint, medical issue, or request you cannot resolve, say: "
       }
       return { reply: reply.trim() };
     })
+  }),
+  /**
+   * Blog — AI-generated interactive articles stored in MySQL
+   */
+  blog: router({
+    /** Generate a new interactive blog article using Gemini */
+    generate: publicProcedure.input(z2.object({
+      topic: z2.string().min(1).max(300),
+      category: z2.string().max(100).optional()
+    })).mutation(async ({ input }) => {
+      const slug = input.topic.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-").slice(0, 80) + "-" + Date.now().toString(36);
+      const systemPrompt = `You are a senior content strategist for NightDesk.agency, a hotel digital marketing agency. You write SEO blog articles that feel written by a real hotel industry expert \u2014 not an AI. Your tone is warm, direct, and objective. You back every claim with real data and statistics. You use vivid analogies from hotel operations that operators will immediately recognise.
+
+CRITICAL REQUIREMENTS for every article:
+1. Sound human and conversational \u2014 use "you", "your hotel", "I've seen this pattern". No corporate jargon.
+2. Every section must include at least ONE of: a real statistic, a data comparison, a chart spec, or a callout insight.
+3. Write for boutique hotel owners and GMs who are busy and skeptical \u2014 respect their intelligence.
+4. Include specific numbers wherever possible (percentages, dollar amounts, timeframes).
+5. Each article must include at least 2 data visualisation specs (chart or stat block).
+
+OUTPUT FORMAT \u2014 you must return valid JSON only, no markdown wrapper:
+
+{
+  "title": "Full SEO-optimised title with keyword",
+  "category": "Hotel Revenue | Google Ads | SEO | AI Technology | Strategy",
+  "excerpt": "One compelling sentence (under 160 chars) that makes a hotel GM want to read this",
+  "readTime": "X min read",
+  "sections": [
+    { "type": "intro", "content": "2-3 sentences. Start with a sharp observation or surprising fact. Make it feel like the start of a conversation, not an essay." },
+    { "type": "h2", "content": "First subheading \u2014 should create curiosity" },
+    { "type": "p", "content": "Paragraph text. Write like you're explaining to a smart friend who runs a hotel." },
+    { "type": "stat", "stats": [
+      { "value": "73%", "label": "of hotel website visitors leave without booking", "color": "#f87171" },
+      { "value": "18%", "label": "average OTA commission rate", "color": "#C9A84C" }
+    ]},
+    { "type": "callout", "content": "Key insight or contrarian take the reader didn't expect. Should make them nod or lean in.", "variant": "gold" },
+    { "type": "chart", "chartType": "bar", "title": "Chart title", "description": "One sentence explaining what this shows", "data": [
+      { "label": "Category A", "value": 73, "color": "#f87171" },
+      { "label": "Category B", "value": 27, "color": "#C9A84C" }
+    ]},
+    { "type": "h2", "content": "Second subheading" },
+    { "type": "p", "content": "..." },
+    { "type": "list", "ordered": false, "items": ["Item with specific detail", "Item with number or stat"] },
+    { "type": "callout", "content": "...", "variant": "info" },
+    { "type": "h2", "content": "Third subheading" },
+    { "type": "p", "content": "..." },
+    { "type": "cta", "text": "Get a free hotel marketing audit from NightDesk \u2192", "link": "/#contact" }
+  ]
+}
+
+Section types available: intro, h2, p, stat, callout, chart, list, cta
+Callout variants: gold, info, warning
+Chart types: bar, area, comparison
+
+Write 1,000\u20131,400 word equivalent content spread across sections. Make it genuinely useful \u2014 hotel operators should feel smarter after reading it.`;
+      const llmMessages = [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: `Write an interactive SEO blog article about: ${input.topic}
+
+Return only the JSON object, no markdown, no explanation.` }
+      ];
+      const result = await invokeLLM({ messages: llmMessages, maxTokens: 4e3 });
+      const raw = result.choices[0]?.message?.content;
+      if (typeof raw !== "string" || !raw.trim()) {
+        throw new TRPCError3({ code: "INTERNAL_SERVER_ERROR", message: "AI generation failed" });
+      }
+      const jsonStr = raw.trim().replace(/^```json\s*/i, "").replace(/\s*```$/i, "").trim();
+      let parsed;
+      try {
+        parsed = JSON.parse(jsonStr);
+      } catch {
+        throw new TRPCError3({ code: "INTERNAL_SERVER_ERROR", message: "AI returned invalid JSON" });
+      }
+      await createBlogPost({
+        slug,
+        title: parsed.title ?? input.topic,
+        category: parsed.category ?? input.category ?? "Hotel Marketing",
+        excerpt: parsed.excerpt ?? "",
+        content: JSON.stringify(parsed.sections ?? []),
+        readTime: parsed.readTime ?? "7 min read",
+        status: "draft"
+      });
+      return { slug, title: parsed.title };
+    }),
+    /** List all blog posts */
+    list: publicProcedure.input(z2.object({ status: z2.enum(["draft", "published", "all"]).default("published") })).query(async ({ input }) => {
+      if (input.status === "all") return getAllBlogPosts();
+      return getAllBlogPosts(input.status);
+    }),
+    /** Get single post by slug */
+    get: publicProcedure.input(z2.object({ slug: z2.string() })).query(async ({ input }) => getBlogPost(input.slug)),
+    /** Publish a draft */
+    publish: publicProcedure.input(z2.object({ id: z2.number().int().positive() })).mutation(async ({ input }) => {
+      await publishBlogPost(input.id);
+      return { success: true };
+    }),
+    /** Delete a post */
+    delete: publicProcedure.input(z2.object({ id: z2.number().int().positive() })).mutation(async ({ input }) => {
+      await deleteBlogPost(input.id);
+      return { success: true };
+    })
   })
 });
 
@@ -1194,6 +1337,19 @@ app.get("/api/setup", async (_req, res) => {
         userAgent VARCHAR(512),
         ipAddress VARCHAR(45),
         createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+      )`,
+      `CREATE TABLE IF NOT EXISTS blog_posts (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        slug VARCHAR(255) NOT NULL UNIQUE,
+        title VARCHAR(500) NOT NULL,
+        category VARCHAR(100),
+        excerpt TEXT,
+        content LONGTEXT NOT NULL,
+        status ENUM('draft','published') NOT NULL DEFAULT 'draft',
+        readTime VARCHAR(20),
+        publishedAt TIMESTAMP NULL,
+        createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
       )`
     ];
     for (const sql of tables) {
