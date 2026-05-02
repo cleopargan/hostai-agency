@@ -566,10 +566,7 @@ async function invokeLLM(params) {
   if (normalizedToolChoice) {
     payload.tool_choice = normalizedToolChoice;
   }
-  payload.max_tokens = 32768;
-  payload.thinking = {
-    "budget_tokens": 128
-  };
+  payload.max_tokens = 4096;
   const normalizedResponseFormat = normalizeResponseFormat({
     responseFormat,
     response_format,
