@@ -15,20 +15,15 @@ interface Message {
 }
 
 const quickReplies = [
-  "Check-in time?",
-  "Is parking free?",
-  "Breakfast included?",
-  "Pet policy?",
+  "How can you help my hotel get more direct bookings?",
+  "Tell me about your services and pricing",
+  "Book a free marketing audit",
+  "How quickly can campaigns go live?",
 ];
 
-// Demo hotel context — in production each hotel gets their own config
-const DEMO_HOTEL = {
-  hotelName: "The Grand Maison",
-  hotelCity: "Paris",
-  checkInTime: "3:00 PM",
-  checkOutTime: "11:00 AM",
-  currency: "€",
-  startingRate: "185",
+// Site chat context for NightDesk marketing site
+const SITE_CONTEXT = {
+  isSiteChat: true,
 };
 
 export default function FloatingChat() {
@@ -36,7 +31,7 @@ export default function FloatingChat() {
   const [messages, setMessages] = useState<Message[]>([
     {
       from: "bot",
-      text: "Welcome to The Grand Maison! I'm your AI concierge — available 24/7 to answer any questions about your stay. How can I assist you today? 🏨",
+      text: "Welcome to NightDesk — Hotel digital marketing specialists. Ask about our services, pricing, or book a free marketing audit.",
     },
   ]);
   const [input, setInput] = useState("");
@@ -87,7 +82,7 @@ export default function FloatingChat() {
     try {
       const result = await chatMutation.mutateAsync({
         messages: conversationHistory,
-        ...DEMO_HOTEL,
+        ...SITE_CONTEXT,
       });
       setMessages((prev) => [...prev, { from: "bot", text: result.reply }]);
     } catch {
@@ -165,7 +160,7 @@ export default function FloatingChat() {
                     lineHeight: 1.1,
                   }}
                 >
-                  The Grand Maison
+                  NightDesk
                 </div>
                 <div
                   style={{
@@ -192,7 +187,7 @@ export default function FloatingChat() {
                       color: "rgba(74,222,128,0.75)",
                     }}
                   >
-                    AI Concierge · Online 24/7
+                    NightDesk AI · Live
                   </span>
                 </div>
               </div>
@@ -392,7 +387,7 @@ export default function FloatingChat() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && !isLoading && send()}
-              placeholder="Ask about check-in, parking, breakfast…"
+              placeholder="Ask how NightDesk grows direct bookings or book a free audit…"
               disabled={isLoading}
               style={{
                 flex: 1,
