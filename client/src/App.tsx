@@ -42,6 +42,7 @@ import AiReceptionist from "./pages/AiReceptionist";
 import GoogleAds from "./pages/GoogleAds";
 import DirectBooking from "./pages/DirectBooking";
 import CompletePackage from "./pages/CompletePackage";
+import NightDeskHome from "./pages/NightDeskHome";
 import WhyHotelsLoseBookingsToOtas from "./pages/blog/WhyHotelsLoseBookingsToOtas";
 import WhatIsAiReceptionistForHotels from "./pages/blog/WhatIsAiReceptionistForHotels";
 import GoogleAdsForHotels from "./pages/blog/GoogleAdsForHotels";
@@ -72,7 +73,7 @@ function Router() {
     <>
       <PageViewTracker />
       <Switch>
-        <Route path={"/"} component={MarketingLanding} />
+        <Route path={"/"} component={NightDeskHome} />
         <Route path={"/home-v1"} component={Home} />
         <Route path={"/privacy"} component={PrivacyPolicy} />
         <Route path={"/admin"} component={AdminDashboard} />
