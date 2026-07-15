@@ -715,42 +715,23 @@ function NightDeskHome() {
           </div>
         </section>
 
-        <section className="section-tight">
-          <div className="wrap">
-            <div className="founding reveal">
-              <div className="fmark">10</div>
-              <div>
-                <span className="mono">Founding properties</span>
-                <h2 className="section-offset">No fake testimonials. Just founding-client terms.</h2>
-                <p>We're a new studio, and we won't show you stock-photo "clients" from Lisbon. Instead: we're onboarding our first 10 properties in the New York area at founding terms — direct access to the founder, input on what we build next, and your pricing locked for 12 months. When the results are in, this section will show real numbers from real hotels, with their permission.</p>
-                <div className="perks">
-                  <span className="perk">Founder-direct support</span>
-                  <span className="perk">Pricing locked 12 months</span>
-                  <span className="perk">Shape the roadmap</span>
-                  <span className="perk">First case-study spotlight</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
         <section id="pilot" className="section-tight">
           <div className="wrap">
             <div className="pilot-box reveal">
               <div>
-                <span className="mono">The 21-day pilot</span>
-                <h2>See it work on your hotel before you commit.</h2>
-                <p>We install Core Desk on one channel and measure from day one. At the end of 21 days you see exactly what the system caught — in your numbers, not ours.</p>
+                <span className="mono">Tailored demo</span>
+                <h2>We’ll shape a working preview around your property.</h2>
+                <p>Send your hotel website, your most common guest questions, and the goal you want to improve first. We’ll use that to build a demo that feels relevant to your team and send your details straight to hello@nightdesk.agency.</p>
                 <ul className="pilot-metrics">
-                  <li>% of inquiries answered in under 5 minutes</li>
-                  <li>Booking intents captured, with contact info</li>
-                  <li>After-hours calls recovered by text-back</li>
+                  <li>Your website and key policies</li>
+                  <li>The questions guests ask most often</li>
+                  <li>The outcome you want to improve first</li>
                 </ul>
                 <div className="pilot-quote">
-                  <blockquote>"Send me your hotel's website. I'll build a working demo trained on your property — test it yourself, ask it about your own parking policy."</blockquote>
+                  <blockquote>“If you want a demo that reflects your hotel, share the details and we’ll build from there.”</blockquote>
                   <div className="founder">
-                    <span className="fmark">R</span>
-                    <span>Reda · Founder, Night Desk<br />You deal with me directly. No account managers.</span>
+                    <span className="fmark">N</span>
+                    <span>Night Desk<br />We reply directly and make the next step feel clear.</span>
                   </div>
                 </div>
               </div>

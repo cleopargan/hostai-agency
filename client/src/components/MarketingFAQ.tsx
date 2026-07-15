@@ -3,36 +3,36 @@ import { Plus, Minus } from "lucide-react";
 
 const faqs = [
   {
-    q: "How quickly will I see results from Google Ads?",
-    a: "Typically within 2–4 weeks you'll see the first direct bookings. Google Ads is intent-based — people are actively searching for hotels — so results come faster than social media ads. Most clients see meaningful ROI within the first 30–60 days.",
+    q: "How quickly will I see results from Google and Bing Ads?",
+    a: "Typically within 2–4 weeks you'll see the first direct bookings. Paid search is intent-based, so results usually appear faster than social media campaigns. Most clients see meaningful ROI within the first 30–60 days.",
   },
   {
     q: "What ad spend budget do I need alongside the management fee?",
-    a: "We recommend a minimum of $500/month for Google Ads-only campaigns, $1,500–$2,000/month for multi-channel (Google + Facebook + Bing), and $3,000+ for full-stack. Your ad spend goes 100% to the ad platforms — we don't take a percentage of it.",
+    a: "We recommend a minimum of $500/month for Google and Bing campaigns, $1,500–$2,000/month for multi-channel growth, and $3,000+ for the full stack including SEO and AI conversion. Your ad spend goes directly to the platforms — we don't take a percentage of it.",
   },
   {
-    q: "How is this different from managing ads myself or using a general agency?",
-    a: "We work exclusively with hotels and hospitality operators, which means our keyword lists, audience segments, and campaign structures are built specifically for the hotel booking journey — not generic e-commerce or lead-gen templates. We also integrate with Google Hotel Ads, which most general agencies don't touch.",
+    q: "Do you also offer SEO, AI conversion, and concierge automation?",
+    a: "Yes. Our most common setup pairs paid search with SEO, direct booking AI, and digital concierge automation so the full guest journey is covered — from first click to post-stay review generation.",
   },
   {
-    q: "How long does it take to launch SEO landing pages?",
-    a: "We build the first batch of pages within 2–3 weeks of sign-up. Technical SEO improvements start showing effect in 6–12 weeks, while new landing pages typically begin ranking meaningfully by month 3–5. SEO is a long-term investment — but once pages rank, bookings are essentially free.",
+    q: "How long does it take to launch SEO pages and content?",
+    a: "We usually begin with the first batch of pages within 2–3 weeks of onboarding. Technical SEO improvements start showing effect in 6–12 weeks, while new landing pages often begin ranking meaningfully by months 3–5.",
   },
   {
     q: "Do you guarantee results?",
-    a: "We guarantee we'll deliver measurable improvements in campaign performance within 30 days — or your first month management fee is free. We can't guarantee a specific ROAS or booking volume (that depends partly on your property, rates, and local market) but our benchmarks across hotel clients give us strong confidence in typical outcomes.",
+    a: "We guarantee measurable improvement in campaign performance within 30 days — or your first month management fee is free. We cannot guarantee a specific ROAS or booking volume because that depends on your property, rates, and market conditions.",
   },
   {
     q: "Can I run ads if my website is on Wix, Squarespace, or WordPress?",
-    a: "Yes. We work with properties on any website platform. All we need is the ability to add a small tracking pixel to your site (usually done through a simple tag manager). If your booking engine is hosted separately (like Beds24, Cloudbeds, or Little Hotelier) we can track conversions there too.",
+    a: "Yes. We work across any website platform. We just need the ability to add tracking and conversion tools to your site, and we can usually do that through your existing setup or tag manager.",
   },
   {
     q: "Is there a long-term contract?",
-    a: "No. All plans are month-to-month with 30 days notice to cancel. We don't lock clients into long contracts because we'd rather keep your business by delivering results than by locking you in legally.",
+    a: "No. All plans are month-to-month with 30 days notice to cancel. We prefer to earn your business through performance rather than locking you into a rigid contract.",
   },
   {
     q: "Can I combine digital marketing with the NightDesk AI concierge?",
-    a: "Absolutely — and we'd recommend it. Ads drive guests to your website; the AI concierge converts them by answering their questions instantly and reducing booking friction. Clients who use both services typically see a higher conversion rate from ad traffic than industry benchmarks.",
+    a: "Absolutely — and we recommend it. Paid search and SEO bring visitors in; the AI concierge and guest automation convert and retain them more effectively by answering questions, prompting upsells, and reducing friction.",
   },
 ];
 

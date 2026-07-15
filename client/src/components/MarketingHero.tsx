@@ -125,7 +125,7 @@ export default function MarketingHero() {
               marginBottom: "0.875rem",
               maxWidth: "520px",
             }}>
-              Google Ads, Facebook Ads, Bing Ads, and high-converting SEO landing pages —
+              Google & Bing Ads, SEO, direct booking AI, digital concierge automation, and executive reporting —
               fully managed for hotel operators who want more{" "}
               <strong style={{ color: "rgba(245,240,232,0.75)", fontWeight: 600 }}>direct bookings</strong>{" "}
               and fewer OTA commissions.

@@ -1,54 +1,66 @@
 import { useEffect, useRef, useState } from "react";
-import { Search, Target, Globe, FileText, ArrowRight } from "lucide-react";
+import { Search, Globe, Sparkles, MessageCircle, BarChart2, ArrowRight } from "lucide-react";
 
 const services = [
   {
     icon: Search,
-    tag: "Paid Search",
-    title: "Google Ads",
-    description: "Capture travelers actively searching for hotels in your area. We set up and manage search, display, and Google Hotel Ads campaigns — optimized for direct bookings.",
-    bullets: ["Search & Display campaigns", "Google Hotel Ads integration", "Conversion tracking setup", "Weekly bid optimization"],
+    tag: "Demand Capture",
+    title: "Google & Bing Ads",
+    description: "Capture high-intent travellers at the exact moment they search for a hotel in your market. We manage paid search across Google and Bing to drive more direct bookings with lower wasted spend.",
+    bullets: ["Google Ads & Bing campaigns", "Hotel Ads & property promotion", "Keyword strategy & bid control", "Weekly optimisation & reporting"],
     color: "#4A90E2",
     bg: "rgba(74,144,226,0.06)",
     border: "rgba(74,144,226,0.15)",
     accentBorder: "rgba(74,144,226,0.6)",
-    anchor: "#google-ads",
-  },
-  {
-    icon: Target,
-    tag: "Social Ads",
-    title: "Facebook & Instagram Ads",
-    description: "Re-engage past website visitors and reach new audiences who match your ideal guests. Retargeting, lookalike audiences, and video creative — all managed for you.",
-    bullets: ["Pixel setup & retargeting", "Lookalike audience targeting", "Carousel & video ads", "Meta Advantage+ campaigns"],
-    color: "#7B5EA7",
-    bg: "rgba(123,94,167,0.06)",
-    border: "rgba(123,94,167,0.15)",
-    accentBorder: "rgba(123,94,167,0.6)",
-    anchor: "#facebook-ads",
+    anchor: "#google-bing-ads",
   },
   {
     icon: Globe,
-    tag: "Microsoft Ads",
-    title: "Bing Ads",
-    description: "Underpriced, overlooked, and profitable. Bing audiences skew older, wealthier, and are often ready to book. Lower CPCs mean your budget goes further.",
-    bullets: ["Microsoft Advertising campaigns", "Import & optimize from Google", "LinkedIn profile targeting", "Older, higher-income audience"],
-    color: "#00B4D8",
-    bg: "rgba(0,180,216,0.06)",
-    border: "rgba(0,180,216,0.15)",
-    accentBorder: "rgba(0,180,216,0.6)",
-    anchor: "#bing-ads",
-  },
-  {
-    icon: FileText,
     tag: "Organic Search",
-    title: "SEO Landing Pages",
-    description: "Rank for high-intent local searches like 'boutique hotel in [city]' or 'hotel near [landmark]'. We build, optimize, and maintain location pages that convert.",
-    bullets: ["Keyword-specific landing pages", "Local SEO & Google My Business", "Schema markup & technical SEO", "Monthly content updates"],
+    title: "SEO & Global Search",
+    description: "Build an evergreen search foundation that compounds over time. We create location pages, strengthen technical SEO, and manage your visibility across Google My Business and local search.",
+    bullets: ["Location-specific landing pages", "Schema markup & technical SEO", "Google My Business management", "Quarterly content and ranking reviews"],
     color: "#6EE7B7",
     bg: "rgba(110,231,183,0.06)",
     border: "rgba(110,231,183,0.15)",
     accentBorder: "rgba(110,231,183,0.6)",
-    anchor: "#seo-pages",
+    anchor: "#seo-global-search",
+  },
+  {
+    icon: Sparkles,
+    tag: "Conversion Layer",
+    title: "Direct Booking AI",
+    description: "Turn more of your paid and organic traffic into direct bookings with AI-powered conversion tools that engage visitors before they leave for an OTA.",
+    bullets: ["AI chat assistant on-site", "Rate comparison & booking nudges", "Exit-intent recovery flows", "Conversion reporting & testing"],
+    color: "#7B5EA7",
+    bg: "rgba(123,94,167,0.06)",
+    border: "rgba(123,94,167,0.15)",
+    accentBorder: "rgba(123,94,167,0.6)",
+    anchor: "#direct-booking-ai",
+  },
+  {
+    icon: MessageCircle,
+    tag: "Guest Experience",
+    title: "Digital Concierge",
+    description: "Automate the guest journey from booking confirmation to post-stay review generation so you increase ADR, capture more 5-star reviews, and drive repeat stays.",
+    bullets: ["Pre-arrival & in-stay messaging", "Upsell automations", "Review collection & follow-up", "WhatsApp, SMS & email workflows"],
+    color: "#00B4D8",
+    bg: "rgba(0,180,216,0.06)",
+    border: "rgba(0,180,216,0.15)",
+    accentBorder: "rgba(0,180,216,0.6)",
+    anchor: "#digital-concierge",
+  },
+  {
+    icon: BarChart2,
+    tag: "Executive Visibility",
+    title: "CEO Command Center",
+    description: "Give owners a single live view of marketing performance, direct booking economics, SEO progress, and guest revenue signals — without chasing spreadsheets.",
+    bullets: ["Unified reporting dashboard", "SEO, ads & booking metrics in one view", "Direct-vs-OTA revenue insights", "Weekly and monthly growth reviews"],
+    color: "#C9A84C",
+    bg: "rgba(201,168,76,0.06)",
+    border: "rgba(201,168,76,0.18)",
+    accentBorder: "rgba(201,168,76,0.6)",
+    anchor: "#ceo-command-center",
   },
 ];
 
@@ -88,7 +100,7 @@ export default function MarketingServices() {
               marginBottom: "1rem",
             }}
           >
-            Four Channels.{" "}
+            Five Growth Engines.{" "}
             <em style={{
               fontStyle: "italic",
               background: "linear-gradient(90deg, #BFA06A, #E8C96A, #C9A84C)",
@@ -112,8 +124,7 @@ export default function MarketingServices() {
               margin: "0 auto",
             }}
           >
-            We manage every paid and organic channel that drives direct hotel bookings —
-            so you can focus on running your property.
+            We build and manage the full hotel growth engine — from SEO and paid search to AI conversion, guest communications, and executive reporting.
           </p>
         </div>
 

@@ -329,7 +329,7 @@ export default function ContactCTA() {
                       color: "rgba(245,240,232,0.5)",
                       lineHeight: 1.7,
                     }}>
-                      Got it — we'll reach out within <strong style={{ color: "#C9A84C" }}>24 hours</strong> to schedule your demo.
+                      Got it — we'll reach out within <strong style={{ color: "#C9A84C" }}>24 hours</strong> to follow up with your details.
                     </p>
                   </div>
                 ) : (
@@ -359,22 +359,22 @@ export default function ContactCTA() {
                           (e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.35)";
                         }}
                       >
-                        Prefer email? Leave your details →
+                        Prefer email? Submit your details →
                       </button>
                     ) : (
                       <>
                         <div className="grid sm:grid-cols-2 gap-3">
                           <div>
                             <label style={{ display: "block", fontFamily: "'DM Sans', sans-serif", fontSize: "0.58rem", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(245,240,232,0.3)", marginBottom: "0.4rem" }}>
-                              Name *
+                              Name
                             </label>
-                            <input required value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Your name" className="form-input" />
+                            <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Your name" className="form-input" />
                           </div>
                           <div>
                             <label style={{ display: "block", fontFamily: "'DM Sans', sans-serif", fontSize: "0.58rem", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(245,240,232,0.3)", marginBottom: "0.4rem" }}>
-                              Email *
+                              Email
                             </label>
-                            <input required type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder="you@yourhotel.com" className="form-input" />
+                            <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder="you@yourhotel.com" className="form-input" />
                           </div>
                         </div>
                         <button

@@ -24,7 +24,7 @@ export default function MarketingNavbar() {
     "✦  Free Marketing Audit — Book Today",
     "✦  Average 3.2× ROAS for Hotel Clients",
     "✦  No Setup Fee This Month",
-    "✦  Google Ads · Facebook Ads · Bing Ads · SEO",
+    "✦  Google & Bing Ads · SEO · AI Conversion · Concierge",
     "✦  7-Day Campaign Launch Guarantee",
     "✦  Now Accepting New Hotel Clients",
   ];

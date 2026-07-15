@@ -6,6 +6,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import MarketingLanding from "./pages/MarketingLanding";
+import MockupPage from "./pages/MockupPage";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import AdminDashboard from "./pages/AdminDashboard";
 import { trpc } from "@/lib/trpc";
@@ -107,7 +108,9 @@ function Router() {
         <Route path={"/location/tokyo"} component={Tokyo} />
         <Route path={"/ai-receptionist"} component={AiReceptionist} />
         <Route path={"/google-ads"} component={GoogleAds} />
+        <Route path={"/google-bing-ads"} component={GoogleAds} />
         <Route path={"/direct-booking"} component={DirectBooking} />
+        <Route path={"/mockup"} component={MockupPage} />
         <Route path={"/complete-package"} component={CompletePackage} />
         <Route path={"/blog/why-hotels-lose-bookings-to-otas"} component={WhyHotelsLoseBookingsToOtas} />
         <Route path={"/blog/what-is-ai-receptionist-for-hotels"} component={WhatIsAiReceptionistForHotels} />

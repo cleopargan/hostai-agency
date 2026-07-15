@@ -5,8 +5,8 @@ const CTA_BG = "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1
 
 const benefits = [
   "Free 20-min strategy call — no sales pressure",
-  "Audit of your current ad accounts & SEO",
-  "Custom recommendations for your property type",
+  "Audit of your current ads, SEO, AI conversion, and guest automation",
+  "Custom recommendations for your property type and booking funnel",
   "Results benchmarks from similar hotel clients",
 ];
 
