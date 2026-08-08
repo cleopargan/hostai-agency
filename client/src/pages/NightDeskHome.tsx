@@ -1,8 +1,9 @@
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import "./NightDeskHome.css";
 
-const CONTACT_EMAIL = "hello@nightdesk.com";
+const CONTACT_EMAIL = "hello@nightdesk.agency";
 
 const initialMessageSteps = [
   { step: 1, text: "Hi — do you have parking? We land past midnight.", cls: "guest" },
@@ -46,6 +47,9 @@ function NightDeskHome() {
   const [navOpen, setNavOpen] = useState(false);
   const timeouts = useRef<number[]>([]);
   const submitLead = trpc.leads.submit.useMutation();
+  const [, navigate] = useLocation();
+  const [leadError, setLeadError] = useState("");
+  const [leadSending, setLeadSending] = useState(false);
   const reduced = useRef(false);
   const chatRef = useRef<HTMLDivElement | null>(null);
 
@@ -160,6 +164,8 @@ function NightDeskHome() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (leadSending) return;
+
     const formData = new FormData(event.currentTarget);
     const name = String(formData.get("name") ?? "").trim();
     const email = String(formData.get("email") ?? "").trim();
@@ -167,10 +173,14 @@ function NightDeskHome() {
     const pain = String(formData.get("pain") ?? "").trim();
 
     if (!name || !email || !website) {
+      setLeadError("Please fill in your name, email and hotel website.");
       return;
     }
 
-    const body = `Name: ${name}\nEmail: ${email}\nHotel website: ${website}\nBiggest headache: ${pain}`;
+    const body = `Hotel website: ${website}\nBiggest headache: ${pain}`;
+
+    setLeadSending(true);
+    setLeadError("");
 
     try {
       await submitLead.mutateAsync({
@@ -179,11 +189,14 @@ function NightDeskHome() {
         source: "email_form",
         message: body,
       });
+      navigate("/thank-you");
     } catch {
-      // Fall back to email if the lead capture endpoint is unavailable.
+      setLeadError(
+        `Something went wrong on our end. Please email ${CONTACT_EMAIL} or book a call below.`
+      );
+    } finally {
+      setLeadSending(false);
     }
-
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=Demo%20request%20—%20${encodeURIComponent(name)}&body=${encodeURIComponent(body)}`;
   };
 
   return (
@@ -744,7 +757,7 @@ function NightDeskHome() {
               <div>
                 <span className="mono">Tailored demo</span>
                 <h2>We’ll shape a working preview around your property.</h2>
-                <p>Send your hotel website, your most common guest questions, and the goal you want to improve first. We’ll use that to build a demo that feels relevant to your team and send your details straight to hello@nightdesk.com.</p>
+                <p>Send your hotel website, your most common guest questions, and the goal you want to improve first. We’ll use that to build a demo that feels relevant to your team and send your details straight to hello@nightdesk.agency.</p>
                 <ul className="pilot-metrics">
                   <li>Your website and key policies</li>
                   <li>The questions guests ask most often</li>
@@ -782,7 +795,12 @@ function NightDeskHome() {
                     <option>All of the above</option>
                   </select>
                 </label>
-                <button className="btn primary" type="submit">Build my hotel's demo →</button>
+                <button className="btn primary" type="submit" disabled={leadSending}>
+                  {leadSending ? "Sending…" : "Build my hotel's demo →"}
+                </button>
+                {leadError && (
+                  <p className="fine" role="alert" style={{ color: "#f87171" }}>{leadError}</p>
+                )}
                 <p className="fine">No spam. No commitment. A working demo of your hotel, usually within 48 hours.</p>
                 <p className="alt">Prefer to talk? <a href="https://calendly.com/hello-nightdesk/30min" target="_blank" rel="noreferrer noopener">Book a 30-minute call</a></p>
               </form>
@@ -843,7 +861,7 @@ function NightDeskHome() {
               <a href="#services">Services</a>
               <a href="#pricing">Pricing</a>
               <a href="#pilot">21-day pilot</a>
-              <a href="mailto:hello@nightdesk.com">hello@nightdesk.com</a>
+              <a href="mailto:hello@nightdesk.agency">hello@nightdesk.agency</a>
             </div>
           </div>
           <div className="compliance">
