@@ -11,6 +11,8 @@ import { trpc } from "@/lib/trpc";
 const CONTACT_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663082783554/QDcYwAv8SHis62JyYiBJro/contact-atmosphere-v3-EFNm8aFiK7Li4RzrYmukPR.webp";
 const CONTACT_BG_FALLBACK = "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=1200&q=80";
 
+const CONTACT_EMAIL = "hello@nightdesk.com";
+
 const benefits = [
   "See your AI concierge live in 15 minutes",
   "Custom demo trained on your property",
@@ -54,24 +56,37 @@ export default function ContactCTA() {
 
     setLoading(true);
     setError("");
+    setForm({ name: "", email: "" });
 
-    try {
-      await submitLead.mutateAsync({
+    const mailtoBody = `Name: ${name}\nEmail: ${email}\n\nRequested demo via contact form fallback.`;
+    const mailtoLink = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Demo request — ${name}`)}&body=${encodeURIComponent(mailtoBody)}`;
+
+    submitLead.mutate(
+      {
         name,
         email,
         source: "email_form",
         message: "Requested demo via contact form fallback.",
-      });
-      setForm({ name: "", email: "" });
-      setSubmitted(true);
-    } catch {
-      const mailtoBody = `Name: ${name}\nEmail: ${email}\n\nRequested demo via contact form fallback.`;
-      window.location.href = `mailto:hello@nightdesk.com?subject=${encodeURIComponent(`Demo request — ${name}`)}&body=${encodeURIComponent(mailtoBody)}`;
-      setForm({ name: "", email: "" });
-      setSubmitted(true);
-    } finally {
-      setLoading(false);
-    }
+      },
+      {
+        onSuccess: () => {
+          setLoading(false);
+          setSubmitted(true);
+        },
+        onError: () => {
+          window.setTimeout(() => {
+            window.location.href = mailtoLink;
+          }, 150);
+          setLoading(false);
+          setSubmitted(true);
+        },
+      }
+    );
+
+    setSubmitted(true);
+    window.setTimeout(() => {
+      window.location.href = mailtoLink;
+    }, 150);
   };
 
   return (
@@ -173,7 +188,7 @@ export default function ContactCTA() {
               {/* Contact details */}
               <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                 {[
-                  { icon: Mail, text: "hello@nightdesk.com", href: "mailto:hello@nightdesk.com" },
+                  { icon: Mail, text: CONTACT_EMAIL, href: `mailto:${CONTACT_EMAIL}` },
                   { icon: MapPin, text: "Available worldwide — remote setup" },
                 ].map((item) => (
                   <div key={item.text} style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
