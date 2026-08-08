@@ -6,12 +6,13 @@
    ============================================================ */
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Mail, MapPin, Calendar, CheckCircle2, ExternalLink } from "lucide-react";
+import { useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 
 const CONTACT_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663082783554/QDcYwAv8SHis62JyYiBJro/contact-atmosphere-v3-EFNm8aFiK7Li4RzrYmukPR.webp";
 const CONTACT_BG_FALLBACK = "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=1200&q=80";
 
-const CONTACT_EMAIL = "hello@nightdesk.com";
+const CONTACT_EMAIL = "hello@nightdesk.agency";
 
 const benefits = [
   "See your AI concierge live in 15 minutes",
@@ -28,6 +29,7 @@ export default function ContactCTA() {
   const [error, setError] = useState("");
   const [form, setForm] = useState({ name: "", email: "" });
   const submitLead = trpc.leads.submit.useMutation();
+  const [, navigate] = useLocation();
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -41,6 +43,8 @@ export default function ContactCTA() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (loading) return;
+
     const name = form.name.trim();
     const email = form.email.trim();
 
@@ -56,37 +60,27 @@ export default function ContactCTA() {
 
     setLoading(true);
     setError("");
-    setForm({ name: "", email: "" });
 
-    const mailtoBody = `Name: ${name}\nEmail: ${email}\n\nRequested demo via contact form fallback.`;
-    const mailtoLink = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Demo request — ${name}`)}&body=${encodeURIComponent(mailtoBody)}`;
-
-    submitLead.mutate(
-      {
+    try {
+      await submitLead.mutateAsync({
         name,
         email,
         source: "email_form",
-        message: "Requested demo via contact form fallback.",
-      },
-      {
-        onSuccess: () => {
-          setLoading(false);
-          setSubmitted(true);
-        },
-        onError: () => {
-          window.setTimeout(() => {
-            window.location.href = mailtoLink;
-          }, 150);
-          setLoading(false);
-          setSubmitted(true);
-        },
-      }
-    );
+        message: "Requested demo via contact form.",
+      });
 
-    setSubmitted(true);
-    window.setTimeout(() => {
-      window.location.href = mailtoLink;
-    }, 150);
+      setForm({ name: "", email: "" });
+      setSubmitted(true);
+      navigate("/thank-you");
+    } catch (err) {
+      // Keep what the visitor typed so they can retry, and give them a
+      // working escape hatch instead of a silent no-op.
+      setError(
+        `Something went wrong on our end. Please email ${CONTACT_EMAIL} or book a call directly.`
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -523,7 +517,7 @@ export default function ContactCTA() {
               </h4>
               <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                 <a
-                  href="mailto:hello@nightdesk.com"
+                  href="mailto:hello@nightdesk.agency"
                   style={{
                     fontFamily: "'DM Sans', sans-serif",
                     fontSize: "0.82rem",
@@ -534,7 +528,7 @@ export default function ContactCTA() {
                   onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#C9A84C"}
                   onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.35)"}
                 >
-                  hello@nightdesk.com
+                  hello@nightdesk.agency
                 </a>
                 <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.82rem", color: "rgba(245,240,232,0.25)" }}>
                   Available worldwide
@@ -585,7 +579,7 @@ export default function ContactCTA() {
                 Privacy Policy
               </a>
               <a
-                href="mailto:hello@nightdesk.com"
+                href="mailto:hello@nightdesk.agency"
                 style={{
                   fontFamily: "'DM Sans', sans-serif",
                   fontSize: "0.7rem",

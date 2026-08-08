@@ -8,4 +8,12 @@ export const ENV = {
   forgeApiUrl: process.env.BUILT_IN_FORGE_API_URL ?? "",
   forgeApiKey: process.env.BUILT_IN_FORGE_API_KEY ?? "",
   pabblyWebhookUrl: process.env.PABBLY_WEBHOOK_URL ?? "",
+
+  // ── Transactional email (Resend) ──────────────────────────────────────────
+  resendApiKey: process.env.RESEND_API_KEY ?? "",
+  /** Verified Resend sender. Must be on a domain verified in Resend. */
+  mailFrom: process.env.MAIL_FROM ?? "Night Desk <hello@nightdesk.agency>",
+  /** Inbox that receives new-lead notifications. */
+  leadNotifyEmail: process.env.LEAD_NOTIFY_EMAIL ?? "hello@nightdesk.agency",
+  calendlyUrl: process.env.CALENDLY_URL ?? "https://calendly.com/hello-nightdesk/30min",
 };

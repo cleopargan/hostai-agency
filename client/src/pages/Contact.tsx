@@ -1,16 +1,60 @@
 import { useEffect, useState } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { ArrowLeft, ArrowRight, Mail, Clock, Globe } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import { trpc } from "@/lib/trpc";
+
+const CONTACT_EMAIL = "hello@nightdesk.agency";
 
 export default function Contact() {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
   const [form, setForm] = useState({ name: "", email: "", hotel: "", rooms: "", message: "" });
+  const [, navigate] = useLocation();
+  const submitLead = trpc.leads.submit.useMutation();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    if (sending) return;
+
+    const name = form.name.trim();
+    const email = form.email.trim();
+
+    if (!name || !email) {
+      setError("Please enter your name and email.");
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    setSending(true);
+    setError("");
+
+    const details = [
+      form.rooms.trim() ? `Rooms: ${form.rooms.trim()}` : "",
+      form.message.trim(),
+    ].filter(Boolean).join("\n\n");
+
+    try {
+      await submitLead.mutateAsync({
+        name,
+        email,
+        source: "email_form",
+        propertyName: form.hotel.trim() || undefined,
+        message: details || undefined,
+      });
+      setSubmitted(true);
+      navigate("/thank-you");
+    } catch {
+      setError(`Something went wrong on our end. Please email ${CONTACT_EMAIL} directly, or book a call below.`);
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -29,7 +73,7 @@ export default function Contact() {
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem", marginBottom: "3rem" }}>
           {[
-            { icon: Mail, label: "Email", value: "hello@nightdesk.agency" },
+            { icon: Mail, label: "Email", value: CONTACT_EMAIL },
             { icon: Clock, label: "Response Time", value: "Within 24 hours" },
             { icon: Globe, label: "Service Area", value: "Worldwide" },
           ].map((item, i) => (
@@ -64,6 +108,7 @@ export default function Contact() {
                   placeholder={field.placeholder}
                   value={(form as any)[field.key]}
                   onChange={(e) => setForm({ ...form, [field.key]: e.target.value })}
+                  required={field.key === "name" || field.key === "email"}
                   style={{ width: "100%", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "8px", padding: "0.75rem 1rem", color: "#F5F0E8", fontFamily: "'DM Sans', sans-serif", fontSize: "0.95rem", outline: "none", boxSizing: "border-box" }}
                 />
               </div>
@@ -78,9 +123,12 @@ export default function Contact() {
                 style={{ width: "100%", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "8px", padding: "0.75rem 1rem", color: "#F5F0E8", fontFamily: "'DM Sans', sans-serif", fontSize: "0.95rem", outline: "none", resize: "vertical", boxSizing: "border-box" }}
               />
             </div>
-            <button type="submit" className="btn-gold" style={{ padding: "0.85rem 2rem", fontSize: "0.9rem", display: "inline-flex", alignItems: "center", gap: "0.5rem", cursor: "pointer", border: "none", width: "fit-content" }}>
-              Send Message <ArrowRight size={14} />
+            <button type="submit" disabled={sending} className="btn-gold" style={{ padding: "0.85rem 2rem", fontSize: "0.9rem", display: "inline-flex", alignItems: "center", gap: "0.5rem", cursor: sending ? "not-allowed" : "pointer", opacity: sending ? 0.7 : 1, border: "none", width: "fit-content" }}>
+              {sending ? "Sending…" : <>Send Message <ArrowRight size={14} /></>}
             </button>
+            {error && (
+              <p role="alert" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.85rem", color: "#f87171", margin: 0 }}>{error}</p>
+            )}
           </form>
         )}
 

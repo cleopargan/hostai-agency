@@ -20,6 +20,7 @@ import {
   deleteBlogPost,
 } from "./db";
 import { notifyOwner } from "./_core/notification";
+import { sendLeadNotification, sendLeadAutoReply } from "./_core/email";
 import { ENV } from "./_core/env";
 import { invokeLLM, Message } from "./_core/llm";
 
@@ -57,7 +58,7 @@ export const appRouter = router({
           ctx.req.socket?.remoteAddress ||
           undefined;
 
-        await createDemoRequest({
+        const lead = {
           name: input.name,
           email: input.email,
           source: input.source,
@@ -65,37 +66,64 @@ export const appRouter = router({
           propertyType: input.propertyType,
           message: input.message,
           ipAddress,
-        });
+        };
 
-        // Notify the owner of a new lead
+        // Every delivery channel is independent and non-fatal. A lead is never
+        // lost because one of them is misconfigured — we only fail the request
+        // if *nothing* got through, so the form can show a real error.
+        const [stored, notified, autoReplied, forwarded] = await Promise.all([
+          createDemoRequest(lead)
+            .then(() => true)
+            .catch((err: unknown) => {
+              console.error("[Leads] Database write failed:", err);
+              return false;
+            }),
+
+          sendLeadNotification(lead),
+
+          sendLeadAutoReply(lead).catch(() => false),
+
+          // Outbound webhook to Pabbly Connect. Awaited rather than
+          // fire-and-forget: on serverless the process can be frozen the
+          // moment the response is returned, silently dropping the request.
+          ENV.pabblyWebhookUrl
+            ? fetch(ENV.pabblyWebhookUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  name: input.name,
+                  email: input.email,
+                  source: input.source,
+                  property_name: input.propertyName ?? "",
+                  property_type: input.propertyType ?? "",
+                  message: input.message ?? "",
+                  submitted_at: new Date().toISOString(),
+                  ip_address: ipAddress ?? "",
+                }),
+              })
+                .then((res) => res.ok)
+                .catch((err: unknown) => {
+                  console.warn("[Pabbly] Webhook delivery failed:", err);
+                  return false;
+                })
+            : Promise.resolve(false),
+        ]);
+
+        // Legacy Manus notification — best effort, never blocks.
         await notifyOwner({
           title: `New Demo Request — ${input.name}`,
           content: `**${input.name}** (${input.email}) submitted a demo request via ${input.source}.\n\nProperty: ${input.propertyName || "Not specified"}\nMessage: ${input.message || "None"}`,
-        }).catch(() => {}); // Non-blocking
+        }).catch(() => {});
 
-        // Fire outbound webhook to Pabbly Connect
-        // This replaces the broken Google Sheets lookup step in the Pabbly workflow.
-        // Pabbly receives the full lead payload instantly when a form is submitted.
-        if (ENV.pabblyWebhookUrl) {
-          fetch(ENV.pabblyWebhookUrl, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              name: input.name,
-              email: input.email,
-              source: input.source,
-              property_name: input.propertyName ?? "",
-              property_type: input.propertyType ?? "",
-              message: input.message ?? "",
-              submitted_at: new Date().toISOString(),
-              ip_address: ipAddress ?? "",
-            }),
-          }).catch((err) => {
-            console.warn("[Pabbly] Webhook delivery failed (non-blocking):", err?.message);
+        if (!stored && !notified && !forwarded) {
+          console.error("[Leads] Every delivery channel failed for", input.email);
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "We could not record your request. Please email hello@nightdesk.agency directly.",
           });
         }
 
-        return { success: true };
+        return { success: true, stored, notified, autoReplied, forwarded };
       }),
 
     /** Admin only — list all leads */
