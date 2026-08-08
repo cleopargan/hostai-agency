@@ -158,6 +158,9 @@ function NightDeskHome() {
     timeouts.current.push(timeout);
   };
 
+  const [submitted, setSubmitted] = useState(false);
+  const [formError, setFormError] = useState("");
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -167,6 +170,7 @@ function NightDeskHome() {
     const pain = String(formData.get("pain") ?? "").trim();
 
     if (!name || !email || !website) {
+      setFormError("Please fill out your name, email, and website.");
       return;
     }
 
@@ -177,11 +181,11 @@ function NightDeskHome() {
         source: "email_form",
         message: `Name: ${name}\nEmail: ${email}\nHotel website: ${website}\nBiggest headache: ${pain}`,
       });
+      setSubmitted(true);
+      setFormError("");
     } catch {
-      // If submission fails, still redirect to the same thank-you flow.
+      setFormError("Something went wrong. Please try again in a moment.");
     }
-
-    window.location.href = "/thank-you";
   };
 
   return (
@@ -756,34 +760,45 @@ function NightDeskHome() {
                   </div>
                 </div>
               </div>
-              <form className="lead-form" id="leadform" onSubmit={handleSubmit}>
-                <span className="mono">Get your free demo</span>
-                <label>
-                  Your name
-                  <input type="text" name="name" placeholder="Maria" required />
-                </label>
-                <label>
-                  Email
-                  <input type="email" name="email" placeholder="you@yourhotel.com" required />
-                </label>
-                <label>
-                  Hotel website
-                  <input type="url" name="website" placeholder="https://yourhotel.com" required />
-                </label>
-                <label>
-                  Biggest headache
-                  <select name="pain">
-                    <option>After-hours inquiries</option>
-                    <option>Missed phone calls</option>
-                    <option>Reviews &amp; reputation</option>
-                    <option>OTA commissions</option>
-                    <option>All of the above</option>
-                  </select>
-                </label>
-                <button className="btn primary" type="submit">Build my hotel's demo →</button>
-                <p className="fine">No spam. No commitment. A working demo of your hotel, usually within 48 hours.</p>
-                <p className="alt">Prefer to talk? <a href="https://calendly.com/hello-nightdesk/30min" target="_blank" rel="noreferrer noopener">Book a 30-minute call</a></p>
-              </form>
+              {submitted ? (
+                <div className="lead-form submitted-state">
+                  <span className="mono">Thanks for your request</span>
+                  <h3>Demo request received</h3>
+                  <p>We’ll follow up within 24 hours with a working demo tailored to your hotel.</p>
+                  <p className="fine">No spam. No commitment. A working demo of your hotel, usually within 48 hours.</p>
+                  <p className="alt">Prefer to talk now? <a href="https://calendly.com/hello-nightdesk/30min" target="_blank" rel="noreferrer noopener">Book a 30-minute call</a></p>
+                </div>
+              ) : (
+                <form className="lead-form" id="leadform" onSubmit={handleSubmit}>
+                  <span className="mono">Get your free demo</span>
+                  <label>
+                    Your name
+                    <input type="text" name="name" placeholder="Maria" required />
+                  </label>
+                  <label>
+                    Email
+                    <input type="email" name="email" placeholder="you@yourhotel.com" required />
+                  </label>
+                  <label>
+                    Hotel website
+                    <input type="url" name="website" placeholder="https://yourhotel.com" required />
+                  </label>
+                  <label>
+                    Biggest headache
+                    <select name="pain">
+                      <option>After-hours inquiries</option>
+                      <option>Missed phone calls</option>
+                      <option>Reviews &amp; reputation</option>
+                      <option>OTA commissions</option>
+                      <option>All of the above</option>
+                    </select>
+                  </label>
+                  <button className="btn primary" type="submit">Build my hotel's demo →</button>
+                  {formError && <p className="fine" style={{ color: "#f87171" }}>{formError}</p>}
+                  <p className="fine">No spam. No commitment. A working demo of your hotel, usually within 48 hours.</p>
+                  <p className="alt">Prefer to talk? <a href="https://calendly.com/hello-nightdesk/30min" target="_blank" rel="noreferrer noopener">Book a 30-minute call</a></p>
+                </form>
+              )}
             </div>
           </div>
         </section>
