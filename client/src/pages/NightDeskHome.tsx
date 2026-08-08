@@ -170,20 +170,18 @@ function NightDeskHome() {
       return;
     }
 
-    const body = `Name: ${name}\nEmail: ${email}\nHotel website: ${website}\nBiggest headache: ${pain}`;
-
     try {
       await submitLead.mutateAsync({
         name,
         email,
         source: "email_form",
-        message: body,
+        message: `Name: ${name}\nEmail: ${email}\nHotel website: ${website}\nBiggest headache: ${pain}`,
       });
     } catch {
-      // Fall back to email if the lead capture endpoint is unavailable.
+      // If submission fails, still redirect to the same thank-you flow.
     }
 
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=Demo%20request%20—%20${encodeURIComponent(name)}&body=${encodeURIComponent(body)}`;
+    window.location.href = "/thank-you";
   };
 
   return (

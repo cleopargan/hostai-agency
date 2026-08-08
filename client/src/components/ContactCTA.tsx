@@ -58,9 +58,6 @@ export default function ContactCTA() {
     setError("");
     setForm({ name: "", email: "" });
 
-    const mailtoBody = `Name: ${name}\nEmail: ${email}\n\nRequested demo via contact form fallback.`;
-    const mailtoLink = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Demo request — ${name}`)}&body=${encodeURIComponent(mailtoBody)}`;
-
     submitLead.mutate(
       {
         name,
@@ -74,19 +71,11 @@ export default function ContactCTA() {
           setSubmitted(true);
         },
         onError: () => {
-          window.setTimeout(() => {
-            window.location.href = mailtoLink;
-          }, 150);
           setLoading(false);
-          setSubmitted(true);
+          setError("Submission failed. Please try again or email hello@nightdesk.com.");
         },
       }
     );
-
-    setSubmitted(true);
-    window.setTimeout(() => {
-      window.location.href = mailtoLink;
-    }, 150);
   };
 
   return (
