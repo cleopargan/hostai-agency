@@ -18,8 +18,6 @@ const benefits = [
   "Setup guaranteed in 7 days or it's free",
 ];
 
-const WEB3FORMS_KEY = "eda10f46-c87b-499a-b2ce-d653ae7ce76e";
-
 export default function ContactCTA() {
   const [visible, setVisible] = useState(false);
   const [showForm, setShowForm] = useState(false);
@@ -41,37 +39,36 @@ export default function ContactCTA() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const name = form.name.trim();
+    const email = form.email.trim();
+
+    if (!name || !email) {
+      setError("Please enter your name and email.");
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
     setLoading(true);
     setError("");
+
     try {
-      const payload = {
-        access_key: WEB3FORMS_KEY,
-        subject: `New Demo Interest from ${form.name} — NightDesk Website`,
-        from_name: "NightDesk Website",
-        name: form.name,
-        email: form.email,
+      await submitLead.mutateAsync({
+        name,
+        email,
+        source: "email_form",
         message: "Requested demo via contact form fallback.",
-        botcheck: "",
-      };
-      const res = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify(payload),
       });
-      const data = await res.json();
-      if (data.success) {
-        // Also persist to NightDesk database
-        submitLead.mutate({
-          name: form.name,
-          email: form.email,
-          source: "email_form",
-        });
-        setSubmitted(true);
-      } else {
-        setError("Something went wrong. Please email us at hello@nightdesk.agency");
-      }
+      setForm({ name: "", email: "" });
+      setSubmitted(true);
     } catch {
-      setError("Network error. Please email us at hello@nightdesk.agency");
+      const mailtoBody = `Name: ${name}\nEmail: ${email}\n\nRequested demo via contact form fallback.`;
+      window.location.href = `mailto:hello@nightdesk.com?subject=${encodeURIComponent(`Demo request — ${name}`)}&body=${encodeURIComponent(mailtoBody)}`;
+      setForm({ name: "", email: "" });
+      setSubmitted(true);
     } finally {
       setLoading(false);
     }
@@ -176,7 +173,7 @@ export default function ContactCTA() {
               {/* Contact details */}
               <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                 {[
-                  { icon: Mail, text: "hello@nightdesk.agency", href: "mailto:hello@nightdesk.agency" },
+                  { icon: Mail, text: "hello@nightdesk.com", href: "mailto:hello@nightdesk.com" },
                   { icon: MapPin, text: "Available worldwide — remote setup" },
                 ].map((item) => (
                   <div key={item.text} style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
@@ -368,13 +365,13 @@ export default function ContactCTA() {
                             <label style={{ display: "block", fontFamily: "'DM Sans', sans-serif", fontSize: "0.58rem", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(245,240,232,0.3)", marginBottom: "0.4rem" }}>
                               Name
                             </label>
-                            <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Your name" className="form-input" />
+                            <input name="name" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Your name" className="form-input" required />
                           </div>
                           <div>
                             <label style={{ display: "block", fontFamily: "'DM Sans', sans-serif", fontSize: "0.58rem", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(245,240,232,0.3)", marginBottom: "0.4rem" }}>
                               Email
                             </label>
-                            <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder="you@yourhotel.com" className="form-input" />
+                            <input name="email" type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder="you@yourhotel.com" className="form-input" required />
                           </div>
                         </div>
                         <button
@@ -511,7 +508,7 @@ export default function ContactCTA() {
               </h4>
               <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                 <a
-                  href="mailto:hello@nightdesk.agency"
+                  href="mailto:hello@nightdesk.com"
                   style={{
                     fontFamily: "'DM Sans', sans-serif",
                     fontSize: "0.82rem",
@@ -522,7 +519,7 @@ export default function ContactCTA() {
                   onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "#C9A84C"}
                   onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.35)"}
                 >
-                  hello@nightdesk.agency
+                  hello@nightdesk.com
                 </a>
                 <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.82rem", color: "rgba(245,240,232,0.25)" }}>
                   Available worldwide
@@ -573,7 +570,7 @@ export default function ContactCTA() {
                 Privacy Policy
               </a>
               <a
-                href="mailto:hello@nightdesk.agency"
+                href="mailto:hello@nightdesk.com"
                 style={{
                   fontFamily: "'DM Sans', sans-serif",
                   fontSize: "0.7rem",

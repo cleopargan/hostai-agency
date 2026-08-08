@@ -1,5 +1,8 @@
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { trpc } from "@/lib/trpc";
 import "./NightDeskHome.css";
+
+const CONTACT_EMAIL = "hello@nightdesk.com";
 
 const initialMessageSteps = [
   { step: 1, text: "Hi — do you have parking? We land past midnight.", cls: "guest" },
@@ -42,6 +45,7 @@ function NightDeskHome() {
   });
   const [navOpen, setNavOpen] = useState(false);
   const timeouts = useRef<number[]>([]);
+  const submitLead = trpc.leads.submit.useMutation();
   const reduced = useRef(false);
   const chatRef = useRef<HTMLDivElement | null>(null);
 
@@ -154,13 +158,32 @@ function NightDeskHome() {
     timeouts.current.push(timeout);
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const body = `Name: ${formData.get("name")}\\nEmail: ${formData.get("email")}\\nHotel website: ${formData.get("website")}\\nBiggest headache: ${formData.get("pain")}`;
-    window.location.href = `mailto:hello@nightdesk.agency?subject=Demo%20request%20—%20${encodeURIComponent(
-      String(formData.get("name"))
-    )}&body=${encodeURIComponent(body)}`;
+    const name = String(formData.get("name") ?? "").trim();
+    const email = String(formData.get("email") ?? "").trim();
+    const website = String(formData.get("website") ?? "").trim();
+    const pain = String(formData.get("pain") ?? "").trim();
+
+    if (!name || !email || !website) {
+      return;
+    }
+
+    const body = `Name: ${name}\nEmail: ${email}\nHotel website: ${website}\nBiggest headache: ${pain}`;
+
+    try {
+      await submitLead.mutateAsync({
+        name,
+        email,
+        source: "email_form",
+        message: body,
+      });
+    } catch {
+      // Fall back to email if the lead capture endpoint is unavailable.
+    }
+
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=Demo%20request%20—%20${encodeURIComponent(name)}&body=${encodeURIComponent(body)}`;
   };
 
   return (
@@ -721,7 +744,7 @@ function NightDeskHome() {
               <div>
                 <span className="mono">Tailored demo</span>
                 <h2>We’ll shape a working preview around your property.</h2>
-                <p>Send your hotel website, your most common guest questions, and the goal you want to improve first. We’ll use that to build a demo that feels relevant to your team and send your details straight to hello@nightdesk.agency.</p>
+                <p>Send your hotel website, your most common guest questions, and the goal you want to improve first. We’ll use that to build a demo that feels relevant to your team and send your details straight to hello@nightdesk.com.</p>
                 <ul className="pilot-metrics">
                   <li>Your website and key policies</li>
                   <li>The questions guests ask most often</li>
@@ -820,7 +843,7 @@ function NightDeskHome() {
               <a href="#services">Services</a>
               <a href="#pricing">Pricing</a>
               <a href="#pilot">21-day pilot</a>
-              <a href="mailto:hello@nightdesk.agency">hello@nightdesk.agency</a>
+              <a href="mailto:hello@nightdesk.com">hello@nightdesk.com</a>
             </div>
           </div>
           <div className="compliance">
